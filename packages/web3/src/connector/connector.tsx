@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd';
 import { ConnectModal, type ConnectModalActionType } from 'pelican-web3-lib';
 import type {
   Chain,
@@ -7,7 +8,6 @@ import type {
   ConnectorTriggerProps,
   Wallet,
 } from 'pelican-web3-lib-common';
-import { message } from 'antd';
 
 import useProvider from '../hooks/useProvider';
 import type { ConnectorProps } from './interface';

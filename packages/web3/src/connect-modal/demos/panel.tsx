@@ -1,7 +1,7 @@
 import React from 'react';
+import { Card } from 'antd';
 import { ConnectModal } from 'pelican-web3-lib';
 import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
-import { Card } from 'antd';
 
 import type { Wallet } from '../interface';
 

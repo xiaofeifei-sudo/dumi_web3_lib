@@ -1,6 +1,6 @@
-import { ConnectButton } from 'pelican-web3-lib';
 import { render } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
+import { ConnectButton } from 'pelican-web3-lib';
 import { describe, expect, it } from 'vitest';
 
 describe('ConnectButton style', () => {

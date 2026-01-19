@@ -1,7 +1,7 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { ConnectButton, type Chain } from 'pelican-web3-lib';
 import { Mainnet, Polygon } from 'pelican-web3-lib-assets';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 describe('ConnectButton chains', () => {

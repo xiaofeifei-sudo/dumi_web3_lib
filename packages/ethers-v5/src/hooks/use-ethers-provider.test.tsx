@@ -1,6 +1,6 @@
-import { EthersWeb3ConfigProvider } from 'pelican-web3-lib-ethers';
 import { render } from '@testing-library/react';
 import { providers } from 'ethers';
+import { EthersWeb3ConfigProvider } from 'pelican-web3-lib-ethers';
 import { describe, expect, test } from 'vitest';
 
 import { useEthersProvider } from './use-ethers-provider';

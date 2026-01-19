@@ -1,3 +1,4 @@
+import { Button, message } from 'antd';
 import { ConnectButton, Connector, useAccount } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import {
@@ -8,7 +9,6 @@ import {
   useEthersProvider,
   useEthersSigner,
 } from 'pelican-web3-lib-ethers-v5';
-import { Button, message } from 'antd';
 
 const App = () => {
   const [messageApi, contextHolder] = message.useMessage();

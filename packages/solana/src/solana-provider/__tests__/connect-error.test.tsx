@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useProvider } from 'pelican-web3-lib';
 import type { ConnectionContextState } from '@solana/wallet-adapter-react';
 import { fireEvent } from '@testing-library/react';
+import { useProvider } from 'pelican-web3-lib';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CoinbaseWallet, PhantomWallet } from '../../wallets/built-in';

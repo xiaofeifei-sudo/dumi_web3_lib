@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { EmptyProps, ModalProps } from 'antd';
 import type {
   ConnectingStatus,
   ConnectingStatusConfig,
@@ -7,7 +8,6 @@ import type {
   Locale,
   Wallet,
 } from 'pelican-web3-lib-common';
-import type { EmptyProps, ModalProps } from 'antd';
 
 export type {
   Wallet,

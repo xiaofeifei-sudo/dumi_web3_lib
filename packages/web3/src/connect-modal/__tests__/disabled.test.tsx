@@ -1,7 +1,7 @@
 import React from 'react';
-import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
+import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConnectModal } from '../index';

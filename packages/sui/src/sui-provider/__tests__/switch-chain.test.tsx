@@ -1,8 +1,8 @@
 import React from 'react';
-import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { createNetworkConfig } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
 import { fireEvent } from '@testing-library/react';
+import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { suiMainnet, suiTestnet, SuiWeb3ConfigProvider } from '../..';

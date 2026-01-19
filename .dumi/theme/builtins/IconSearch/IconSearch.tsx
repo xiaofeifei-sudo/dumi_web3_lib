@@ -1,10 +1,10 @@
 import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
 import AntdIcon, { TableOutlined } from '@ant-design/icons';
-import * as AntdWeb3Icons from 'pelican-web3-lib-icons';
 import { Affix, Empty, Grid, Input, Segmented, type SegmentedProps } from 'antd';
 import { createStyles, useTheme } from 'antd-style';
 import { useIntl } from 'dumi';
 import debounce from 'lodash/debounce';
+import * as AntdWeb3Icons from 'pelican-web3-lib-icons';
 
 import Category from './Category';
 import { categories, CategoriesKeys } from './fields';

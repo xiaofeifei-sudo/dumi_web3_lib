@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'antd';
 import type { ConnectModalProps } from 'pelican-web3-lib';
 import { ConnectModal } from 'pelican-web3-lib';
 import {
@@ -10,7 +11,6 @@ import {
   metadata_Trust,
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
-import { Button } from 'antd';
 
 import type { Wallet } from '../interface';
 

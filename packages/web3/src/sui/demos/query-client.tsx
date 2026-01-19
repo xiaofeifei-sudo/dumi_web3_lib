@@ -1,9 +1,9 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
-import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { ConnectButton, Connector } from 'pelican-web3-lib';
+import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 
 const queryClient = new QueryClient();
 

@@ -1,5 +1,5 @@
-import { Address } from 'pelican-web3-lib';
 import { Space } from 'antd';
+import { Address } from 'pelican-web3-lib';
 
 import { formatAddress } from '../../utils';
 

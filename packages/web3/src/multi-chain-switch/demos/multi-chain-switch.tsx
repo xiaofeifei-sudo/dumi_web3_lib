@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { QueryClient } from '@tanstack/react-query';
+import { Button, Space } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { PhantomWallet, SolanaWeb3ConfigProvider } from 'pelican-web3-lib-solana';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 import { Mainnet, MetaMask, WagmiWeb3ConfigProvider, WalletConnect } from 'pelican-web3-lib-wagmi';
-import { QueryClient } from '@tanstack/react-query';
-import { Button, Space } from 'antd';
 import { http } from 'wagmi';
 
 const queryClient = new QueryClient();

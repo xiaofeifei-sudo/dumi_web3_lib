@@ -1,8 +1,8 @@
 import { LinkOutlined } from '@ant-design/icons';
+import { render } from '@testing-library/react';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import { ChainIds, Web3ConfigProvider } from 'pelican-web3-lib-common';
 import { BitcoinCircleColorful } from 'pelican-web3-lib-icons';
-import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { BrowserLink } from '..';

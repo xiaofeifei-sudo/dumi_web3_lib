@@ -1,6 +1,6 @@
+import { Space } from 'antd';
 import { ConnectButton } from 'pelican-web3-lib';
 import { WalletColorful, WalletWhiteColorful } from 'pelican-web3-lib-icons';
-import { Space } from 'antd';
 
 const App: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Web3ThemeConfig } from 'pelican-web3-lib';
 import { theme } from 'antd';
+import type { Web3ThemeConfig } from 'pelican-web3-lib';
 
 export type ThemeValue = 'default' | 'violet' | 'dark' | 'green' | 'pink';
 

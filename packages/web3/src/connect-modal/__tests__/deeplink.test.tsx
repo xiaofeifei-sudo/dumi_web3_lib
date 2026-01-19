@@ -1,5 +1,5 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
+import { ConnectModal } from 'pelican-web3-lib';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock window.location.href

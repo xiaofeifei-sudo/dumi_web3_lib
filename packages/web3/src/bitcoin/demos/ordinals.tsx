@@ -1,6 +1,6 @@
+import { Space } from 'antd';
 import { NFTCard } from 'pelican-web3-lib';
 import { BitcoinWeb3ConfigProvider } from 'pelican-web3-lib-bitcoin';
-import { Space } from 'antd';
 
 /**
  * The main application component that sets up the BitcoinWeb3ConfigProvider and displays NFT cards.

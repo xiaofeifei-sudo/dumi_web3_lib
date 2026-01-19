@@ -1,3 +1,5 @@
+import { QueryClient } from '@tanstack/react-query';
+import { Button, Space } from 'antd';
 import { Account, ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   MetaMask,
@@ -7,8 +9,6 @@ import {
   WagmiWeb3ConfigProvider,
   WalletConnect,
 } from 'pelican-web3-lib-wagmi';
-import { QueryClient } from '@tanstack/react-query';
-import { Button, Space } from 'antd';
 import { createSiweMessage } from 'viem/siwe';
 import { http, useDisconnect } from 'wagmi';
 

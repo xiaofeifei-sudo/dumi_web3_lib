@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import type { Chain } from 'pelican-web3-lib-common';
 import type { ButtonProps } from 'antd';
 import { Button, ConfigProvider, Dropdown, Space } from 'antd';
 import classNames from 'classnames';
+import type { Chain } from 'pelican-web3-lib-common';
 
 export interface ChainSelectProps {
   className?: string;

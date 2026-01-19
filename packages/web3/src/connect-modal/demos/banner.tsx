@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert, Button, Checkbox, Space, theme, Typography } from 'antd';
 import { ConnectModal, Web3ConfigProvider } from 'pelican-web3-lib';
 import {
   metadata_MetaMask,
@@ -6,7 +7,6 @@ import {
   metadata_Trust,
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
-import { Alert, Button, Checkbox, Space, theme, Typography } from 'antd';
 
 import type { Wallet } from '../interface';
 

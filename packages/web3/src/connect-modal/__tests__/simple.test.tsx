@@ -1,6 +1,6 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
 import { theme as antTheme, ConfigProvider } from 'antd';
+import { ConnectModal } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { groupOrder, walletList } from './mock';

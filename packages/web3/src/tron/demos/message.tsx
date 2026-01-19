@@ -1,6 +1,6 @@
+import { Flex } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { TronlinkWallet, TronWeb3ConfigProvider } from 'pelican-web3-lib-tron';
-import { Flex } from 'antd';
 
 import { SignMessage } from './components/SignMessage';
 

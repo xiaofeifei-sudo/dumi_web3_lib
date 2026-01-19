@@ -1,11 +1,11 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { useProvider } from 'pelican-web3-lib';
 import {
   metadata_MetaMask,
   metadata_TokenPocket,
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConnectButton, Web3ConfigProvider, type Account } from '../../../../web3/src';

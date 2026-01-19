@@ -1,6 +1,6 @@
 import React from 'react';
-import { useProvider } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
+import { useProvider } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConnectButton, Web3ConfigProvider, type Account } from '../../../../web3/src';

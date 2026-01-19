@@ -1,5 +1,5 @@
-import { Mainnet } from 'pelican-web3-lib-assets';
 import { render } from '@testing-library/react';
+import { Mainnet } from 'pelican-web3-lib-assets';
 import { describe, expect, it } from 'vitest';
 
 import { BrowserLink } from '..';

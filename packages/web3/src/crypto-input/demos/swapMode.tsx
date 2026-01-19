@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SwapOutlined } from '@ant-design/icons';
-import { CryptoInput, type CryptoInputProps, type Token } from 'pelican-web3-lib';
-import { ETH, USDT } from 'pelican-web3-lib-assets/tokens';
 import { Button, Flex } from 'antd';
 import Decimal from 'decimal.js';
+import { CryptoInput, type CryptoInputProps, type Token } from 'pelican-web3-lib';
+import { ETH, USDT } from 'pelican-web3-lib-assets/tokens';
 
 const App: React.FC = () => {
   const [cryptoPair, setCryptoPair] = useState<CryptoInputProps['value'][]>([]);

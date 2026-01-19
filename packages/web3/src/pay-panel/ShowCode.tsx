@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { WalletColorful } from 'pelican-web3-lib-icons';
 import { Button, ConfigProvider, Flex, QRCode, Statistic, Tabs, Typography } from 'antd';
+import { WalletColorful } from 'pelican-web3-lib-icons';
 
 import useIntl from '../hooks/useIntl';
 import { PayPanelContext } from './PayPanelContext';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { devUseWarning } from 'pelican-web3-lib-common';
 import { ConfigProvider, Modal } from 'antd';
 import classNames from 'classnames';
+import { devUseWarning } from 'pelican-web3-lib-common';
 
 import ModalPanel from './components/ModalPanel';
 import useMode from './hooks/useMode';

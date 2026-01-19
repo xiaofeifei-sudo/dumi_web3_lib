@@ -1,9 +1,9 @@
 import React from 'react';
-import { Web3ConfigProvider } from 'pelican-web3-lib';
-import type { ConnectModalProps } from 'pelican-web3-lib';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Col, Radio, Row, Select, Slider, Space, Switch, Tabs } from 'antd';
 import type { ConfigProviderProps } from 'antd';
+import { Web3ConfigProvider } from 'pelican-web3-lib';
+import type { ConnectModalProps } from 'pelican-web3-lib';
 
 import { themeList } from '../tokens';
 import type { ThemeSetting, ThemeValue } from '../tokens';

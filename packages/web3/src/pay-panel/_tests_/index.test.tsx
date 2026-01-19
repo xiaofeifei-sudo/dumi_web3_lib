@@ -1,4 +1,6 @@
 import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { ConfigProvider } from 'antd';
 import {
   BSC,
   Mainnet,
@@ -7,8 +9,6 @@ import {
   metadata_TokenPocket,
   USDT,
 } from 'pelican-web3-lib-assets';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ConfigProvider } from 'antd';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PayPanel } from '../index';

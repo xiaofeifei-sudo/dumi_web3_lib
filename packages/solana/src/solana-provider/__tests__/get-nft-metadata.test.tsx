@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 import React from 'react';
-import { useProvider } from 'pelican-web3-lib';
-import { metadata_CoinbaseWallet } from 'pelican-web3-lib-assets';
 import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
 import type { ConnectionContextState } from '@solana/wallet-adapter-react';
 import { fireEvent } from '@testing-library/react';
+import { useProvider } from 'pelican-web3-lib';
+import { metadata_CoinbaseWallet } from 'pelican-web3-lib-assets';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { SolanaWeb3ConfigProvider } from '..';

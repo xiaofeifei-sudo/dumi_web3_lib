@@ -1,7 +1,7 @@
 import React from 'react';
-import { Connector, Web3ConfigProvider, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Button } from 'antd';
+import { Connector, Web3ConfigProvider, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import { mainnet } from 'wagmi/chains';

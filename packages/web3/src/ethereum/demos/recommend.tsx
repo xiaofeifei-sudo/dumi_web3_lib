@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   Mainnet,
@@ -7,7 +8,6 @@ import {
   WagmiWeb3ConfigProvider,
   WalletConnect,
 } from 'pelican-web3-lib-wagmi';
-import { QueryClient } from '@tanstack/react-query';
 import { http } from 'wagmi';
 
 const queryClient = new QueryClient();

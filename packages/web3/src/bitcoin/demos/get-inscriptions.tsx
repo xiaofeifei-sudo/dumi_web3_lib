@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, message, Space } from 'antd';
 import { ConnectButton, Connector, NFTImage } from 'pelican-web3-lib';
 import {
   BitcoinWeb3ConfigProvider,
@@ -9,7 +10,6 @@ import {
   XverseWallet,
   type Inscription,
 } from 'pelican-web3-lib-bitcoin';
-import { Button, message, Space } from 'antd';
 
 /**
  * Component to get and display inscriptions.

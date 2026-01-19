@@ -1,6 +1,6 @@
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
-import { fireEvent, render, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import { mainnet } from 'wagmi/chains';

@@ -1,6 +1,6 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { render } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
+import { ConnectModal } from 'pelican-web3-lib';
 import { describe, expect, it } from 'vitest';
 
 import { Web3ConfigProvider } from '../index';

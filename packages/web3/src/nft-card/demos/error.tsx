@@ -1,6 +1,6 @@
 import React from 'react';
-import { NFTCard } from 'pelican-web3-lib';
 import { Space } from 'antd';
+import { NFTCard } from 'pelican-web3-lib';
 
 const App: React.FC = () => {
   return (

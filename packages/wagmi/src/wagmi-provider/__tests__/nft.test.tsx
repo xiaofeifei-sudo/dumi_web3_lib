@@ -1,6 +1,6 @@
+import { render, waitFor } from '@testing-library/react';
 import { NFTCard } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
-import { render, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import { mainnet } from 'wagmi/chains';

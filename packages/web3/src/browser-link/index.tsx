@@ -1,7 +1,7 @@
 import React from 'react';
+import { Space, Tooltip } from 'antd';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import { type BrowserLinkType, type Chain } from 'pelican-web3-lib-common';
-import { Space, Tooltip } from 'antd';
 
 import { Address } from '../address';
 import useProvider from '../hooks/useProvider';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { BSC, Mainnet, USDT } from 'pelican-web3-lib-assets';
 import { render, screen } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
+import { BSC, Mainnet, USDT } from 'pelican-web3-lib-assets';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ChainInfo } from '../ChainInfo';

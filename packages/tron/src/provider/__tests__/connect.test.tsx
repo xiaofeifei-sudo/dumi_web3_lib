@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useProvider } from 'pelican-web3-lib';
 import { fireEvent } from '@testing-library/react';
 import { WalletReadyState } from '@tronweb3/tronwallet-abstract-adapter';
+import { useProvider } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { TronWeb3ConfigProvider } from '../..';

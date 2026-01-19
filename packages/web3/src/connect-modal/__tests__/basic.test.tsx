@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { theme as antTheme, ConfigProvider, Grid } from 'antd';
 import type { DefaultGuide } from 'pelican-web3-lib';
 import { ConnectModal } from 'pelican-web3-lib';
 import { BitcoinCircleColorful } from 'pelican-web3-lib-icons';
-import { fireEvent, render } from '@testing-library/react';
-import { theme as antTheme, ConfigProvider, Grid } from 'antd';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mockBrowser } from '../../utils/test-utils';

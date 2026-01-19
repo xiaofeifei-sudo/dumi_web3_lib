@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as AntdWeb3Icons from 'pelican-web3-lib-icons';
 import { Badge, message } from 'antd';
 import classNames from 'classnames';
+import * as AntdWeb3Icons from 'pelican-web3-lib-icons';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 import type { ThemeType } from './IconSearch';

@@ -1,7 +1,7 @@
 import React from 'react';
+import { fireEvent } from '@testing-library/react';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { metadata_Slush } from 'pelican-web3-lib-assets';
-import { fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Slush, SuiWeb3ConfigProvider } from '../../';

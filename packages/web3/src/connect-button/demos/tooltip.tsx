@@ -1,5 +1,5 @@
-import { ConnectButton } from 'pelican-web3-lib';
 import { Space } from 'antd';
+import { ConnectButton } from 'pelican-web3-lib';
 
 const App: React.FC = () => {
   return (

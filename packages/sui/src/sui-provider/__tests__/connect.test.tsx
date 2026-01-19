@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { fireEvent } from '@testing-library/react';
+import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { SuiWeb3ConfigProvider } from '../../';

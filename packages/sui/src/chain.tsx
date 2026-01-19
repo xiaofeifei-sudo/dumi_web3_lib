@@ -1,8 +1,8 @@
 import React from 'react';
+import { SUI_DECIMALS } from '@mysten/sui/utils';
 import type { Chain } from 'pelican-web3-lib-common';
 import { createGetBrowserLink, SuiChainIds } from 'pelican-web3-lib-common';
 import { SuiColorful } from 'pelican-web3-lib-icons';
-import { SUI_DECIMALS } from '@mysten/sui/utils';
 
 export interface SuiChain extends Chain {
   id: SuiChainIds;

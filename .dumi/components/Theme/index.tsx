@@ -1,4 +1,7 @@
 import React, { useContext, useEffect } from 'react';
+import { Card, theme } from 'antd';
+import { useTheme } from 'antd-style';
+import { useIntl, usePrefersColor } from 'dumi';
 import { ConnectModal, Web3ConfigProvider, type Wallet } from 'pelican-web3-lib';
 import {
   metadata_CoinbaseWallet,
@@ -7,9 +10,6 @@ import {
   metadata_TokenPocket,
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
-import { Card, theme } from 'antd';
-import { useTheme } from 'antd-style';
-import { useIntl, usePrefersColor } from 'dumi';
 
 import { ThemeContext } from '../ThemeContext';
 import { Thumbnail } from './components/Thumbnail';

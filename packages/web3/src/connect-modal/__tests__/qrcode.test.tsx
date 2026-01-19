@@ -1,5 +1,5 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { ConnectModal } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import QrCode from '../components/QrCode';

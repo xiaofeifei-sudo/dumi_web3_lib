@@ -1,6 +1,6 @@
 import React from 'react';
-import { ConnectButton, Web3ConfigProvider } from 'pelican-web3-lib';
 import { render } from '@testing-library/react';
+import { ConnectButton, Web3ConfigProvider } from 'pelican-web3-lib';
 import { describe, expect, it } from 'vitest';
 
 describe('ConnectButton intl', () => {

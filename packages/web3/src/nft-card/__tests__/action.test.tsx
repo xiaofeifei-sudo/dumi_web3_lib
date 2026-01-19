@@ -1,5 +1,5 @@
-import { NFTCard } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
+import { NFTCard } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('NFTCard actions', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAccount, useConnection, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
 import { Button } from 'antd';
+import { useAccount, useConnection, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('ConnectButton', () => {

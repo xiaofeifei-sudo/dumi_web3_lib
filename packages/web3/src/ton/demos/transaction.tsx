@@ -1,3 +1,4 @@
+import { Button, Space } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   CHAIN,
@@ -9,7 +10,6 @@ import {
   TonWeb3ConfigProvider,
   useTonConnector,
 } from 'pelican-web3-lib-ton';
-import { Button, Space } from 'antd';
 
 const SendTransfer: React.FC = () => {
   const { connector, account, connectConfig } = useTonConnector();

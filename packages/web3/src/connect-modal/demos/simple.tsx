@@ -1,8 +1,8 @@
 import React from 'react';
+import { Button } from 'antd';
 import type { ConnectModalProps } from 'pelican-web3-lib';
 import { ConnectModal } from 'pelican-web3-lib';
 import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
-import { Button } from 'antd';
 
 import type { Wallet } from '../interface';
 

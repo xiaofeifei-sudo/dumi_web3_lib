@@ -1,8 +1,8 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { ConnectButton, Connector, type Account } from 'pelican-web3-lib';
 import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
 import type { Wallet } from 'pelican-web3-lib-common';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('Connector quick connect', () => {

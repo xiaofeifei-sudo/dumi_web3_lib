@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import React, { isValidElement, useContext, useMemo } from 'react';
-import { type Locale } from 'pelican-web3-lib-common';
 import type { TooltipProps } from 'antd';
 import { ConfigProvider, Tooltip, Typography } from 'antd';
 import type { TextProps } from 'antd/lib/typography/Text';
 import classNames from 'classnames';
+import { type Locale } from 'pelican-web3-lib-common';
 
 import { useProvider } from '../hooks';
 import useIntl from '../hooks/useIntl';

@@ -1,8 +1,8 @@
 import EventEmitter from 'node:events';
 import React, { useEffect } from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Mainnet, Polygon } from 'pelican-web3-lib-assets';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import type { Chain as WagmiChain } from 'wagmi/chains';

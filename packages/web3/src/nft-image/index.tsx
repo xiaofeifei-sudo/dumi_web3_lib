@@ -1,7 +1,7 @@
 import React from 'react';
+import { Image, type ImageProps } from 'antd';
 import type { UniversalWeb3ProviderInterface } from 'pelican-web3-lib-common';
 import { getWeb3AssetUrl, parseNumberToBigint } from 'pelican-web3-lib-common';
-import { Image, type ImageProps } from 'antd';
 
 import useNFT from '../hooks/useNFT';
 

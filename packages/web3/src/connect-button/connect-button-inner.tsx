@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MoreOutlined } from '@ant-design/icons';
-import type { Wallet } from 'pelican-web3-lib-common';
 import type { ButtonProps, MenuProps } from 'antd';
 import { Button, ConfigProvider, Dropdown, Space } from 'antd';
 import classNames from 'classnames';
+import type { Wallet } from 'pelican-web3-lib-common';
 
 import type { IntlType } from '../hooks/useIntl';
 

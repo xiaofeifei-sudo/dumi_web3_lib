@@ -1,4 +1,7 @@
 import { useMemo } from 'react';
+import { Card, Col, Flex, Row, Tag, Typography } from 'antd';
+import { createStyles } from 'antd-style';
+import { Link, usePrefersColor, useSidebarData } from 'dumi';
 import {
   BitcoinCircleColorful,
   EthereumCircleColorful,
@@ -6,9 +9,6 @@ import {
   SuiCircleColorful,
   TonCircleColorful,
 } from 'pelican-web3-lib-icons';
-import { Card, Col, Flex, Row, Tag, Typography } from 'antd';
-import { createStyles } from 'antd-style';
-import { Link, usePrefersColor, useSidebarData } from 'dumi';
 
 const AdapterCovers: Record<string, React.ReactNode> = {
   Bitcoin: <BitcoinCircleColorful />,

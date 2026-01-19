@@ -1,10 +1,10 @@
 import React, { useMemo, useState, type PropsWithChildren } from 'react';
-import type { Locale, Wallet } from 'pelican-web3-lib-common';
 import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
 import { BybitWalletAdapter } from '@tronweb3/tronwallet-adapter-bybit';
 import { OkxWalletAdapter } from '@tronweb3/tronwallet-adapter-okxwallet';
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { TronLinkAdapter } from '@tronweb3/tronwallet-adapter-tronlink';
+import type { Locale, Wallet } from 'pelican-web3-lib-common';
 
 import { AntDesignWeb3ConfigProvider } from './config-provider';
 

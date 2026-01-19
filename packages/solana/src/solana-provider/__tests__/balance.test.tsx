@@ -1,5 +1,5 @@
-import { useProvider } from 'pelican-web3-lib';
 import type { ConnectionContextState } from '@solana/wallet-adapter-react';
+import { useProvider } from 'pelican-web3-lib';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SolanaWeb3ConfigProvider } from '../index';

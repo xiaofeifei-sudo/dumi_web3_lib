@@ -1,3 +1,4 @@
+import { Button, message } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import {
@@ -7,7 +8,6 @@ import {
   TokenPocket,
   useWeb3js,
 } from 'pelican-web3-lib-eth-web3js';
-import { Button, message } from 'antd';
 
 const App = () => {
   const [messageApi, contextHolder] = message.useMessage();

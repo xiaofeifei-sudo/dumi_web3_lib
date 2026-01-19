@@ -1,6 +1,6 @@
+import { fireEvent, render } from '@testing-library/react';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { WagmiWeb3ConfigProvider } from 'pelican-web3-lib-wagmi';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
