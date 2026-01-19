@@ -1,12 +1,16 @@
 # pelican-web3-lib
 
-[https://web3.ant.design](https://web3.ant.design)
+Ant Design Web3 的核心组件库，提供连接按钮、地址展示、Token 选择、NFT 卡片等常用组件。
 
-## Usage
+文档地址：https://web3.ant.design
+
+## 安装
 
 ```bash
 npm install pelican-web3-lib
 ```
+
+## 使用示例
 
 ```tsx
 import { Address } from 'pelican-web3-lib';

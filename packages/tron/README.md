@@ -1,12 +1,14 @@
 # pelican-web3-lib-tron
 
-This package provides a [TRON](https://tron.network) adapter for [pelican-web3-lib](https://www.npmjs.com/package/pelican-web3-lib).
+为 pelican-web3-lib 提供 TRON 网络适配能力，支持 TronLink、OKX、Bitget、Bybit 等钱包连接。
 
-## Usage
+## 安装
 
 ```bash
 npm install pelican-web3-lib pelican-web3-lib-tron --save
 ```
+
+## 使用示例
 
 ```tsx
 import { ConnectButton, Connector } from 'pelican-web3-lib';
@@ -31,9 +33,9 @@ const Basic = () => {
 export default Basic;
 ```
 
-For more examples, refer to [TRON - Ant Design Web3](https://web3.ant.design/components/tron).
+更多示例参考：https://web3.ant.design/components/tron
 
-## Documentation
+## 文档
 
-- For more information, visit [Ant Design Web3](https://web3.ant.design).
-- For an introduction to TRON, visit [TRON](https://tron.network).
+- Ant Design Web3：https://web3.ant.design
+- TRON 官方：https://tron.network

@@ -1,14 +1,14 @@
 # pelican-web3-lib-bitcoin
 
-This package provides a Bitcoin adapter for [pelican-web3-lib](https://www.npmjs.com/package/pelican-web3-lib).
+为 pelican-web3-lib 提供比特币适配能力，支持常见钱包（Xverse、Unisat、OKX 等）连接与账户管理。
 
-## Installation
+## 安装
 
 ```bash
 npm install pelican-web3-lib pelican-web3-lib-bitcoin
 ```
 
-## Usage
+## 使用示例
 
 ```tsx
 import { ConnectButton, Connector } from 'pelican-web3-lib';
@@ -32,8 +32,8 @@ const App: React.FC = () => {
 export default App;
 ```
 
-For more examples, refer to [Bitcoin - Ant Design Web3](https://web3.ant.design/components/bitcoin).
+更多示例参考：https://web3.ant.design/components/bitcoin
 
-## Documentation
+## 文档
 
-- For more information, visit [Ant Design Web3](https://web3.ant.design).
+- Ant Design Web3：https://web3.ant.design

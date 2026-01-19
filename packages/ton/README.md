@@ -1,12 +1,14 @@
 # pelican-web3-lib-ton
 
-This package provides a [TON](https://ton.org) adapter for [pelican-web3-lib](https://www.npmjs.com/package/pelican-web3-lib).
+为 pelican-web3-lib 提供 TON 网络适配能力，支持 Tonkeeper、OKX 等钱包连接。
 
-## Usage
+## 安装
 
 ```bash
 npm install pelican-web3-lib pelican-web3-lib-ton --save
 ```
+
+## 使用示例
 
 ```tsx
 import { ConnectButton, Connector } from 'pelican-web3-lib';
@@ -25,9 +27,9 @@ const Basic = () => {
 export default Basic;
 ```
 
-For more examples, refer to [TON - Ant Design Web3](https://web3.ant.design/components/ton).
+更多示例参考：https://web3.ant.design/components/ton
 
-## Documentation
+## 文档
 
-- For more information, visit [Ant Design Web3](https://web3.ant.design).
-- For an introduction to TON, visit [TON](https://ton.org).
+- Ant Design Web3：https://web3.ant.design
+- TON 官方：https://ton.org

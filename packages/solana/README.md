@@ -1,14 +1,14 @@
 # pelican-web3-lib-solana
 
-This package provides a [Solana](https://solana.com) adapter for [pelican-web3-lib](https://www.npmjs.com/package/pelican-web3-lib).
+为 pelican-web3-lib 提供 Solana 适配能力，支持 Phantom 等常见钱包连接。
 
-## Installation
+## 安装
 
 ```bash
 npm install pelican-web3-lib pelican-web3-lib-solana --save
 ```
 
-## Usage
+## 使用示例
 
 ```tsx
 import { ConnectButton, Connector } from 'pelican-web3-lib';
@@ -27,9 +27,9 @@ const App: React.FC = () => {
 export default App;
 ```
 
-For more examples, refer to [Solana - Ant Design Web3](https://web3.ant.design/components/solana).
+更多示例参考：https://web3.ant.design/components/solana
 
-## Documentation
+## 文档
 
-- For more information, visit [Ant Design Web3](https://web3.ant.design).
-- For an introduction to Solana, visit [Solana](https://solana.com).
+- Ant Design Web3：https://web3.ant.design
+- Solana 官方：https://solana.com
