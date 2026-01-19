@@ -1,0 +1,15 @@
+{
+  "extends": "./src/.umi/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "pelican-web3-lib": ["../../packages/web3/src"],
+      "pelican-web3-lib-common": ["../../packages/common/src"],
+      "pelican-web3-lib-assets": ["../../packages/assets/src"],
+      "pelican-web3-lib-assets/*": ["../../packages/assets/src/*"],
+      "pelican-web3-lib-icons": ["../../packages/icons/src"],
+      "pelican-web3-lib-wagmi": ["../../packages/wagmi/src"],
+      "pelican-web3-lib-eth-web3js": ["../../packages/eth-web3js/src"],
+      "pelican-web3-lib-eth-web3js/*": ["../../packages/eth-web3js/src/*"]
+    }
+  }
+}

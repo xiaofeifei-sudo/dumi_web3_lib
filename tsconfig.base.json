@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@@/*": [".dumi/tmp/*"],
+      "pelican-web3-lib": ["./packages/web3/src/"],
+      "pelican-web3-lib-common": ["./packages/common/src/"],
+      "pelican-web3-lib-icons": ["./packages/icons/src/"],
+      "pelican-web3-lib-assets": ["./packages/assets/src/"],
+      "pelican-web3-lib-assets/solana": ["./packages/assets/src/solana/"],
+      "pelican-web3-lib-assets/tokens": ["./packages/assets/src/tokens/"],
+      "pelican-web3-lib-assets/wallets": ["./packages/assets/src/wallets/"],
+      "pelican-web3-lib-wagmi": ["./packages/wagmi/src/"],
+      "pelican-web3-lib-ethers": ["./packages/ethers/src/"],
+      "pelican-web3-lib-ethers/provider": ["./packages/ethers/src/ethers-provider/"],
+      "pelican-web3-lib-ethers/wallets": ["./packages/ethers/src/wallets/"],
+      "pelican-web3-lib-ethers/wagmi": ["./packages/ethers/src/wagmi.ts"],
+      "pelican-web3-lib-ethers-v5": ["./packages/ethers-v5/src/"],
+      "pelican-web3-lib-ethers-v5/wagmi": ["./packages/ethers-v5/src/wagmi.ts"],
+      "pelican-web3-lib-eth-web3js": ["./packages/eth-web3js/src/"],
+      "pelican-web3-lib-solana": ["./packages/solana/src/"],
+      "pelican-web3-lib-sui": ["./packages/sui/src/"],
+      "pelican-web3-lib-ton": ["./packages/ton/src/"],
+      "pelican-web3-lib-bitcoin": ["./packages/bitcoin/src/"],
+      "pelican-web3-lib-tron": ["./packages/tron/src/"]
+    }
+  }
+}
