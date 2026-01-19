@@ -62,7 +62,7 @@ export default defineConfig({
         useStream: false,
       }
     : false,
-  mfsu: false,
+  mfsu: true,
   alias,
   metas: [
     {
@@ -107,21 +107,18 @@ export default defineConfig({
   publicPath: process.env.PUBLIC_PATH || '/',
   base: process.env.BASE || '/',
   themeConfig: {
-    name: 'Ant Design Web3',
-    socialLinks: {
-      github: 'https://github.com/ant-design/ant-design-web3',
-      twitter: 'https://twitter.com/AntDesignWeb3',
-    },
+    logo: false,
+    name: 'Web3 Examples',
     rtl: false,
     nav: {
       'en-US': [
         { title: 'Course', link: '/course/introduction' },
-        { title: 'Guide', link: '/guide/ant-design-web3' },
+        { title: 'Guide', link: '/guide/pelican-web3-lib' },
         { title: 'Components', link: '/components/overview' },
       ],
       'zh-CN': [
         { title: '课程', link: '/course/introduction-cn' },
-        { title: '指南', link: '/guide/ant-design-web3-cn' },
+        { title: '指南', link: '/guide/pelican-web3-lib-cn' },
         { title: '组件', link: '/components/overview-cn' },
       ],
     },

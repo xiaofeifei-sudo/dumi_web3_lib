@@ -4,13 +4,7 @@ import {
   type Web3ConfigProviderProps,
 } from 'pelican-web3-lib-common';
 
-import type { ComponentToken as ConnectModalComponentToken } from '../connect-modal/style/index';
-
-interface Web3ThemeConfig extends ThemeConfig {
-  web3Components?: {
-    ConnectModal?: Partial<ConnectModalComponentToken>;
-  };
-}
+interface Web3ThemeConfig extends ThemeConfig {}
 
 const Web3ConfigProvider: React.FC<{ theme?: Web3ThemeConfig } & Web3ConfigProviderProps> = (
   props,
@@ -22,7 +16,6 @@ const Web3ConfigProvider: React.FC<{ theme?: Web3ThemeConfig } & Web3ConfigProvi
         ...theme,
         components: {
           ...theme?.components,
-          ...theme?.web3Components,
         },
       }}
     >

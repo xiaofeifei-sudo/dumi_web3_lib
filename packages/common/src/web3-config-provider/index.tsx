@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { merge } from 'lodash-es';
 
-import defaultLocale from '../locale/default';
 import { ConfigContext, type ConfigConsumerProps, type Web3ConfigProviderProps } from './context';
 
 const ProviderChildren: React.FC<
@@ -23,11 +22,7 @@ const ProviderChildren: React.FC<
 
   // If ignoreConfig is true, don't merge this provider's config, just pass through parent context
   if (ignoreConfig) {
-    const passThroughConfig = parentContext
-      ? { ...parentContext }
-      : {
-          defaultLocale: rest.defaultLocale,
-        };
+    const passThroughConfig = parentContext ? { ...parentContext } : {};
     return (
       <ConfigContext.Provider value={passThroughConfig as ConfigConsumerProps}>
         {children}
@@ -68,7 +63,6 @@ const Web3ConfigProvider: React.FC<Web3ConfigProviderProps> = (props) => {
   return (
     <ProviderChildren
       {...restProps}
-      defaultLocale={defaultLocale}
       parentContext={context}
       extendsContextFromParent={extendsContextFromParent}
       ignoreConfig={ignoreConfig}
