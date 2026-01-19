@@ -2,7 +2,8 @@ const { execSync } = require('node:child_process');
 const { readFileSync, writeFileSync } = require('node:fs');
 
 function listFiles() {
-  const dirs = ['packages', 'docs', '.dumi', 'examples'];
+  const inputDirs = process.argv.slice(2);
+  const dirs = inputDirs.length ? inputDirs : ['packages', 'docs', '.dumi', 'examples'];
   const files = [];
   for (const d of dirs) {
     try {
@@ -18,6 +19,9 @@ function listFiles() {
 
 function migrate() {
   const replacements = [
+    // brand & textual mentions
+    ['Ant Design Web3', 'Pelican Web3'],
+    ['ant-design-web3', 'pelican-web3-lib'],
     ['@ant-design/web3-ethers/wagmi', 'pelican-web3-lib-ethers/wagmi'],
     ['@ant-design/web3-ethers/provider', 'pelican-web3-lib-ethers/provider'],
     ['@ant-design/web3-ethers/wallets', 'pelican-web3-lib-ethers/wallets'],

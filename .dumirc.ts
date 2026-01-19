@@ -107,20 +107,31 @@ export default defineConfig({
   publicPath: process.env.PUBLIC_PATH || '/',
   base: process.env.BASE || '/',
   themeConfig: {
-    name: '',
+    name: 'Ant Design Web3',
+    socialLinks: {
+      github: 'https://github.com/ant-design/ant-design-web3',
+      twitter: 'https://twitter.com/AntDesignWeb3',
+    },
     rtl: false,
     nav: {
       'en-US': [
-        { title: 'API', link: '/api/overview' },
+        { title: 'Course', link: '/course/introduction' },
+        { title: 'Guide', link: '/guide/ant-design-web3' },
+        { title: 'Components', link: '/components/overview' },
       ],
       'zh-CN': [
-        { title: 'API', link: '/api/overview' },
+        { title: '课程', link: '/course/introduction-cn' },
+        { title: '指南', link: '/guide/ant-design-web3-cn' },
+        { title: '组件', link: '/components/overview-cn' },
       ],
     },
+    localesEnhance: [
+      { id: 'en-US', switchPrefix: '中' },
+      { id: 'zh-CN', switchPrefix: 'en' },
+    ],
+    sidebarGroupModePath: ['/guide', '/components'],
+    docVersions: false,
   },
-  favicons: [
-    'https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*XACEQ5Lqbt8AAAAAAAAAAAAADlrGAQ/original',
-  ],
   locales: [
     {
       id: 'en-US',

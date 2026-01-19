@@ -4,9 +4,6 @@ import classNames from 'classnames';
 import { usePrefersColor } from 'dumi';
 import SiteContext from 'dumi-theme-antd-web3/dist/slots/SiteContext';
 
-import { Banner } from '../../components/Banner';
-import { Features } from '../../components/Features';
-import { ShowCase } from '../../components/ShowCase';
 import { Theme } from '../../components/Theme';
 import { FullTheme, themes } from '../../components/Theme/components/Thumbnail';
 import { ThemeContext } from '../../components/ThemeContext';
@@ -54,10 +51,7 @@ export const HomePage: React.FC = () => {
         }}
       >
         <div className={classNames(styles.container)} style={themeStyle}>
-          <Banner />
-          <Features />
           <Theme />
-          <ShowCase />
         </div>
       </ConfigProvider>
     </ThemeContext.Provider>
