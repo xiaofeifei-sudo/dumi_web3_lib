@@ -1,7 +1,7 @@
 import React from 'react';
+import { Space } from 'antd';
 import { NFTCard, NFTImage } from 'pelican-web3-lib';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
-import { Space } from 'antd';
 
 const App: React.FC = () => {
   return (

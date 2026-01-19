@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
-import type { Balance } from 'pelican-web3-lib-common';
 import { ConfigProvider } from 'antd';
 import classNames from 'classnames';
+import type { Balance } from 'pelican-web3-lib-common';
 
 import { formatBalance } from '../utils';
 

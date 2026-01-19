@@ -1,9 +1,9 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { CopyOutlined, LoginOutlined, UserOutlined } from '@ant-design/icons';
-import { ConnectStatus, type Chain, type Wallet } from 'pelican-web3-lib-common';
 import type { ButtonProps } from 'antd';
 import { Avatar, ConfigProvider, Divider, Dropdown, message } from 'antd';
 import classNames from 'classnames';
+import { ConnectStatus, type Chain, type Wallet } from 'pelican-web3-lib-common';
 
 import { Address } from '../address';
 import { CryptoPrice } from '../crypto-price';

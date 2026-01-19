@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd';
 import type { Wallet } from 'pelican-web3-lib';
 import { ConnectButton } from 'pelican-web3-lib';
 import {
@@ -6,7 +7,6 @@ import {
   metadata_TokenPocket,
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
-import { message } from 'antd';
 
 const App: React.FC = () => {
   return (

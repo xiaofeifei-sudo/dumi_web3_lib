@@ -1,5 +1,5 @@
-import { NFTCard } from 'pelican-web3-lib';
 import { render, waitFor } from '@testing-library/react';
+import { NFTCard } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { BitcoinWeb3ConfigProvider } from '../index';

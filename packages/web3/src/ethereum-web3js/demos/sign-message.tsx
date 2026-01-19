@@ -1,8 +1,8 @@
 import React from 'react';
+import { Button, Input, message, Space } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import { EthWeb3jsConfigProvider, useWeb3js } from 'pelican-web3-lib-eth-web3js';
-import { Button, Input, message, Space } from 'antd';
 
 const SignerButton = () => {
   const [messageApi, contextHolder] = message.useMessage();

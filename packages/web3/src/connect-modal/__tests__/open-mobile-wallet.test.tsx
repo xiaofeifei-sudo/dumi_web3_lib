@@ -1,6 +1,6 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
 import type { GetProp } from 'antd';
+import { ConnectModal } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('ConnectModal open Solana Nobile Wallet Adapter(MWA) test', () => {

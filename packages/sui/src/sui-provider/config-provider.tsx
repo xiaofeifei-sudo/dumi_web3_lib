@@ -1,8 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { SUI } from 'pelican-web3-lib-assets/tokens';
-import type { Account, Locale, UniversalWeb3ProviderInterface } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider, type Wallet } from 'pelican-web3-lib-common';
-import { SuiColorful } from 'pelican-web3-lib-icons';
 import {
   useConnectWallet,
   useCurrentAccount,
@@ -12,6 +8,10 @@ import {
   useSuiClientQuery,
   useWallets,
 } from '@mysten/dapp-kit';
+import { SUI } from 'pelican-web3-lib-assets/tokens';
+import type { Account, Locale, UniversalWeb3ProviderInterface } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider, type Wallet } from 'pelican-web3-lib-common';
+import { SuiColorful } from 'pelican-web3-lib-icons';
 
 import type { SuiChain } from '../chain';
 import type { WalletFactory } from '../wallets/types';

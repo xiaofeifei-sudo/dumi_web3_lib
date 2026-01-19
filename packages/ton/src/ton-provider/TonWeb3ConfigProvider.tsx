@@ -1,6 +1,6 @@
 import React, { useEffect, type PropsWithChildren } from 'react';
-import type { Locale } from 'pelican-web3-lib-common';
 import type { CHAIN, TonConnectOptions, Wallet } from '@tonconnect/sdk';
+import type { Locale } from 'pelican-web3-lib-common';
 
 import { TonWalletFactory } from '../wallets/factory';
 import type { TonBasicWallet, TonWalletMetadata } from '../wallets/type';

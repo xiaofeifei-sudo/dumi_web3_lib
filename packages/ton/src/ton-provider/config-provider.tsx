@@ -1,7 +1,7 @@
 import React, { useEffect, type PropsWithChildren } from 'react';
+import { toUserFriendlyAddress } from '@tonconnect/sdk';
 import { Web3ConfigProvider, type Account, type Balance } from 'pelican-web3-lib-common';
 import { TonCircleColorful } from 'pelican-web3-lib-icons';
-import { toUserFriendlyAddress } from '@tonconnect/sdk';
 
 import { useTonConnector } from '../hooks';
 import type { TonWallet } from '../wallets/type';

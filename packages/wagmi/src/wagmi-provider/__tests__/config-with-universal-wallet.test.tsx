@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react';
 import { useProvider } from 'pelican-web3-lib';
 import {
   metadata_MetaMask,
@@ -6,7 +7,6 @@ import {
   UniversalWallet,
   WagmiWeb3ConfigProvider,
 } from 'pelican-web3-lib-wagmi';
-import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { createConfig, http } from 'wagmi';
 import { mainnet, polygon } from 'wagmi/chains';

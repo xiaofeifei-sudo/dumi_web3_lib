@@ -1,4 +1,6 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { Button } from 'antd';
 import {
   ConnectButton,
   Connector,
@@ -6,8 +8,6 @@ import {
   type ConnectorTriggerProps,
 } from 'pelican-web3-lib';
 import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
-import { fireEvent, render } from '@testing-library/react';
-import { Button } from 'antd';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('Connector', () => {

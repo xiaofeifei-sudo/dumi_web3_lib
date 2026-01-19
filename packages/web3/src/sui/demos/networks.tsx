@@ -1,8 +1,8 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
-import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 import { createNetworkConfig } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
+import { ConnectButton, Connector } from 'pelican-web3-lib';
+import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 
 const { networkConfig } = createNetworkConfig({
   localnet: { url: getFullnodeUrl('localnet') },

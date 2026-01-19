@@ -1,5 +1,5 @@
-import type { Wallet, WalletMetadata } from 'pelican-web3-lib-common';
 import type { Adapter } from '@solana/wallet-adapter-base';
+import type { Wallet, WalletMetadata } from 'pelican-web3-lib-common';
 
 import type { IUniversalProvider } from '../types';
 import type { WalletConnectWalletAdapter } from '../wallet-connect-adapter';

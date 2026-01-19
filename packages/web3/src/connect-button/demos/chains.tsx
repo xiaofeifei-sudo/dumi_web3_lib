@@ -1,7 +1,7 @@
 import React from 'react';
+import { Space } from 'antd';
 import { ConnectButton, type Chain } from 'pelican-web3-lib';
 import { Mainnet, Polygon } from 'pelican-web3-lib-assets';
-import { Space } from 'antd';
 
 const App: React.FC = () => {
   const [chain, setChain] = React.useState<Chain>(Polygon);

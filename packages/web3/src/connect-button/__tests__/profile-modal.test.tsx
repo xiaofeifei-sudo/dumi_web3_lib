@@ -1,5 +1,5 @@
-import { Polygon } from 'pelican-web3-lib-assets';
 import { fireEvent, render } from '@testing-library/react';
+import { Polygon } from 'pelican-web3-lib-assets';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConnectButton } from '..';

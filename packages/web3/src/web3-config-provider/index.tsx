@@ -1,8 +1,8 @@
+import { ConfigProvider, type ThemeConfig } from 'antd';
 import {
   Web3ConfigProvider as AntdWeb3ConfigProvider,
   type Web3ConfigProviderProps,
 } from 'pelican-web3-lib-common';
-import { ConfigProvider, type ThemeConfig } from 'antd';
 
 import type { ComponentToken as ConnectModalComponentToken } from '../connect-modal/style/index';
 

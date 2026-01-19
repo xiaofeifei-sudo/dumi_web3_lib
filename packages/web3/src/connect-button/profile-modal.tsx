@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { Address } from 'pelican-web3-lib';
-import type { Balance } from 'pelican-web3-lib-common';
 import { Avatar, Button, ConfigProvider, message, Modal, Space } from 'antd';
 import type { AvatarProps, ModalProps } from 'antd';
 import classNames from 'classnames';
+import { Address } from 'pelican-web3-lib';
+import type { Balance } from 'pelican-web3-lib-common';
 
 import { CryptoPrice } from '../crypto-price';
 import type { IntlType } from '../hooks/useIntl';

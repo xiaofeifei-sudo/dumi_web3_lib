@@ -1,4 +1,7 @@
 /* v8 ignore start */
+import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
+import { TrustWalletAdapter } from '@solana/wallet-adapter-trust';
+import { TipLinkWalletAdapter } from '@tiplink/wallet-adapter';
 import {
   metadata_Backpack,
   metadata_CoinbaseWallet,
@@ -9,9 +12,6 @@ import {
   metadata_WalletConnect,
 } from 'pelican-web3-lib-assets';
 import { WalletMetadata } from 'pelican-web3-lib-common';
-import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
-import { TrustWalletAdapter } from '@solana/wallet-adapter-trust';
-import { TipLinkWalletAdapter } from '@tiplink/wallet-adapter';
 
 import { WalletConnectWalletAdapter } from '../wallet-connect-adapter';
 import { StandardWalletFactory, WalletConnectWalletFactory, WalletFactory } from './factory';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ETH, USDT } from 'pelican-web3-lib-assets/tokens';
 import { fireEvent, render } from '@testing-library/react';
+import { ETH, USDT } from 'pelican-web3-lib-assets/tokens';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { TokenSelectProps } from '..';

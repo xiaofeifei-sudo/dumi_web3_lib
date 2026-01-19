@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useProvider } from 'pelican-web3-lib';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { type ConnectionContextState } from '@solana/wallet-adapter-react';
+import { useProvider } from 'pelican-web3-lib';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { OKXWallet, PhantomWallet, SolflareWallet } from '../../wallets/built-in';

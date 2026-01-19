@@ -1,6 +1,6 @@
 import React from 'react';
-import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { ConnectButton, Connector, useProvider } from 'pelican-web3-lib';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TonConnectorContext, TonWeb3ConfigProvider } from '../';

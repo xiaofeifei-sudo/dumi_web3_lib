@@ -1,9 +1,9 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { Button } from 'antd';
 import { Connector, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import { Mainnet, Polygon } from 'pelican-web3-lib-assets';
 import type { Chain } from 'pelican-web3-lib-common';
-import { fireEvent, render } from '@testing-library/react';
-import { Button } from 'antd';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('Connector with chains', () => {

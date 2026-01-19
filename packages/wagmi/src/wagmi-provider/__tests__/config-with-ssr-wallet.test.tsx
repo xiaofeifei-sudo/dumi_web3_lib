@@ -1,7 +1,7 @@
+import { render } from '@testing-library/react';
 import { useProvider } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import { MetaMask, WagmiWeb3ConfigProvider } from 'pelican-web3-lib-wagmi';
-import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import { mainnet } from 'wagmi/chains';

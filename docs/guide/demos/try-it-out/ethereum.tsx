@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ConfigProviderProps } from 'antd';
 import type { ConnectModalProps } from 'pelican-web3-lib';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
@@ -8,7 +9,6 @@ import {
   WagmiWeb3ConfigProvider,
   WalletConnect,
 } from 'pelican-web3-lib-wagmi';
-import type { ConfigProviderProps } from 'antd';
 
 type SizeType = ConfigProviderProps['componentSize'];
 

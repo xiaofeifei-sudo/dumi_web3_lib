@@ -1,8 +1,8 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { Connector, useProvider, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import { CoinbaseWallet, MetaMask, Polygon, WagmiWeb3ConfigProvider } from 'pelican-web3-lib-wagmi';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { createConfig, http } from 'wagmi';
 import { base, goerli, mainnet, polygon } from 'wagmi/chains';

@@ -1,5 +1,5 @@
-import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 import { render } from '@testing-library/react';
+import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 import { describe, expect, it } from 'vitest';
 
 import { Address } from '..';

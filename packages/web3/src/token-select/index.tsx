@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { devUseWarning, type Token } from 'pelican-web3-lib-common';
 import type { SelectProps } from 'antd';
 import { ConfigProvider, Flex, Select } from 'antd';
+import { devUseWarning, type Token } from 'pelican-web3-lib-common';
 
 import useIntl from '../hooks/useIntl';
 import { useStyle } from './style';

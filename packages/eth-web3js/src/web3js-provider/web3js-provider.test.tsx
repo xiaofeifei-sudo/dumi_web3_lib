@@ -1,7 +1,7 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 import { useProvider } from 'pelican-web3-lib';
 import { Mainnet, Optimism } from 'pelican-web3-lib-assets';
-import { render } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { createStorage } from 'wagmi';
 

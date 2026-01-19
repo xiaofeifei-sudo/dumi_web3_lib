@@ -1,7 +1,7 @@
 import React from 'react';
+import { Space } from 'antd';
 import { Address, BrowserLink, NFTCard } from 'pelican-web3-lib';
 import { CoinbaseWallet, SolanaWeb3ConfigProvider } from 'pelican-web3-lib-solana';
-import { Space } from 'antd';
 
 const App: React.FC = () => {
   return (

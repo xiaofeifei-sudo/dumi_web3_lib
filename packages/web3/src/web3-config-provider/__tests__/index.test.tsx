@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { Spin } from 'antd';
 import {
   ConfigContext,
   ConnectButton,
@@ -8,8 +10,6 @@ import {
   type Account,
 } from 'pelican-web3-lib';
 import type { Web3ConfigProviderProps } from 'pelican-web3-lib-common';
-import { fireEvent, render } from '@testing-library/react';
-import { Spin } from 'antd';
 import { describe, expect, it, vi } from 'vitest';
 
 const baseProps: Web3ConfigProviderProps = {

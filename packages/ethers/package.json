@@ -10,7 +10,7 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/lib/index.js",
       "types": "./dist/esm/index.d.ts"
-    },  
+    },
     "./provider": {
       "import": "./dist/esm/ethers-provider/index.js",
       "require": "./dist/lib/ethers-provider/index.js",

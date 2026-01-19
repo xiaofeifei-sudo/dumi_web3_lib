@@ -1,5 +1,5 @@
-import type { Account, ConnectorTriggerProps, Locale, SignConfig } from 'pelican-web3-lib-common';
 import type { AvatarProps, ButtonProps, GetProp, MenuProps, TooltipProps } from 'antd';
+import type { Account, ConnectorTriggerProps, Locale, SignConfig } from 'pelican-web3-lib-common';
 
 import type { AddressProps } from '../address';
 import type { ProfileModalProps } from './profile-modal';

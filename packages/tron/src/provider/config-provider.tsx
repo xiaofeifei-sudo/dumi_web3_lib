@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import type { Account, Locale, Wallet } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 import {
   WalletReadyState,
   type AdapterName,
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
+import type { Account, Locale, Wallet } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import { hasWalletReady } from '../utils';
 

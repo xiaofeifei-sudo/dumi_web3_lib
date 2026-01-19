@@ -1,7 +1,7 @@
 import React from 'react';
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Connector, useProvider } from 'pelican-web3-lib';
 import { type ConnectorTriggerProps } from 'pelican-web3-lib-common';
-import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { describe, expect, it, vi } from 'vitest';
 
 import { suiMainnet, SuiWeb3ConfigProvider } from '../../';

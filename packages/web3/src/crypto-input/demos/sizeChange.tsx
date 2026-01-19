@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Radio } from 'antd';
 import { CryptoInput, type CryptoInputProps, type Token } from 'pelican-web3-lib';
 import { ETH, USDT } from 'pelican-web3-lib-assets/tokens';
-import { Radio } from 'antd';
 
 const App: React.FC = () => {
   const [crypto, setCrypto] = useState<CryptoInputProps['value']>();

@@ -1,5 +1,5 @@
-import { Mainnet } from 'pelican-web3-lib-assets';
 import { render } from '@testing-library/react';
+import { Mainnet } from 'pelican-web3-lib-assets';
 import { describe, expect, test, vi } from 'vitest';
 
 import { MetaMask } from '../wallets';

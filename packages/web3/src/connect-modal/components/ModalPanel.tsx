@@ -1,7 +1,7 @@
 import React from 'react';
-import type { ConnectOptions } from 'pelican-web3-lib-common';
 import { Button, ConfigProvider } from 'antd';
 import classNames from 'classnames';
+import type { ConnectOptions } from 'pelican-web3-lib-common';
 
 import useIntl from '../../hooks/useIntl';
 import useProvider from '../../hooks/useProvider';

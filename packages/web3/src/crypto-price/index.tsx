@@ -1,7 +1,7 @@
 import { useContext } from 'react';
+import { ConfigProvider } from 'antd';
 import { Mainnet } from 'pelican-web3-lib-assets';
 import type { Chain } from 'pelican-web3-lib-common';
-import { ConfigProvider } from 'antd';
 
 import useProvider from '../hooks/useProvider';
 import { CryptoPriceBalance, type CryptoPriceBalanceProps } from './balance';

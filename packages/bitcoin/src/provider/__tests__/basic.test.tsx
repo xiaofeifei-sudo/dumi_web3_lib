@@ -1,7 +1,7 @@
-import { ConnectButton, Connector, useConnection } from 'pelican-web3-lib';
-import { metadata_Xverse } from 'pelican-web3-lib-assets';
 import { fireEvent, waitFor } from '@testing-library/react';
 import { Button } from 'antd';
+import { ConnectButton, Connector, useConnection } from 'pelican-web3-lib';
+import { metadata_Xverse } from 'pelican-web3-lib-assets';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getBalanceByMempool, getInscriptionsByAddress } from '../../helpers';

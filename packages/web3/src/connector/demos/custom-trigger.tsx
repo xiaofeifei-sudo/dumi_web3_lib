@@ -1,8 +1,8 @@
 import React from 'react';
+import { Typography } from 'antd';
 import type { Account, ConnectorTriggerProps } from 'pelican-web3-lib';
 import { Connector } from 'pelican-web3-lib';
 import { metadata_MetaMask, metadata_WalletConnect } from 'pelican-web3-lib-assets';
-import { Typography } from 'antd';
 
 const CustomTrigger: React.FC<ConnectorTriggerProps> = (props) => {
   const { loading, onConnectClick, account } = props;

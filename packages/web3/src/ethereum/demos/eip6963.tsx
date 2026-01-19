@@ -1,6 +1,6 @@
+import { message } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { MetaMask, WagmiWeb3ConfigProvider } from 'pelican-web3-lib-wagmi';
-import { message } from 'antd';
 
 const App: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button, Space } from 'antd';
+import base58 from 'bs58';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   PhantomWallet,
@@ -7,8 +9,6 @@ import {
   SolanaWeb3ConfigProvider,
   useWallet,
 } from 'pelican-web3-lib-solana';
-import { Button, Space } from 'antd';
-import base58 from 'bs58';
 
 const SignMessage: React.FC = () => {
   const { connected, signMessage } = useWallet();

@@ -1,5 +1,5 @@
-import { NFTCard } from 'pelican-web3-lib';
 import { ConfigProvider, Space, theme } from 'antd';
+import { NFTCard } from 'pelican-web3-lib';
 
 const { darkAlgorithm } = theme;
 

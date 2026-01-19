@@ -1,7 +1,7 @@
 import React from 'react';
-import { Web3ConfigProvider } from 'pelican-web3-lib';
 import { render } from '@testing-library/react';
 import { Button } from 'antd';
+import { Web3ConfigProvider } from 'pelican-web3-lib';
 import { describe, expect, it } from 'vitest';
 
 import useIntl from '../useIntl';

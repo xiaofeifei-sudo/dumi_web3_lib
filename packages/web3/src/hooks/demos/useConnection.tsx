@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAccount, useConnection, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 import { Button } from 'antd';
+import { useAccount, useConnection, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 
 const Demo: React.FC = () => {
   const { account } = useAccount();

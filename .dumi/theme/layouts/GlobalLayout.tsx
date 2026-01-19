@@ -1,8 +1,8 @@
 import React from 'react';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
-import { en_US, Web3ConfigProvider, zh_CN } from 'pelican-web3-lib-common';
 import { useIntl, useLocation, useOutlet, usePrefersColor, useServerInsertedHTML } from 'dumi';
 import { GlobalLayout as ThemeGlobalLayout } from 'dumi-theme-antd-web3';
+import { en_US, Web3ConfigProvider, zh_CN } from 'pelican-web3-lib-common';
 
 import SiteThemeProvider from '../SiteThemeProvider';
 

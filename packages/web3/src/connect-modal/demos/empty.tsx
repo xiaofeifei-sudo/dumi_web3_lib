@@ -1,8 +1,8 @@
 import React from 'react';
-import type { ConnectModalProps } from 'pelican-web3-lib';
-import { ConnectModal } from 'pelican-web3-lib';
 import { Button, Space } from 'antd';
 import type { EmptyProps } from 'antd';
+import type { ConnectModalProps } from 'pelican-web3-lib';
+import { ConnectModal } from 'pelican-web3-lib';
 
 const App: React.FC<ConnectModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);

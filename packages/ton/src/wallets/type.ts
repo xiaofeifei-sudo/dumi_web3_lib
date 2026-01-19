@@ -1,5 +1,5 @@
-import type { Wallet, WalletMetadata } from 'pelican-web3-lib-common';
 import type { WalletInfo } from '@tonconnect/sdk';
+import type { Wallet, WalletMetadata } from 'pelican-web3-lib-common';
 
 export type TonBasicWallet = TonWalletMetadata &
   WalletInfo & {

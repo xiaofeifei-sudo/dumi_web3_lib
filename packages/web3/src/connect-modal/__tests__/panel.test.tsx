@@ -1,6 +1,6 @@
-import { ConnectModal } from 'pelican-web3-lib';
 import { fireEvent, render } from '@testing-library/react';
 import { Grid } from 'antd';
+import { ConnectModal } from 'pelican-web3-lib';
 import { describe, expect, it, vi } from 'vitest';
 
 import { groupOrder, guide, walletList } from './mock';

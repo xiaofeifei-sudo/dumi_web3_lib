@@ -1,6 +1,6 @@
+import { Space } from 'antd';
 import { BrowserLink } from 'pelican-web3-lib';
 import { Mainnet } from 'pelican-web3-lib-assets';
-import { Space } from 'antd';
 
 const App: React.FC = () => {
   return (

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import type { Locale } from 'pelican-web3-lib-common';
 import { createNetworkConfig, SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
 import { QueryClient, QueryClientContext, QueryClientProvider } from '@tanstack/react-query';
+import type { Locale } from 'pelican-web3-lib-common';
 
 import type { SuiChain } from '../chain';
 import { suiDevnet, suiLocalnet, suiMainnet, suiTestnet } from '../chain';

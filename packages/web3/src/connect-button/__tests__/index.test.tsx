@@ -1,5 +1,5 @@
-import { WalletColorful } from 'pelican-web3-lib-icons';
 import { render } from '@testing-library/react';
+import { WalletColorful } from 'pelican-web3-lib-icons';
 import { describe, expect, it } from 'vitest';
 
 import { ConnectButton } from '..';

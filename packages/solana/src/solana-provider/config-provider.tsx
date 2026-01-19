@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import type { Account, Chain, Locale, Wallet } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 import { Metaplex, PublicKey } from '@metaplex-foundation/js';
 import {
   WalletReadyState,
@@ -8,6 +6,8 @@ import {
   type WalletName,
 } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import type { Account, Chain, Locale, Wallet } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import type { SolanaChainConfig } from '../chains';
 import { hasWalletReady } from '../utils';

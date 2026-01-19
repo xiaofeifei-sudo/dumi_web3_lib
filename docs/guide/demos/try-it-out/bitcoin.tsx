@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ConfigProviderProps } from 'antd';
 import type { ConnectModalProps } from 'pelican-web3-lib';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
@@ -7,7 +8,6 @@ import {
   UnisatWallet,
   XverseWallet,
 } from 'pelican-web3-lib-bitcoin';
-import type { ConfigProviderProps } from 'antd';
 
 type SizeType = ConfigProviderProps['componentSize'];
 

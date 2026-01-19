@@ -1,3 +1,4 @@
+import { Button, Space } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   BitcoinWeb3ConfigProvider,
@@ -8,7 +9,6 @@ import {
   useBitcoinWallet,
   XverseWallet,
 } from 'pelican-web3-lib-bitcoin';
-import { Button, Space } from 'antd';
 
 /**
  * Component to send Bitcoin transfer.

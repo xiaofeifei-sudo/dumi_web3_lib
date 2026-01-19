@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Locale } from 'pelican-web3-lib-common';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { Locale } from 'pelican-web3-lib-common';
 import type { Transport, Chain as WagmiChain } from 'viem';
 import { createConfig, http, WagmiProvider } from 'wagmi';
 import type { Config, State } from 'wagmi';

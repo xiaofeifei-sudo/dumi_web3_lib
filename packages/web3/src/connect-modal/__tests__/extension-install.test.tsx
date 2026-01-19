@@ -1,6 +1,6 @@
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ConnectModal } from 'pelican-web3-lib';
 import { metadata_MetaMask } from 'pelican-web3-lib-assets';
-import { fireEvent, render, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('ConnectModal with hasExtensionInstalled', () => {

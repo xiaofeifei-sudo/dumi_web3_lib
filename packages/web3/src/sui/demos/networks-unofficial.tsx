@@ -1,7 +1,7 @@
 import React from 'react';
+import { createNetworkConfig } from '@mysten/dapp-kit';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
-import { createNetworkConfig } from '@mysten/dapp-kit';
 
 const { networkConfig } = createNetworkConfig({
   testnet: { url: `https://api.zan.top/node/v1/sui/testnet/${YOUR_ZAN_API_KEY}` },

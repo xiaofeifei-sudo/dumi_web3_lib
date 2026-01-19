@@ -1,7 +1,7 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ConnectModal } from 'pelican-web3-lib';
 import { metadata_MetaMask } from 'pelican-web3-lib-assets';
 import type { Wallet } from 'pelican-web3-lib-common';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 describe('ConnectModal with qrCode & plugin tag', () => {

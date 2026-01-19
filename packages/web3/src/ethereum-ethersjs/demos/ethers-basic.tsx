@@ -1,3 +1,4 @@
+import { Typography } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   EthersWeb3ConfigProvider,
@@ -7,7 +8,6 @@ import {
   useEthersSigner,
 } from 'pelican-web3-lib-ethers';
 import { useBlockNumber } from 'pelican-web3-lib-ethers/wagmi';
-import { Typography } from 'antd';
 
 const AddressPreviewer = () => {
   const provider = useEthersProvider(); // ethers provider

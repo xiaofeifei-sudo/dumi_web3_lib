@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Connector, useProvider, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import type { ConnectionContextState } from '@solana/wallet-adapter-react';
 import { fireEvent, render } from '@testing-library/react';
+import { Connector, useProvider, type ConnectorTriggerProps } from 'pelican-web3-lib';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { solana } from '../../chains';

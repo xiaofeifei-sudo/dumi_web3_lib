@@ -1,6 +1,6 @@
+import { fireEvent, render } from '@testing-library/react';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Mainnet, Polygon } from 'pelican-web3-lib-assets';
-import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type * as Wagmi from 'wagmi';
 import { mainnet, polygon } from 'wagmi/chains';

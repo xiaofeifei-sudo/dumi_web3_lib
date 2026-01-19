@@ -1,7 +1,7 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
+import { Flex, Space } from 'antd';
 import { ConnectButton } from 'pelican-web3-lib';
 import { EthereumCircleColorful } from 'pelican-web3-lib-icons';
-import { Flex, Space } from 'antd';
 
 const App: React.FC = () => {
   return (

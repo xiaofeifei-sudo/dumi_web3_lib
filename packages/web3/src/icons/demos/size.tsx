@@ -1,5 +1,5 @@
-import { BitcoinCircleColorful, EthereumFilled } from 'pelican-web3-lib-icons';
 import { Space } from 'antd';
+import { BitcoinCircleColorful, EthereumFilled } from 'pelican-web3-lib-icons';
 
 const App: React.FC = () => {
   return (

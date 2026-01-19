@@ -1,7 +1,7 @@
 import React, { useDeferredValue } from 'react';
-import type { Token } from 'pelican-web3-lib-common';
 import { Flex, InputNumber, Typography } from 'antd';
 import Decimal from 'decimal.js';
+import type { Token } from 'pelican-web3-lib-common';
 
 import { CryptoPrice } from '../crypto-price';
 import useIntl from '../hooks/useIntl';

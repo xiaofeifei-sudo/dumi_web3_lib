@@ -1,6 +1,6 @@
 import React from 'react';
-import { useProvider, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 import { Button } from 'antd';
+import { useProvider, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
 
 const ConnectTrigger: React.FC = () => {
   const { connect, account, disconnect } = useProvider();

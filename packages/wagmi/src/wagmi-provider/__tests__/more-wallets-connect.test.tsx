@@ -1,3 +1,5 @@
+import { fireEvent, render } from '@testing-library/react';
+import { Grid } from 'antd';
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   CoinbaseWallet,
@@ -7,8 +9,6 @@ import {
   WagmiWeb3ConfigProvider,
   WalletConnect,
 } from 'pelican-web3-lib-wagmi';
-import { fireEvent, render } from '@testing-library/react';
-import { Grid } from 'antd';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
