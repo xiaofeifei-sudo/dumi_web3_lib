@@ -41,8 +41,6 @@ Ant Design Web3 官方提供了 `pelican-web3-lib-wagmi`（wagmi + viem）来适
 
 <code src="./demos/more-wallets.tsx">Normal Mode</code>
 
-<code src="./demos/more-wallets-in-simple.tsx">Simple Mode</code>
-
 ## 自定义钱包信息
 
 <code src="./demos/custom-wallet.tsx"></code>

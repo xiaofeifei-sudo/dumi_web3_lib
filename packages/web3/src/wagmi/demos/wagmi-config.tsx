@@ -9,12 +9,15 @@ import {
 import { createConfig, http } from 'wagmi';
 import { injected, walletConnect as wagmiWalletConnect } from 'wagmi/connectors';
 import { mainnet } from 'wagmi/chains';
+import { Space } from 'antd';
+import Connector from '../../components/Connector';
+import { ConnectButton } from '../../components/connect-button';
 
 const config = createConfig({
   chains: [mainnet],
   transports: { [mainnet.id]: http() },
   connectors: [
-    wagmiWalletConnect({ projectId: YOUR_WALLET_CONNECT_PROJECT_ID, showQrModal: true }),
+    wagmiWalletConnect({ projectId: YOUR_WALLET_CONNECT_PROJECT_ID, showQrModal: false }),
     injected({ target: 'metaMask' }),
   ],
 });
@@ -26,7 +29,15 @@ const App: React.FC = () => {
       queryClient={new QueryClient()}
       chains={[Mainnet]}
       wallets={[MetaMask(), WalletConnect({ useWalletConnectOfficialModal: true })]}
-    ></WagmiWeb3ConfigProvider>
+    >
+
+<Space direction="vertical">
+        <Connector>
+          <ConnectButton quickConnect />
+        </Connector>
+      </Space>
+
+    </WagmiWeb3ConfigProvider>
   );
 };
 

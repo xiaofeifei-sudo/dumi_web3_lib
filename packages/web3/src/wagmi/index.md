@@ -14,7 +14,7 @@ Ant Design Web3 officially provides adapters for EVM chains via `pelican-web3-li
 
 <code src="./demos/recommend.tsx"></code>
 
-<!-- The recommended configuration mainly includes:
+The recommended configuration mainly includes:
 
 - Use EIP6963 to auto‑discover injected wallets.
 - Display ENS and balance.
@@ -41,9 +41,7 @@ To reduce bundle size, configure `wallets` to import only what you need from `pe
 
 <code src="./demos/more-wallets.tsx">Normal Mode</code>
 
-<code src="./demos/more-wallets-in-simple.tsx">Simple Mode</code>
-
-## Customize wallet information
+<!-- ## Customize wallet information
 
 <code src="./demos/custom-wallet.tsx"></code>
 
