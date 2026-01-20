@@ -59,7 +59,7 @@
     "@solana/web3.js": "^1.98.0"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org",
+    "registry": "http://192.168.1.50:4873",
     "access": "public"
   },
   "browserslist": [

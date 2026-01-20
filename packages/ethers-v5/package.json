@@ -62,7 +62,7 @@
     "ethers": "^5.7.2"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org",
+    "registry": "http://192.168.1.50:4873",
     "access": "public"
   },
   "browserslist": [
