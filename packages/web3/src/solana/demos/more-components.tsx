@@ -8,7 +8,11 @@ const App: React.FC = () => {
       rpcProvider={() => `https://api.zan.top/node/v1/solana/mainnet/${YOUR_ZAN_API_KEY}`}
       wallets={[CoinbaseWallet()]}
     >
-      <Space direction="vertical"></Space>
+      <Space direction="vertical">
+        {/* <BrowserLink address="GNyDA4Z7vgTzi35qRFHBa4BDjZiugycWhNGWgcJcxiMo" ellipsis />
+        <Address address="GNyDA4Z7vgTzi35qRFHBa4BDjZiugycWhNGWgcJcxiMo" ellipsis />
+        <NFTCard address="GNyDA4Z7vgTzi35qRFHBa4BDjZiugycWhNGWgcJcxiMo" tokenId={3332} /> */}
+      </Space>
     </SolanaWeb3ConfigProvider>
   );
 };

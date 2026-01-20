@@ -6,6 +6,8 @@ import {
   solanaTestnet,
   SolanaWeb3ConfigProvider,
 } from 'pelican-web3-lib-solana';
+import Connector from '../../components/Connector';
+import { ConnectButton } from '../../components/connect-button';
 
 const App: React.FC = () => {
   return (
@@ -13,7 +15,11 @@ const App: React.FC = () => {
       balance={false}
       chains={[solana, solanaTestnet, solanaDevnet]}
       wallets={[CoinbaseWallet()]}
-    ></SolanaWeb3ConfigProvider>
+    >
+      <Connector>
+        <ConnectButton />
+      </Connector>
+    </SolanaWeb3ConfigProvider>
   );
 };
 

@@ -1,23 +1,14 @@
-import React from 'react';
-import { WagmiWeb3ConfigProvider, MetaMask, Mainnet } from 'pelican-web3-lib-wagmi';
-import { useAccount, useEnsName, useBalance } from 'wagmi';
+import { WagmiWeb3ConfigProvider, MetaMask } from "pelican-web3-lib-wagmi";
+import Connector from "../../components/Connector";
+import { ConnectButton } from "../../components/connect-button";
 
-const Info: React.FC = () => {
-  const { address } = useAccount();
-  const { data: ens } = useEnsName({ address, chainId: Mainnet.wagmiChain?.id });
-  const { data: balance } = useBalance({ address });
-  return (
-    <div>
-      <div>ENS: {ens ?? '-'}</div>
-      <div>Balance: {balance?.formatted ?? '-'}</div>
-    </div>
-  );
-};
 
 const App: React.FC = () => {
   return (
-    <WagmiWeb3ConfigProvider balance ens wallets={[MetaMask()]}>
-      <Info />
+    <WagmiWeb3ConfigProvider eip6963 ens balance wallets={[MetaMask()]}>
+      <Connector>
+        <ConnectButton />
+      </Connector>
     </WagmiWeb3ConfigProvider>
   );
 };

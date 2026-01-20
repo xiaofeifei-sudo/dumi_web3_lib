@@ -1,13 +1,9 @@
-import React from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space } from "antd";
+import { useWallet, SolanaWeb3ConfigProvider, solana, solanaDevnet, PhantomWallet } from "pelican-web3-lib-solana";
+import Connector from "../../components/Connector";
 import base58 from 'bs58';
-import {
-  PhantomWallet,
-  solana,
-  solanaDevnet,
-  SolanaWeb3ConfigProvider,
-  useWallet,
-} from 'pelican-web3-lib-solana';
+import { ConnectButton } from "../../components/connect-button";
+
 
 const SignMessage: React.FC = () => {
   const { connected, signMessage } = useWallet();
@@ -43,6 +39,10 @@ const App: React.FC = () => {
       wallets={[PhantomWallet()]}
     >
       <Space direction="vertical">
+        <Connector>
+          <ConnectButton />
+        </Connector>
+
         <SignMessage />
       </Space>
     </SolanaWeb3ConfigProvider>

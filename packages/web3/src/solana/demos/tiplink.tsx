@@ -1,9 +1,11 @@
 import React from 'react';
 import { PhantomWallet, SolanaWeb3ConfigProvider, TipLinkWallet } from 'pelican-web3-lib-solana';
+import Connector from '../../components/Connector';
+import { ConnectButton } from '../../components/connect-button';
 
 const App: React.FC = () => {
   return (
-    <SolanaWeb3ConfigProvider
+     <SolanaWeb3ConfigProvider
       wallets={[
         PhantomWallet(),
         TipLinkWallet({
@@ -13,7 +15,11 @@ const App: React.FC = () => {
           hideDraggableWidget: true,
         }),
       ]}
-    ></SolanaWeb3ConfigProvider>
+    >
+      <Connector>
+        <ConnectButton />
+      </Connector>
+    </SolanaWeb3ConfigProvider>
   );
 };
 

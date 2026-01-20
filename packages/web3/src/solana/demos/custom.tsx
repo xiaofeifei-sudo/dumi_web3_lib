@@ -1,12 +1,8 @@
-import React from 'react';
-import type { WalletMetadata } from 'pelican-web3-lib-common';
-import { ChromeCircleColorful, SolflareColorful } from 'pelican-web3-lib-icons';
-import {
-  OKXWallet,
-  PhantomWallet,
-  SolanaWeb3ConfigProvider,
-  StandardWalletFactory,
-} from 'pelican-web3-lib-solana';
+import { WalletMetadata } from "pelican-web3-lib-common";
+import { ChromeCircleColorful, SolflareColorful } from "pelican-web3-lib-icons";
+import { OKXWallet, PhantomWallet, SolanaWeb3ConfigProvider, StandardWalletFactory } from "pelican-web3-lib-solana";
+import Connector from "../../components/Connector";
+import { ConnectButton } from "../../components/connect-button";
 
 const metadata_Demo: WalletMetadata = {
   icon: <SolflareColorful />,
@@ -41,7 +37,11 @@ const App: React.FC = () => {
         }),
         StandardWalletFactory(metadata_Demo),
       ]}
-    ></SolanaWeb3ConfigProvider>
+    >
+      <Connector>
+        <ConnectButton />
+      </Connector>
+    </SolanaWeb3ConfigProvider>
   );
 };
 

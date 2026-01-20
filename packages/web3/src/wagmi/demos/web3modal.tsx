@@ -1,15 +1,21 @@
-import React from 'react';
-import { WagmiWeb3ConfigProvider, WalletConnect } from 'pelican-web3-lib-wagmi';
+import { WagmiWeb3ConfigProvider, MetaMask, WalletConnect } from "pelican-web3-lib-wagmi";
+import Connector from "../../components/Connector";
+import { ConnectButton } from "../../components/connect-button";
+
 
 const App: React.FC = () => {
   return (
     <WagmiWeb3ConfigProvider
-      wallets={[WalletConnect({ useWalletConnectOfficialModal: true })]}
+      wallets={[MetaMask(), WalletConnect()]}
       walletConnect={{
-        projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID',
+        projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
         useWalletConnectOfficialModal: true,
       }}
-    ></WagmiWeb3ConfigProvider>
+    >
+      <Connector>
+        <ConnectButton />
+      </Connector>
+    </WagmiWeb3ConfigProvider>
   );
 };
 
