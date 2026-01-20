@@ -16,10 +16,38 @@ Connect or disconnect the wallet. Usually, you don't need to use this Hook direc
 
 ### Examples
 
-The following example uses the Solana adapter to perform a real wallet connection (e.g., Phantom). In practice, we recommend managing connection capabilities via an [adapter](../../../../docs/guide/adapter.md) and then invoking `useConnection` in your custom interactions.
+Examples across different chains. We recommend managing connection capabilities via an [adapter](../../../../docs/guide/adapter.md) and then invoking `useConnection` in your custom interactions.
 
-<code src="./demos/useConnection.tsx"></code>
+Solana (Adapter: pelican-web3-lib-solana)
+<code src="./demos/useConnection.solana.tsx"></code>
 
+Ethereum (Adapter: pelican-web3-lib-ethers)
+<code src="./demos/useConnection.ethers.tsx"></code>
+
+Ethereum (Adapter: pelican-web3-lib-eth-web3js)
+<code src="./demos/useConnection.web3js.tsx"></code>
+
+Sui (Adapter: pelican-web3-lib-sui)
+<code src="./demos/useConnection.sui.tsx"></code>
+
+Bitcoin (Adapter: pelican-web3-lib-bitcoin)
+<code src="./demos/useConnection.bitcoin.tsx"></code>
+
+Ethereum (Adapter: pelican-web3-lib-wagmi)
+<code src="./demos/useConnection.wagmi.tsx"></code>
+
+TRON (Adapter: pelican-web3-lib-tron)
+<code src="./demos/useConnection.tron.tsx"></code>
+
+### Adapter Setup
+
+- Ethereum (EVM, wagmi): Use WagmiWeb3ConfigProvider from pelican-web3-lib-wagmi; for WalletConnect, set walletConnect.projectId on the Provider.
+- Ethereum (EVM, ethers): Use EthersWeb3ConfigProvider from pelican-web3-lib-ethers.
+- Ethereum (EVM, web3.js): Use EthWeb3jsConfigProvider from pelican-web3-lib-eth-web3js.
+- Solana: Use SolanaWeb3ConfigProvider from pelican-web3-lib-solana.
+- Sui: Use SuiWeb3ConfigProvider from pelican-web3-lib-sui.
+- Bitcoin: Use the corresponding Bitcoin adapter Provider.
+- TRON: Use TronWeb3ConfigProvider from pelican-web3-lib-tron.
 ### API
 
 #### Result

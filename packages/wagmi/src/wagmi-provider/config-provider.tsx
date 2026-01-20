@@ -32,6 +32,20 @@ import { isEIP6963Connector } from '../utils';
 import { EIP6963Wallet } from '../wallets/eip6963';
 import { getNFTMetadata } from './methods';
 
+/**
+ * PelicanWeb3ConfigProvider 组件属性
+ * - chainAssets: 支持的链资产列表（用于映射 wagmi 链到展示用链信息）
+ * - walletFactories: 钱包工厂列表（根据连接器生成可用钱包）
+ * - locale: 本地化配置
+ * - children: 子节点
+ * - ens: 是否启用 ENS 名称与头像解析
+ * - balance: 是否查询账户余额
+ * - eip6963: EIP-6963 配置（注入式钱包自动发现等）
+ * - wagimConfig: wagmi 配置实例
+ * - useWalletConnectOfficialModal: 是否使用 WalletConnect 官方二维码弹窗
+ * - siwe: Sign-In With Ethereum 配置（含 nonce、消息生成与验证方法）
+ * - ignoreConfig: 是否忽略当前 Provider 的配置以避免多 Provider 合并时的闪烁
+ */
 export interface PelicanWeb3ConfigProviderProps {
   chainAssets: Chain[];
   walletFactories: WalletFactory[];
@@ -44,13 +58,18 @@ export interface PelicanWeb3ConfigProviderProps {
   useWalletConnectOfficialModal?: boolean;
   siwe?: SIWEConfig;
   /**
-   * If true, this provider's configuration will be ignored when merging with parent context.
-   * This is useful when you have multiple chain providers and want to switch between them
-   * without causing page flickering. Only the active provider should not have this flag set.
+   * 若为 true，则在与父级上下文合并时忽略当前 Provider 的配置。
+   * 当存在多个链 Provider 需要切换时，可避免页面闪烁。
+   * 仅激活中的 Provider 不应设置该标志。
    */
   ignoreConfig?: boolean;
 }
 
+/**
+ * PelicanWeb3ConfigProvider
+ * 将 wagmi 的账户、连接器、链信息整合为 pelican-web3-lib 的通用上下文，
+ * 提供账户、余额、ENS、钱包列表、链切换、NFT 元数据查询及 SIWE 登录能力。
+ */
 export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps> = (props) => {
   const {
     children,
@@ -91,11 +110,18 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
         }
       : undefined;
 
+  /**
+   * 判断连接器名称是否匹配（忽略空格与大小写）
+   * 如：okxWallet、Okx Wallet、OKX Wallet 视为一致
+   */
   const isConnectorNameMatch = (aName: string, bName: string) => {
-    // match connector name like okxWallet, Okx Wallet, OKX Wallet
+    // 匹配连接器名称，例如 okxWallet、Okx Wallet、OKX Wallet
     return aName.replace(/ /g, '').toLowerCase() === bName.replace(/ /g, '').toLowerCase();
   };
 
+  /**
+   * 通过名称查找连接器，优先匹配 EIP-6963 注入式连接器
+   */
   const findConnectorByName = (name: string): WagmiConnector | undefined => {
     const commonConnector = wagimConfig.connectors.find(
       (item) => isConnectorNameMatch(item.name, name) && !isEIP6963Connector(item),
@@ -109,11 +135,16 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     return eip6963Connector || commonConnector;
   };
 
+  /**
+   * 生成可用钱包列表：
+   * - 根据钱包工厂配置与已存在的连接器组合生成支持的钱包
+   * - 在开启 EIP-6963 自动追加时，会为未显式配置的注入式钱包自动加入
+   */
   const wallets: Wallet[] = React.useMemo(() => {
     const autoAddEIP6963Wallets: Wallet[] = [];
     wagimConfig.connectors.forEach((connector) => {
       if (isEIP6963Connector(connector)) {
-        // check is need auto add eip6963 wallet
+        // 检查是否需要自动添加 EIP-6963 注入式钱包
         if (
           typeof eip6963 === 'object' &&
           eip6963?.autoAddInjectedWallets &&
@@ -121,14 +152,14 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             item.connectors.some((aName) => isConnectorNameMatch(aName, connector.name)),
           )
         ) {
-          // not config wallet and find the wallet in connectors, auto add it
+          // 未在配置中定义，但在连接器中发现该钱包，则自动添加
           autoAddEIP6963Wallets.push(
             EIP6963Wallet().create([connector], {
               useWalletConnectOfficialModal,
             }),
           );
         }
-        // Do not need check eip6963 wallet
+        // EIP-6963 钱包无需继续检查
         return;
       }
 
@@ -137,7 +168,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       );
 
       if (!walletFactory?.create) {
-        // check user wallets config and console.error for alert
+        // 检查用户钱包配置并提示错误
         console.error(
           `Can not find wallet factory for ${connector.name}, you should config it in WagmiWeb3ConfigProvider 'wallets'.`,
         );
@@ -152,7 +183,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           .filter((item) => !!item) as WagmiConnector[];
 
         if (connectors.length === 0 && !eip6963) {
-          // Not config connector for this wallet factory and not use eip6963, ignore it.
+          // 该钱包工厂未配置连接器且未启用 EIP-6963，忽略该钱包
           console.error(
             `Can not find connector for ${factory.connectors.join(
               ',',
@@ -169,6 +200,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     return [...supportWallets, ...autoAddEIP6963Wallets];
   }, [wagimConfig.connectors, walletFactories, eip6963]);
 
+  /**
+   * 将 wagmi 链配置映射为展示用链信息（id、name、icon）
+   */
   const chainList: Chain[] = React.useMemo(() => {
     return wagimConfig.chains
       .map((item) => {
@@ -196,7 +230,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
   React.useEffect(() => {
     setCurrentChain((prevChain) => {
-      // not connected any chain, keep current chain
+      // 未连接任何链时，保持当前链不变
       let newChain = chainAssets?.find((item) => item?.id === chainId);
       if (!newChain && chainId) {
         newChain = { id: chainId, name: chainName };
@@ -209,12 +243,21 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
   const currency = currentChain?.nativeCurrency;
 
+  /**
+   * 获取 NFT 元数据
+   */
   const getNFTMetadataFunc = React.useCallback(
     async ({ address: contractAddress, tokenId }: { address: string; tokenId?: bigint }) =>
       getNFTMetadata(config, contractAddress, tokenId!, chain?.id),
     [chain?.id],
   );
 
+  /**
+   * SIWE 登录流程：
+   * 1. 获取 nonce
+   * 2. 生成消息并请求钱包签名
+   * 3. 验证签名并更新状态为 Signed
+   */
   const signIn = React.useCallback(
     async (signAddress: string) => {
       const { getNonce, createMessage, verifyMessage } = siwe!;
@@ -222,7 +265,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       let signature: `0x${string}`;
 
       try {
-        // get nonce
+        // 获取 nonce
         const nonce = await getNonce(signAddress);
         msg = createMessage({
           domain: window?.location ? window.location.hostname : '',
@@ -269,6 +312,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       availableWallets={wallets}
       addressPrefix="0x"
       connect={async (wallet, options) => {
+        // 连接钱包：优先使用适配器提供的 wagmi 连接器，回退到名称匹配
         let connector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(options);
         if (!connector && wallet) {
           connector = findConnectorByName(wallet.name);
@@ -294,7 +338,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       }}
       switchChain={async (newChain: Chain) => {
         if (!chain) {
-          // hava not connected any chain
+          // 尚未连接任何链，直接更新当前链
           setCurrentChain(newChain);
         } else {
           switchChain?.({ chainId: newChain.id });

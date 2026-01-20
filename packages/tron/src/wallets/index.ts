@@ -1,4 +1,4 @@
-// TODO: Enable after fixing build issues
+// 待办：修复构建问题后再启用
 // export * from './bitgetWallet';
 
 export * from './okxTronWallet';

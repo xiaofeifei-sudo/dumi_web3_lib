@@ -17,9 +17,39 @@ coverDark: https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*SXbqSKo3tlAAAA
 
 ### 代码演示
 
-下面的示例基于 Solana 适配器进行真实连接，你可以安装并使用支持的插件钱包（如 Phantom）。在实际项目中，推荐通过[适配器](../../../../docs/guide/adapter.zh-CN.md)统一管理连接能力，然后在自定义交互里调用 `useConnection`。
+提供不同链的示例，推荐通过[适配器](../../../../docs/guide/adapter.zh-CN.md)统一管理连接能力，然后在自定义交互里调用 `useConnection`。
 
-<code src="./demos/useConnection.tsx"></code>
+Solana（适配器：pelican-web3-lib-solana）
+<code src="./demos/useConnection.solana.tsx"></code>
+
+以太坊（适配器：pelican-web3-lib-ethers）
+<code src="./demos/useConnection.ethers.tsx"></code>
+
+以太坊（适配器：pelican-web3-lib-eth-web3js）
+<code src="./demos/useConnection.web3js.tsx"></code>
+
+Sui（适配器：pelican-web3-lib-sui）
+<code src="./demos/useConnection.sui.tsx"></code>
+
+Bitcoin（适配器：pelican-web3-lib-bitcoin）
+<code src="./demos/useConnection.bitcoin.tsx"></code>
+
+以太坊（适配器：pelican-web3-lib-wagmi）
+<code src="./demos/useConnection.wagmi.tsx"></code>
+
+TRON（适配器：pelican-web3-lib-tron）
+<code src="./demos/useConnection.tron.tsx"></code>
+<code src="./demos/useConnection.tron.tsx"></code>
+
+### 适配器选择
+
+- 以太坊（EVM，wagmi）：使用 pelican-web3-lib-wagmi 的 WagmiWeb3ConfigProvider；如需 WalletConnect，请在 Provider 上配置 walletConnect.projectId。
+- 以太坊（EVM，ethers）：使用 pelican-web3-lib-ethers 的 EthersWeb3ConfigProvider。
+- 以太坊（EVM，web3.js）：使用 pelican-web3-lib-eth-web3js 的 EthWeb3jsConfigProvider。
+- Solana：使用 pelican-web3-lib-solana 的 SolanaWeb3ConfigProvider。
+- Sui：使用 pelican-web3-lib-sui 的 SuiWeb3ConfigProvider。
+- Bitcoin：使用相应的 Bitcoin 适配器 Provider。
+- TRON：使用 pelican-web3-lib-tron 的 TronWeb3ConfigProvider。
 
 ### API
 

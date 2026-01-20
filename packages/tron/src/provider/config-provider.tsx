@@ -15,9 +15,9 @@ interface PelicanWeb3ConfigProviderProps {
   locale?: Locale;
   connectionError?: WalletError;
   /**
-   * If true, this provider's configuration will be ignored when merging with parent context.
-   * This is useful when you have multiple chain providers and want to switch between them
-   * without causing page flickering. Only the active provider should not have this flag set.
+   * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
+   * 当存在多个链的 Provider 并需要在它们之间切换时，这很有用，
+   * 可避免页面闪烁。仅当前处于激活状态的 Provider 不应该设置该标志。
    */
   ignoreConfig?: boolean;
 }
@@ -73,7 +73,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [connectionError]);
 
-  // get account address
+  // 获取账户地址
   useEffect(() => {
     if (!(address && connected)) {
       setAccount(undefined);
@@ -96,10 +96,10 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [connected]);
 
-  // connect/disconnect wallet
+  // 连接/断开钱包
   useEffect(() => {
     if (wallet?.adapter?.name) {
-      // if wallet is not ready, need clear selected wallet
+      // 如果钱包尚未就绪，需要清除已选钱包
       if (!hasWalletReady(wallet.adapter.readyState)) {
         select(null as any);
         return;

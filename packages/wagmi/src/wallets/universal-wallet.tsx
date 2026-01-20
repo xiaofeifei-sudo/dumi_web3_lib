@@ -3,6 +3,13 @@ import type { Connector, CreateConnectorFn } from 'wagmi';
 
 import type { CreateWalletOptions, WalletFactory, WalletUseInWagmiAdapter } from '../interface';
 
+/**
+ * UniversalWallet
+ * 通用钱包工厂：
+ * - 根据 WalletMetadata 自动推断支持的连接器（Injected/WalletConnect）
+ * - create 方法在运行时根据连接方式与是否安装扩展选择合适的连接器
+ * - 支持获取 WalletConnect 二维码与自定义二维码面板
+ */
 export class UniversalWallet implements WalletFactory {
   public name?: string;
   public createWagmiConnector?: () => CreateConnectorFn;
@@ -14,12 +21,13 @@ export class UniversalWallet implements WalletFactory {
     this.name = wallet.name;
     this.createWagmiConnector = createWagmiConnector;
     if (wallet.extensions) {
-      // support injected connector
+      // 支持 Injected 连接器
       // https://wagmi.sh/react/connectors/injected
       this.connectors.push(wallet.name);
     }
     if (wallet.app) {
-      // support WalletConnect https://wagmi.sh/react/connectors/walletConnect
+      // 支持 WalletConnect
+      // https://wagmi.sh/react/connectors/walletConnect
       this.connectors.push('WalletConnect');
     }
   }

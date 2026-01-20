@@ -2,6 +2,7 @@
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, TronlinkColorful } from 'pelican-web3-lib-icons';
 
+// TronLink 钱包的展示与下载信息元数据
 export const TronlinkWallet: WalletMetadata = {
   icon: <TronlinkColorful />,
   name: 'TronLink',

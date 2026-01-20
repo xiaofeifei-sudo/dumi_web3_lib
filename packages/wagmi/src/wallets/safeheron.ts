@@ -5,6 +5,10 @@ import type { Connector } from 'wagmi';
 
 import type { EthereumWallet } from '../interface';
 
+/**
+ * Safeheron 钱包工厂
+ * - 依赖注入式 Connector，检测 provider 以判断是否安装与就绪
+ */
 export const SafeheronWallet: EthereumWallet = (metadata) => {
   return {
     connectors: ['Safeheron'],

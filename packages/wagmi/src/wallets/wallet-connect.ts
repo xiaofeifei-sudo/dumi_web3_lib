@@ -10,6 +10,12 @@ export type EthereumWalletConnect = (
   },
 ) => WalletFactory;
 
+/**
+ * WalletConnect 钱包工厂
+ * - 通过 wagmi 的 WalletConnect 连接器进行连接
+ * - 支持自定义是否使用官方二维码弹窗
+ * - 提供获取二维码 URI 的方法（监听 display_uri 事件）
+ */
 export const WalletConnect: EthereumWalletConnect = (metadata) => {
   const { useWalletConnectOfficialModal = false, ...rest } = metadata || {};
   return {

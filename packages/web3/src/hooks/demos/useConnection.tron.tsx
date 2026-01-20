@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { useAccount, useConnection } from 'pelican-web3-lib';
-import { PhantomWallet, SolanaWeb3ConfigProvider } from 'pelican-web3-lib-solana';
+import { TronWeb3ConfigProvider, TronlinkWallet, OkxTronWallet, BybitWallet } from 'pelican-web3-lib-tron';
 
 const Demo: React.FC = () => {
   const { account } = useAccount();
   const { connect, disconnect } = useConnection();
   return (
-    <>
+    <Space direction="vertical">
       <Button
         onClick={() => {
           if (account) {
@@ -19,16 +19,16 @@ const Demo: React.FC = () => {
       >
         {account ? 'Disconnect' : 'Connect'}
       </Button>
-      {account ? <p>Account: {account?.address}</p> : <p>Not Connected</p>}
-    </>
+      {account ? <div>{account.address}</div> : <div>Not Connected</div>}
+    </Space>
   );
 };
 
 const App: React.FC = () => {
   return (
-    <SolanaWeb3ConfigProvider wallets={[PhantomWallet()]}>
+    <TronWeb3ConfigProvider wallets={[TronlinkWallet, OkxTronWallet, BybitWallet]}>
       <Demo />
-    </SolanaWeb3ConfigProvider>
+    </TronWeb3ConfigProvider>
   );
 };
 

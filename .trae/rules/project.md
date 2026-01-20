@@ -1,0 +1,1 @@
+执行完任务跳过 pnpm run lint

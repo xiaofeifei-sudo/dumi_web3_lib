@@ -18,6 +18,12 @@ import type {
 } from '../interface';
 import { PelicanWeb3ConfigProvider } from './config-provider';
 
+/**
+ * WalletConnectOptions
+ * WalletConnect 自定义选项
+ * - useWalletConnectOfficialModal: 是否启用官方二维码弹窗
+ * 其余选项与 wagmi 的 WalletConnectParameters 对齐
+ */
 export interface WalletConnectOptions
   extends Pick<
     WalletConnectParameters,
@@ -32,6 +38,23 @@ export interface WalletConnectOptions
   useWalletConnectOfficialModal?: boolean;
 }
 
+/**
+ * WagmiWeb3ConfigProviderProps
+ * - config: 自定义的 wagmi Config（存在时优先使用）
+ * - locale: 本地化配置
+ * - wallets: 钱包工厂列表（用于生成连接器与钱包）
+ * - chains: 链资产与 wagmi 链的映射
+ * - ens: 是否启用 ENS
+ * - queryClient: TanStack Query 客户端
+ * - balance: 是否查询余额
+ * - eip6963: EIP-6963 配置
+ * - initialState: wagmi 初始状态
+ * - reconnectOnMount: 组件挂载时是否自动重连
+ * - walletConnect: WalletConnect 配置或关闭
+ * - transports: 各链的 RPC Transport 配置
+ * - siwe: SIWE 登录配置
+ * - ignoreConfig: 是否在多 Provider 合并时忽略当前配置以避免闪烁
+ */
 export interface WagmiWeb3ConfigProviderProps {
   config?: Config;
   locale?: Locale;
@@ -54,6 +77,11 @@ export interface WagmiWeb3ConfigProviderProps {
   ignoreConfig?: boolean;
 }
 
+/**
+ * WagmiWeb3ConfigProvider
+ * 负责创建或复用 wagmi Config，并结合 QueryClient 与 PelicanWeb3ConfigProvider
+ * 提供完整的 Web3 上下文（账户、链、钱包、余额、SIWE 等）。
+ */
 export function WagmiWeb3ConfigProvider({
   children,
   config,
@@ -70,8 +98,8 @@ export function WagmiWeb3ConfigProvider({
   ignoreConfig,
   ...restProps
 }: React.PropsWithChildren<WagmiWeb3ConfigProviderProps>): React.ReactElement {
-  // When user custom config, add Mainnet by default
-  // When user not provide config, auto generate config, chains use user provided chains
+  // 用户提供自定义 config 时，默认补充 Mainnet
+  // 用户未提供 config 时，自动生成 config，链采用用户传入的链集合
   const chainAssets: ChainAssetWithWagmiChain[] = config
     ? [Mainnet, ...chains]
     : chains?.length
@@ -82,7 +110,7 @@ export function WagmiWeb3ConfigProvider({
   };
 
   const generateConfig = () => {
-    // Auto generate config
+    // 自动生成 wagmi 配置
     const connectors = [];
     // biome-ignore lint/complexity/useOptionalChain: <explanation>
     if (walletConnect && walletConnect.projectId) {
@@ -134,7 +162,7 @@ export function WagmiWeb3ConfigProvider({
     }
     const flag = generateConfigFlag();
     if (flag !== autoConfig.flag) {
-      // Need recreate wagmi config
+      // 需要重新创建 wagmi 配置
       setAutoConfig(generateConfig());
     }
   }, [config, wallets, chains, walletConnect]);

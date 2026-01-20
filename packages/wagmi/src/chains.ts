@@ -34,6 +34,11 @@ import {
 
 import type { ChainAssetWithWagmiChain } from './interface';
 
+/**
+ * 链资产到 wagmi Chain 的映射
+ * - 将 pelican-web3-lib-assets 提供的链描述与 wagmi 的链配置关联
+ * - 提供 id、name、icon 等展示信息与底层 RPC/Explorer 等连接信息
+ */
 export const Mainnet: ChainAssetWithWagmiChain = {
   ...MainnetAsset,
   wagmiChain: mainnet,
@@ -84,7 +89,7 @@ export const Base: ChainAssetWithWagmiChain = {
   wagmiChain: base,
 };
 
-// OKX X1: https://www.okx.com/cn/x1/docs/developer/build-on-x1/quickstart
+// OKX X1 测试网：参考文档 https://www.okx.com/cn/x1/docs/developer/build-on-x1/quickstart
 export const X1Testnet: ChainAssetWithWagmiChain = {
   ...X1TestnetAsset,
   wagmiChain: {

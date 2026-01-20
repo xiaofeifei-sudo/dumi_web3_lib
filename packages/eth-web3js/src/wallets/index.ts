@@ -1,3 +1,4 @@
+/** 导出常见 EVM 钱包工厂方法，供 Provider 组合使用 */
 export {
   MetaMask,
   CoinbaseWallet,
