@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Space } from 'antd';
 import base58 from 'bs58';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   PhantomWallet,
   solana,
@@ -44,10 +43,6 @@ const App: React.FC = () => {
       wallets={[PhantomWallet()]}
     >
       <Space direction="vertical">
-        <Connector>
-          <ConnectButton />
-        </Connector>
-
         <SignMessage />
       </Space>
     </SolanaWeb3ConfigProvider>

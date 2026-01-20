@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { PhantomWallet, SolanaWeb3ConfigProvider, TipLinkWallet } from 'pelican-web3-lib-solana';
 
 const App: React.FC = () => {
@@ -14,11 +13,7 @@ const App: React.FC = () => {
           hideDraggableWidget: true,
         }),
       ]}
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

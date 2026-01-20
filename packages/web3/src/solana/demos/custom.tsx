@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, SolflareColorful } from 'pelican-web3-lib-icons';
 import {
@@ -42,11 +41,7 @@ const App: React.FC = () => {
         }),
         StandardWalletFactory(metadata_Demo),
       ]}
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

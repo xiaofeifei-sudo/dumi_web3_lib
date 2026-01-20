@@ -1,6 +1,5 @@
 import React from 'react';
 import { createNetworkConfig } from '@mysten/dapp-kit';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 
 const { networkConfig } = createNetworkConfig({
@@ -10,11 +9,11 @@ const { networkConfig } = createNetworkConfig({
 
 const App: React.FC = () => {
   return (
-    <SuiWeb3ConfigProvider wallets={[Suiet()]} balance networkConfig={networkConfig}>
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SuiWeb3ConfigProvider>
+    <SuiWeb3ConfigProvider
+      wallets={[Suiet()]}
+      balance
+      networkConfig={networkConfig}
+    ></SuiWeb3ConfigProvider>
   );
 };
 

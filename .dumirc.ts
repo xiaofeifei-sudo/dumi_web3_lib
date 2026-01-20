@@ -111,22 +111,14 @@ export default defineConfig({
     name: 'Web3 Examples',
     rtl: false,
     nav: {
-      'en-US': [
-        { title: 'Course', link: '/course/introduction' },
-        { title: 'Guide', link: '/guide/pelican-web3-lib' },
-        { title: 'Components', link: '/components/overview' },
-      ],
-      'zh-CN': [
-        { title: '课程', link: '/course/introduction-cn' },
-        { title: '指南', link: '/guide/pelican-web3-lib-cn' },
-        { title: '组件', link: '/components/overview-cn' },
-      ],
+      'en-US': [{ title: 'Components', link: '/components/overview' }],
+      'zh-CN': [{ title: '组件', link: '/components/overview-cn' }],
     },
     localesEnhance: [
       { id: 'en-US', switchPrefix: '中' },
       { id: 'zh-CN', switchPrefix: 'en' },
     ],
-    sidebarGroupModePath: ['/guide', '/components'],
+    sidebarGroupModePath: ['/components'],
     docVersions: false,
   },
   locales: [

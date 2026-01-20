@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectButton, Web3ConfigProvider } from 'pelican-web3-lib';
+import { Web3ConfigProvider } from 'pelican-web3-lib';
 
 const App: React.FC = () => {
   return (
@@ -9,9 +9,7 @@ const App: React.FC = () => {
           connect: 'CONNECT',
         },
       }}
-    >
-      <ConnectButton />
-    </Web3ConfigProvider>
+    ></Web3ConfigProvider>
   );
 };
 

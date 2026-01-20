@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Card, theme } from 'antd';
 import { useTheme } from 'antd-style';
 import { useIntl, usePrefersColor } from 'dumi';
-import { ConnectModal, Web3ConfigProvider, type Wallet } from 'pelican-web3-lib';
+import { Web3ConfigProvider, type Wallet } from 'pelican-web3-lib';
 import {
   metadata_CoinbaseWallet,
   metadata_MetaMask,
@@ -104,19 +104,7 @@ export const Theme: React.FC = () => {
                   colorPrimary: curTheme.color,
                 },
         }}
-      >
-        <Card
-          className={styles.card}
-          style={curTheme.style}
-          styles={{
-            body: {
-              padding: 0,
-            },
-          }}
-        >
-          <ConnectModal.ModalPanel walletList={walletList} />
-        </Card>
-      </Web3ConfigProvider>
+      ></Web3ConfigProvider>
       <div className={styles.thumbnailBox}>
         <Thumbnail selectedTheme={curTheme} onSelect={(theme) => updateTheme(theme)} />
       </div>

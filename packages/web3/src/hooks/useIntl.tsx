@@ -15,9 +15,8 @@ export default function useIntl<T extends ComponentName = any>(
 ): IntlType<T> {
   const context = React.useContext<ConfigConsumerProps>(ConfigContext);
   const locale: RequiredLocale[T] = {
-    ...context.defaultLocale[componentName],
-    ...context?.locale?.[componentName],
-    ...componentLocale,
+    ...(context?.locale?.[componentName] as RequiredLocale[T]),
+    ...(componentLocale as RequiredLocale[T]),
   };
 
   return {

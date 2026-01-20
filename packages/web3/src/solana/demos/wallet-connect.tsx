@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { SolanaWeb3ConfigProvider, WalletConnectWallet } from 'pelican-web3-lib-solana';
 
 const App: React.FC = () => {
@@ -9,11 +8,7 @@ const App: React.FC = () => {
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
       }}
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

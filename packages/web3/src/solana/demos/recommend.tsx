@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   OKXWallet,
   PhantomWallet,
@@ -17,11 +16,7 @@ const App: React.FC = () => {
       rpcProvider={rpcProvider}
       wallets={[PhantomWallet(), OKXWallet(), WalletConnectWallet()]}
       walletConnect={{ projectId: YOUR_WALLET_CONNECT_PROJECT_ID }}
-    >
-      <Connector modalProps={{ mode: 'simple', group: false }}>
-        <ConnectButton quickConnect />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

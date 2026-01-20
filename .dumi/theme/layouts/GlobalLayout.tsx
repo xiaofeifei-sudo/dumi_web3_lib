@@ -2,7 +2,7 @@ import React from 'react';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { useIntl, useLocation, useOutlet, usePrefersColor, useServerInsertedHTML } from 'dumi';
 import { GlobalLayout as ThemeGlobalLayout } from 'dumi-theme-antd-web3';
-import { en_US, Web3ConfigProvider, zh_CN } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import SiteThemeProvider from '../SiteThemeProvider';
 
@@ -26,7 +26,7 @@ const GlobalLayout: React.FC = () => {
     <StyleProvider cache={cssCache}>
       {/*@ts-ignore */}
       <ThemeGlobalLayout>
-        <Web3ConfigProvider locale={locale === 'zh-CN' ? zh_CN : en_US}>
+        <Web3ConfigProvider>
           <SiteThemeProvider themeMode={color || 'auto'}>
             <div className={pathname === '/' || pathname === '/index-cn' ? 'home' : ''}>
               {outlet}

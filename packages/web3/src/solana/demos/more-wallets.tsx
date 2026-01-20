@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   CoinbaseWallet,
   OKXWallet,
@@ -12,11 +11,7 @@ const App: React.FC = () => {
   return (
     <SolanaWeb3ConfigProvider
       wallets={[CoinbaseWallet(), PhantomWallet(), SolflareWallet(), OKXWallet()]}
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

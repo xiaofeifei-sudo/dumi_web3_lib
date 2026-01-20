@@ -1,5 +1,4 @@
 import { Divider, Typography } from 'antd';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { useAccount } from 'wagmi';
 
 import MintBtn from './mint';
@@ -38,20 +37,7 @@ const SBT: React.FC = () => {
         src="https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*brRjT72GJPIAAAAAAAAAAAAADlrGAQ/original"
         aria-label="Ant Design Meetup 2024"
       />
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 80,
-        }}
-      >
-        <Connector
-          modalProps={{
-            mode: 'simple',
-          }}
-        >
-          <ConnectButton type={address ? 'default' : 'primary'} size="large" />
-        </Connector>
-      </div>
+
       {address ? <MintBtn /> : null}
 
       <div

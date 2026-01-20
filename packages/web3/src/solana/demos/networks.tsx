@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
   CoinbaseWallet,
   solana,
@@ -14,11 +13,7 @@ const App: React.FC = () => {
       balance={false}
       chains={[solana, solanaTestnet, solanaDevnet]}
       wallets={[CoinbaseWallet()]}
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SolanaWeb3ConfigProvider>
+    ></SolanaWeb3ConfigProvider>
   );
 };
 

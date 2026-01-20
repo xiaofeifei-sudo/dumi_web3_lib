@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNetworkConfig } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
-import { ConnectButton, Connector } from 'pelican-web3-lib';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
 
 const { networkConfig } = createNetworkConfig({
@@ -18,11 +17,7 @@ const App: React.FC = () => {
       balance
       networkConfig={networkConfig}
       defaultNetwork="testnet"
-    >
-      <Connector>
-        <ConnectButton />
-      </Connector>
-    </SuiWeb3ConfigProvider>
+    ></SuiWeb3ConfigProvider>
   );
 };
 
