@@ -4,6 +4,10 @@ import type { Account, Chain, Client, Transport } from 'viem';
 import { useConnectorClient, type Config } from 'wagmi';
 
 /* v8 ignore next 13 */
+/** 将 wagmi Client 转换为 ethers Signer
+ * - 通过 BrowserProvider + JsonRpcSigner 构建签名器
+ * - 根据链信息构建 network；未提供链信息则使用默认网络
+ */
 export function clientToSigner(client: Client<Transport, Chain, Account>) {
   const { account, chain, transport } = client;
   const network = chain
@@ -18,6 +22,7 @@ export function clientToSigner(client: Client<Transport, Chain, Account>) {
   return signer;
 }
 
+/** 获取当前账户对应的 ethers Signer；未连接时返回 null */
 export function useEthersSigner() {
   const { data: client } = useConnectorClient<Config>();
   /* v8 ignore next */

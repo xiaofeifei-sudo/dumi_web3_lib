@@ -10,14 +10,25 @@ import { createConfig, http, type CreateConnectorFn, type Storage } from 'wagmi'
 import * as wagmiChains from 'wagmi/chains';
 import * as wagmiConnectors from 'wagmi/connectors';
 
+/** Ethers 包的 Web3 配置 Provider 额外配置
+ * - 基于 WagmiWeb3ConfigProvider，内部自动生成 config
+ * - storage: 指定 wagmi 的持久化存储；传入 false 可禁用持久化
+ */
 export interface EthersWeb3ConfigProviderProps
   extends Omit<WagmiWeb3ConfigProviderProps, 'config'> {
+  /** wagmi 的存储实现；传入 false 表示不使用存储（仅内存） */
   storage?: Storage | false;
 }
 
+/** 使用 wagmi + ethers 构建 Web3 配置 Provider
+ * - 根据 props.chains 映射到 wagmi 支持的链
+ * - 依据 props.wallets 与 walletConnect 生成连接器
+ * - 提供统一的 Web3 Config 上下文，包裹 children
+ */
 export const EthersWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<EthersWeb3ConfigProviderProps>
 > = ({ children, walletConnect, storage, ...props }) => {
+  // 将 viem Chain 转换为 wagmi 链配置，不支持的链会给出警告
   const chains = React.useMemo(
     () =>
       (props.chains ?? [Mainnet])
@@ -33,6 +44,7 @@ export const EthersWeb3ConfigProvider: React.FC<
     [props.chains?.map((chain) => chain.id).join()],
   );
 
+  // 合并自定义钱包列表；配置了 WalletConnect 项目 ID 时自动追加 WalletConnect
   const wallets = React.useMemo(() => {
     const targetWallets = [...(props.wallets ?? [])];
     // biome-ignore lint/complexity/useOptionalChain: <explanation>
@@ -40,6 +52,7 @@ export const EthersWeb3ConfigProvider: React.FC<
     return targetWallets;
   }, [props.wallets, walletConnect]);
 
+  // 创建 wagmi 配置：transports（HTTP RPC）、connectors（钱包连接器）、storage（可选）
   const wagmiConfig = React.useMemo(() => {
     const transports = Object.fromEntries(chains.map((chain) => [chain.id, http()]));
     const connectors: CreateConnectorFn[] = [wagmiConnectors.injected()];
