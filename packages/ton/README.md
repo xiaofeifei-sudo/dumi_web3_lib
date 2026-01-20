@@ -27,9 +27,7 @@ const Basic = () => {
 export default Basic;
 ```
 
-更多示例参考：https://web3.ant.design/components/ton
 
 ## 文档
 
-- Ant Design Web3：https://web3.ant.design
 - TON 官方：https://ton.org

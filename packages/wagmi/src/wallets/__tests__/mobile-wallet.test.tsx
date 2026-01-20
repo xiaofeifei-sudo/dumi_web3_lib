@@ -38,7 +38,7 @@ describe('MobileWallet', () => {
           on: (_: string, callback: (uri: string) => void) => {
             eventFired = true;
             setTimeout(() => {
-              callback('https://web3.ant.design');
+              callback('https://qr.com');
             }, 100);
           },
         };
@@ -46,8 +46,8 @@ describe('MobileWallet', () => {
     } as Connector;
     const wallet = MobileWallet().create([testConnector]);
     const qrCode = await wallet.getQrCode?.();
-    expect(qrCode?.uri).toBe('https://web3.ant.design');
+    expect(qrCode?.uri).toBe('https://qr.com');
     const qrCode2 = await wallet.getQrCode?.();
-    expect(qrCode2?.uri).toBe('https://web3.ant.design');
+    expect(qrCode2?.uri).toBe('https://qr.com');
   });
 });

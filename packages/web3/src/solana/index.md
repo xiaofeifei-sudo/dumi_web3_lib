@@ -37,7 +37,7 @@ When `autoAddRegisteredWallets` is `true`, the `Mobile Wallet Adapter` wallet wi
 
 ## Add more wallets
 
-To reduce the size of the package you're including, you need to manually configure the `wallets` to import the relevant wallets. You can export the necessary resources from `pelican-web3-lib-assets` and `@solana/wallet-adapter-ADAPTER_YOUR_NEED`. If you don't find the resources you need, you can let us know by submitting a [GitHub issue](https://github.com/ant-design/ant-design-web3/issues). You can also configure it yourself or submit a Pull Request to us for support.
+To reduce the size of the package you're including, you need to manually configure the `wallets` to import the relevant wallets. You can export the necessary resources from `pelican-web3-lib-assets` and `@solana/wallet-adapter-ADAPTER_YOUR_NEED`. If you don't find the resources you need, you can let us know, or configure it yourself or submit a Pull Request to us for support.
 
 `@solana/wallet-adapter-ADAPTER_YOUR_NEED`:
 
@@ -97,5 +97,5 @@ You can use more components together. The content related to the chain in the co
 | autoConnect | Whether to connect automatically | `boolean` | `false` | - |
 | autoAddRegisteredWallets | Whether to automatically add registered plugin wallets | `boolean` | `false` | - |
 | walletProviderProps | Transparent to WalletProvider | [WalletProviderProps](https://github.com/solana-labs/wallet-adapter/blob/master/packages/core/react/src/WalletProvider.tsx#L17) | - | - |
-| locale | Multilingual settings | [Locale](https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/zh_CN.ts) | - | - |
+| locale | Multilingual settings | Locale | - | - |
 | walletConnect | WalletConnect configs | [UniversalProviderOpts](https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/providers/universal-provider/src/types/misc.ts#L9) | - | - |

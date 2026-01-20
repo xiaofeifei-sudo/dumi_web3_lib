@@ -133,4 +133,4 @@ This is an enum type that contains the IDs of some commonly used chains. Its val
 
 ## Locale
 
-Internationalization support text can be found in the [code](https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/en_US.ts).
+Internationalization support text can be found in the code.

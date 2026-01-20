@@ -90,7 +90,7 @@ describe('UniversalWallet', async () => {
               eventFired = true;
               if (type === 'display_uri') {
                 setTimeout(() => {
-                  handler('https://web3.ant.design');
+                  handler('https://qr.com');
                 }, 10);
               }
             },
@@ -100,9 +100,9 @@ describe('UniversalWallet', async () => {
     ]);
 
     const qrCode = await wallet.getQrCode?.();
-    expect(qrCode?.uri).toBe('https://web3.ant.design');
+    expect(qrCode?.uri).toBe('https://qr.com');
     const qrCode2 = await wallet.getQrCode?.();
-    expect(qrCode2?.uri).toBe('https://web3.ant.design');
+    expect(qrCode2?.uri).toBe('https://qr.com');
   });
 
   it('only has extension, without install', async () => {

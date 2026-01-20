@@ -38,14 +38,6 @@
     "ethers-v5",
     "ethersjs"
   ],
-  "homepage": "https://web3.ant.design",
-  "bugs": {
-    "url": "https://github.com/ant-design/ant-design-web3/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ant-design/ant-design-web3"
-  },
   "scripts": {
     "dev": "father dev",
     "build": "father build"

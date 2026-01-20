@@ -2,8 +2,6 @@
 
 基于 ethers.js v6 的以太坊适配包，为 pelican-web3-lib 提供 EVM 链连接与账户管理能力。
 
-- 官网文档：https://web3.ant.design
-
 ## 安装
 
 ```bash

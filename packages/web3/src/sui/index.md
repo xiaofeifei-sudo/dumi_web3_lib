@@ -59,6 +59,4 @@ We have built-in the Sui mainnet `mainnet`. If you want to use other networks, y
 | defaultNetwork | Default network                  | string          | `mainnet` | -       |
 | wallets        | Wallet list                      | WalletFactory[] | -         | -       |
 | queryClient    | QueryClient                      | QueryClient     | -         | -       |
-| locale         | Multilingual settings            | [Locale]        | -         | -       |
-
-[Locale]: https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/zh_CN.ts
+| locale         | Multilingual settings            | Locale          | -         | -       |

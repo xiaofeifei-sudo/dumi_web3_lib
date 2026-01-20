@@ -134,4 +134,4 @@ coverDark: https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*n4F2RK3AVTsAAA
 
 ## Locale
 
-国际化支持的文案请参考[代码](https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/zh_CN.ts)。
+国际化支持的文案请参考代码。

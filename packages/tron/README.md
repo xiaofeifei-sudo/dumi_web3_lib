@@ -33,9 +33,7 @@ const Basic = () => {
 export default Basic;
 ```
 
-更多示例参考：https://web3.ant.design/components/tron
 
 ## 文档
 
-- Ant Design Web3：https://web3.ant.design
 - TRON 官方：https://tron.network

@@ -40,7 +40,7 @@ export const Theme: React.FC = () => {
       },
       getQrCode: async () => {
         return {
-          uri: 'https://web3.ant.design',
+          uri: 'https://qr.com',
         };
       },
     },
@@ -48,7 +48,7 @@ export const Theme: React.FC = () => {
       ...metadata_WalletConnect,
       getQrCode: async () => {
         return {
-          uri: 'https://web3.ant.design',
+          uri: 'https://qr.com',
         };
       },
     },
@@ -62,7 +62,7 @@ export const Theme: React.FC = () => {
       },
       getQrCode: async () => {
         return {
-          uri: 'https://web3.ant.design',
+          uri: 'https://qr.com',
         };
       },
     },
@@ -76,7 +76,7 @@ export const Theme: React.FC = () => {
       },
       getQrCode: async () => {
         return {
-          uri: 'https://web3.ant.design',
+          uri: 'https://qr.com',
         };
       },
     },

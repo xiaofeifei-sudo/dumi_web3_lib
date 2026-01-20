@@ -27,9 +27,7 @@ const App: React.FC = () => {
 export default App;
 ```
 
-For more examples, refer to [Sui - Ant Design Web3](https://web3.ant.design/components/sui).
 
 ## Documentation
 
-- For more information, visit [Ant Design Web3](https://web3.ant.design).
 - For an introduction to Sui, visit [Sui](https://sui.io).

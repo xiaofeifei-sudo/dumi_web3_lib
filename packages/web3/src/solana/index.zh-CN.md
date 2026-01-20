@@ -38,7 +38,7 @@ Ant Design Web3 官方提供了 `pelican-web3-lib-solana` 来适配 Solana，它
 
 ## 添加更多钱包
 
-为了降低引入包的大小，你需要手动配置 `wallets` 引入相关钱包。你可以从 `pelican-web3-lib-assets` 和 `@solana/wallet-adapter-ADAPTER_YOUR_NEED` 中导出相关资源，如果没有你需要的资源，你可以通过提交 [GitHub issue](https://github.com/ant-design/ant-design-web3/issues) 告诉我们。当然，你也可以自己配置或者给我们提交 PR 支持。
+为了降低引入包的大小，你需要手动配置 `wallets` 引入相关钱包。你可以从 `pelican-web3-lib-assets` 和 `@solana/wallet-adapter-ADAPTER_YOUR_NEED` 中导出相关资源。如果没有你需要的资源，你可以告知我们，或者自行配置，或提交 PR 支持。
 
 `@solana/wallet-adapter-ADAPTER_YOUR_NEED`:
 
@@ -98,5 +98,5 @@ TipLink 是一个轻量级的钱包。我们通过内置的 TipLinkWallet 对其
 | autoConnect | 是否自动连接 | `boolean` | `false` | - |
 | autoAddRegisteredWallets | 是否自动添加已注册的插件钱包 | `boolean` | `false` | - |
 | walletProviderProps | WalletProvider 的属性 | [WalletProviderProps](https://github.com/solana-labs/wallet-adapter/blob/master/packages/core/react/src/WalletProvider.tsx#L17) | - | - |
-| locale | 多语言设置 | [Locale](https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/zh_CN.ts) | - | - |
+| locale | 多语言设置 | Locale | - | - |
 | walletConnect | WalletConnect 配置 | [UniversalProviderOpts](https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/providers/universal-provider/src/types/misc.ts#L9) | - | - |

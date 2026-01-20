@@ -2,8 +2,6 @@
 
 Web3 图标集合，包含常见链、钱包、代币的彩色与线性图标，开箱即用。
 
-文档地址：https://web3.ant.design/components/icons
-
 ### 安装
 
 ```bash

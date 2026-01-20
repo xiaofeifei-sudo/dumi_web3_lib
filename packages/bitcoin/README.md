@@ -32,8 +32,4 @@ const App: React.FC = () => {
 export default App;
 ```
 
-更多示例参考：https://web3.ant.design/components/bitcoin
-
 ## 文档
-
-- Ant Design Web3：https://web3.ant.design

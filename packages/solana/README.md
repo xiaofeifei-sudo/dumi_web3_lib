@@ -27,9 +27,7 @@ const App: React.FC = () => {
 export default App;
 ```
 
-更多示例参考：https://web3.ant.design/components/solana
 
 ## 文档
 
-- Ant Design Web3：https://web3.ant.design
 - Solana 官方：https://solana.com

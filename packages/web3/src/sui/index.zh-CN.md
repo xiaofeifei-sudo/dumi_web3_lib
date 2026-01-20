@@ -59,6 +59,4 @@ Ant Design Web3 官方提供了 `pelican-web3-lib-sui` 来适配 Sui。它基于
 | defaultNetwork | 默认网络     | string          | `mainnet` | -    |
 | wallets        | 钱包列表     | WalletFactory[] | -         | -    |
 | queryClient    | QueryClient  | QueryClient     | -         | -    |
-| locale         | 多语言设置   | [Locale]        | -         | -    |
-
-[Locale]: https://github.com/ant-design/ant-design-web3/blob/main/packages/common/src/locale/zh_CN.ts
+| locale         | 多语言设置   | Locale          | -         | -    |
