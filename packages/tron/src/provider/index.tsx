@@ -6,7 +6,7 @@ import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { TronLinkAdapter } from '@tronweb3/tronwallet-adapter-tronlink';
 import type { Locale, Wallet } from 'pelican-web3-lib-common';
 
-import { AntDesignWeb3ConfigProvider } from './config-provider';
+import { PelicanWeb3ConfigProvider } from './config-provider';
 
 export interface TronWeb3ConfigProviderProps {
   wallets?: Wallet[];
@@ -51,14 +51,14 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       autoConnect={autoConnect}
       {...walletProviderProps}
     >
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         locale={locale}
         connectionError={connectionError}
         availableWallets={wallets}
         ignoreConfig={ignoreConfig}
       >
         {children}
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     </WalletProvider>
   );
 };

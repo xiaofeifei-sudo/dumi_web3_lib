@@ -16,7 +16,7 @@ import type {
   SIWEConfig,
   WalletFactory,
 } from '../interface';
-import { AntDesignWeb3ConfigProvider } from './config-provider';
+import { PelicanWeb3ConfigProvider } from './config-provider';
 
 export interface WalletConnectOptions
   extends Pick<
@@ -144,7 +144,7 @@ export function WagmiWeb3ConfigProvider({
   return (
     <WagmiProvider config={wagmiConfig} {...restProps}>
       <QueryClientProvider client={mergedQueryClient}>
-        <AntDesignWeb3ConfigProvider
+        <PelicanWeb3ConfigProvider
           locale={locale}
           siwe={siwe}
           chainAssets={chainAssets}
@@ -159,7 +159,7 @@ export function WagmiWeb3ConfigProvider({
           ignoreConfig={ignoreConfig}
         >
           {children}
-        </AntDesignWeb3ConfigProvider>
+        </PelicanWeb3ConfigProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

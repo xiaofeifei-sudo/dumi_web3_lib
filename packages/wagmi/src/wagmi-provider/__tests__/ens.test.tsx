@@ -7,7 +7,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 vi.mock('wagmi/actions', () => {
   return {
@@ -64,14 +64,14 @@ describe('WagmiWeb3ConfigProvider ens', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         ens
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -101,14 +101,14 @@ describe('WagmiWeb3ConfigProvider ens', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         ens
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 

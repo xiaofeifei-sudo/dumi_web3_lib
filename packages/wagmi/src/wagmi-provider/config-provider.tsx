@@ -32,7 +32,7 @@ import { isEIP6963Connector } from '../utils';
 import { EIP6963Wallet } from '../wallets/eip6963';
 import { getNFTMetadata } from './methods';
 
-export interface AntDesignWeb3ConfigProviderProps {
+export interface PelicanWeb3ConfigProviderProps {
   chainAssets: Chain[];
   walletFactories: WalletFactory[];
   locale?: Locale;
@@ -51,7 +51,7 @@ export interface AntDesignWeb3ConfigProviderProps {
   ignoreConfig?: boolean;
 }
 
-export const AntDesignWeb3ConfigProvider: React.FC<AntDesignWeb3ConfigProviderProps> = (props) => {
+export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps> = (props) => {
   const {
     children,
     chainAssets,

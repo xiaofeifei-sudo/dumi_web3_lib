@@ -10,7 +10,7 @@ import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import { hasWalletReady } from '../utils';
 
-interface AntDesignWeb3ConfigProviderProps {
+interface PelicanWeb3ConfigProviderProps {
   availableWallets?: Wallet[];
   locale?: Locale;
   connectionError?: WalletError;
@@ -28,8 +28,8 @@ interface ConnectAsync {
   reject: (reason: any) => void;
 }
 
-export const AntDesignWeb3ConfigProvider: React.FC<
-  React.PropsWithChildren<AntDesignWeb3ConfigProviderProps>
+export const PelicanWeb3ConfigProvider: React.FC<
+  React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({ availableWallets, locale, connectionError, ignoreConfig, children }) => {
   const { address, wallet, wallets, connected, connect, disconnect, select } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();

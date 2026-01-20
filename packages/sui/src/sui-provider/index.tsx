@@ -7,7 +7,7 @@ import type { Locale } from 'pelican-web3-lib-common';
 import type { SuiChain } from '../chain';
 import { suiDevnet, suiLocalnet, suiMainnet, suiTestnet } from '../chain';
 import type { WalletFactory } from '../wallets/types';
-import { AntDesignWeb3ConfigProvider } from './config-provider';
+import { PelicanWeb3ConfigProvider } from './config-provider';
 
 export interface SuiWeb3ConfigProviderProps {
   balance?: boolean;
@@ -73,7 +73,7 @@ export const SuiWeb3ConfigProvider: React.FC<
     <QueryClientProvider client={mergedQueryClient}>
       <SuiClientProvider networks={mergedNetworkConfig} network={network}>
         <WalletProvider autoConnect={autoConnect}>
-          <AntDesignWeb3ConfigProvider
+          <PelicanWeb3ConfigProvider
             locale={locale}
             availableChains={networks}
             availableWallets={wallets}
@@ -84,7 +84,7 @@ export const SuiWeb3ConfigProvider: React.FC<
             ignoreConfig={ignoreConfig}
           >
             {children}
-          </AntDesignWeb3ConfigProvider>
+          </PelicanWeb3ConfigProvider>
         </WalletProvider>
       </SuiClientProvider>
     </QueryClientProvider>

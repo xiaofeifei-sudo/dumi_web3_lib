@@ -10,7 +10,7 @@ import { mainnet, polygon } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 const event = new EventEmitter();
 
@@ -78,7 +78,7 @@ describe('switch chain when connect', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet, Polygon]}
         wagimConfig={config}
@@ -86,7 +86,7 @@ describe('switch chain when connect', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.ant-web3-connect-button-text')?.textContent).toBe(

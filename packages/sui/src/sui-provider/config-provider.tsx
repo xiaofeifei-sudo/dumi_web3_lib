@@ -18,7 +18,7 @@ import type { WalletFactory } from '../wallets/types';
 
 type GetNFTMetadata = NonNullable<UniversalWeb3ProviderInterface['getNFTMetadata']>;
 
-export interface AntDesignWeb3ConfigProviderProps {
+export interface PelicanWeb3ConfigProviderProps {
   balance?: boolean;
   locale?: Locale;
   availableChains?: SuiChain[];
@@ -34,8 +34,8 @@ export interface AntDesignWeb3ConfigProviderProps {
   ignoreConfig?: boolean;
 }
 
-export const AntDesignWeb3ConfigProvider: React.FC<
-  React.PropsWithChildren<AntDesignWeb3ConfigProviderProps>
+export const PelicanWeb3ConfigProvider: React.FC<
+  React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({
   balance: showBalance,
   locale,

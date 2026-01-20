@@ -16,7 +16,7 @@ Connect or disconnect the wallet. Usually, you don't need to use this Hook direc
 
 ### Examples
 
-The following example simulates the connection through `Web3ConfigProvider`. Usually, your application will use [adapter](../../../../docs/guide/adapter.md), so you don't need to do this like the example, but use `useConnection` directly.
+The following example uses the Solana adapter to perform a real wallet connection (e.g., Phantom). In practice, we recommend managing connection capabilities via an [adapter](../../../../docs/guide/adapter.md) and then invoking `useConnection` in your custom interactions.
 
 <code src="./demos/useConnection.tsx"></code>
 

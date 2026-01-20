@@ -10,7 +10,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 const mockConnector = {
   name: 'MetaMask',
@@ -113,13 +113,13 @@ describe('WagmiWeb3ConfigProvider connect', () => {
     };
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={mockWagmiConfig}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.custom-text')?.textContent).toBe('Connect');
@@ -188,13 +188,13 @@ describe('WagmiWeb3ConfigProvider connect', () => {
     };
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={mockWagmiConfig}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     fireEvent.click(baseElement.querySelector('.custom-text')!);

@@ -19,28 +19,39 @@ interface ConnectAsync {
   reject: (reason: any) => void;
 }
 
-export interface AntDesignWeb3ConfigProviderProps {
+export interface PelicanWeb3ConfigProviderProps {
+  /** 国际化配置 */
   locale?: Locale;
+  /** 链的展示资源（图标、名称等），与 availableChains 合并使用 */
   chainAssets?: Chain[];
+  /** 可用的 Solana 链配置列表 */
   availableChains: SolanaChainConfig[];
+  /** 是否开启余额查询 */
   balance?: boolean;
+  /** 当前选择的链 */
   currentChain?: SolanaChainConfig;
+  /** 可用钱包列表（用于 UI 展示与连接） */
   availableWallets: Wallet[];
+  /** 钱包连接错误（用于上抛错误状态） */
   connectionError?: WalletConnectionError;
+  /** 是否自动追加已注册的标准钱包 */
   autoAddRegisteredWallets?: boolean;
+  /** 当前链变更回调 */
   onCurrentChainChange?: (chain?: SolanaChainConfig) => void;
   /**
-   * If true, this provider's configuration will be ignored when merging with parent context.
-   * This is useful when you have multiple chain providers and want to switch between them
-   * without causing page flickering. Only the active provider should not have this flag set.
+   * 若为 true：合并上下文时忽略当前 Provider 的配置
+   * 适用于多个链 Provider 并存、需要在不同 Provider 间切换以避免页面闪烁的场景
+   * 通常仅「非激活」的 Provider 才设置为 true
    */
   ignoreConfig?: boolean;
 }
 
 export const MWA_WALLET_NAME = 'Mobile Wallet Adapter';
 
-export const AntDesignWeb3ConfigProvider: React.FC<
-  React.PropsWithChildren<AntDesignWeb3ConfigProviderProps>
+ 
+
+export const PelicanWeb3ConfigProvider: React.FC<
+  React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = (props) => {
   const mountRef = useRef(false);
 
@@ -61,7 +72,7 @@ export const AntDesignWeb3ConfigProvider: React.FC<
   const [account, setAccount] = useState<Account>();
   const [currentWalletName, setCurrentWalletName] = useState(() => wallet?.adapter?.name ?? null);
 
-  // get account address
+  // 获取账户地址
   useEffect(() => {
     if (!(publicKey && connected)) {
       setAccount(undefined);
@@ -91,7 +102,7 @@ export const AntDesignWeb3ConfigProvider: React.FC<
     }
   }, [props.connectionError]);
 
-  // get balance
+  // 获取余额
   useEffect(() => {
     if (!(props.balance && connection && publicKey)) {
       return;
@@ -105,7 +116,7 @@ export const AntDesignWeb3ConfigProvider: React.FC<
     getBalance();
   }, [connection, publicKey, props.balance]);
 
-  // connect/disconnect wallet
+  // 连接/断开钱包
   useEffect(() => {
     // 初始化时跳过，避免与 wallet-adapter 的自动连接逻辑冲突
     if (!mountRef.current) {
@@ -113,7 +124,7 @@ export const AntDesignWeb3ConfigProvider: React.FC<
     }
 
     if (wallet?.adapter?.name) {
-      // if wallet is not ready, need clear selected wallet
+      // 若钱包未就绪，需要清空已选钱包
       if (!hasWalletReady(wallet.adapter.readyState)) {
         selectWallet(null);
         return;
@@ -183,13 +194,13 @@ export const AntDesignWeb3ConfigProvider: React.FC<
 
     const providedWalletNames = providedWallets.map((w) => w.name);
 
-    // standard wallets
+    // 标准钱包
     const autoRegisteredWallets = wallets
       .filter((w) => !providedWalletNames.includes(w.adapter.name))
       .map<Wallet>((w) => {
         const adapter = w.adapter;
 
-        // MWA is a special case, it's always ready
+        // MWA 属于特殊情况：始终可用
         if (adapter.name === MWA_WALLET_NAME) {
           return {
             name: adapter.name,

@@ -10,7 +10,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { TokenPocket } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 const injectConnector = {
   name: 'TokenPocket',
@@ -110,13 +110,13 @@ describe('WagmiWeb3ConfigProvider connect with UniversalWallet', () => {
     };
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         chainAssets={[Mainnet]}
         walletFactories={[TokenPocket()]}
         wagimConfig={mockWagmiConfig}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.custom-text')?.textContent).toBe('Connect');
@@ -180,13 +180,13 @@ describe('WagmiWeb3ConfigProvider connect with UniversalWallet', () => {
     };
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         chainAssets={[Mainnet]}
         walletFactories={[TokenPocket()]}
         wagimConfig={mockWagmiConfig}
       >
         <CustomConnector />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.custom-text')?.textContent).toBe('Connect');

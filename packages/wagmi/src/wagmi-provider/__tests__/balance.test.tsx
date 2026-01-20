@@ -7,7 +7,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 const mockConnector = {
   name: 'MetaMask',
@@ -49,7 +49,7 @@ describe('WagmiWeb3ConfigProvider balance', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         balance
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
@@ -58,7 +58,7 @@ describe('WagmiWeb3ConfigProvider balance', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.ant-web3-connect-button-text')?.textContent).toBe(
@@ -79,7 +79,7 @@ describe('WagmiWeb3ConfigProvider balance', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
@@ -87,7 +87,7 @@ describe('WagmiWeb3ConfigProvider balance', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     expect(baseElement.querySelector('.ant-web3-connect-button-text')?.textContent).toBe(

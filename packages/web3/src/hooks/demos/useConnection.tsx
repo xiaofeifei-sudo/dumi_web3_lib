@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
-import { useAccount, useConnection, Web3ConfigProvider, type Account } from 'pelican-web3-lib';
+import { useAccount, useConnection } from 'pelican-web3-lib';
+import { PhantomWallet, SolanaWeb3ConfigProvider } from 'pelican-web3-lib-solana';
 
 const Demo: React.FC = () => {
   const { account } = useAccount();
@@ -13,7 +14,6 @@ const Demo: React.FC = () => {
             disconnect?.();
             return;
           }
-          console.log('connect');
           connect?.();
         }}
       >
@@ -25,22 +25,10 @@ const Demo: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  const [testAccount, setTestAccount] = React.useState<Account>();
   return (
-    <Web3ConfigProvider
-      account={testAccount}
-      connect={async () => {
-        console.log('connect call');
-        setTestAccount({
-          address: '0x1234567890123456789012345678901234567890',
-        });
-      }}
-      disconnect={async () => {
-        setTestAccount(undefined);
-      }}
-    >
+    <SolanaWeb3ConfigProvider wallets={[PhantomWallet()]}>
       <Demo />
-    </Web3ConfigProvider>
+    </SolanaWeb3ConfigProvider>
   );
 };
 

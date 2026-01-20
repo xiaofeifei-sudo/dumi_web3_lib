@@ -1,3 +1,9 @@
+/**
+ * 开发环境告警工具集
+ * - 基于 rc-util 的 warning 封装统一的组件前缀与行为
+ * - 提供 Deprecated/Usage/Breaking 等类型的告警
+ * - 通过 WarningContext 控制严格模式行为（strict=false 时收集去重后的弃用告警）
+ */
 /* v8 ignore start */
 import * as React from 'react';
 import rcWarning, { resetWarned as rcResetWarned } from 'rc-util/lib/warning';
@@ -6,6 +12,11 @@ export function noop() {}
 
 let deprecatedWarnList: Record<string, string[]> | null = null;
 
+/**
+ * 重置已记录的告警信息
+ * - 清空本地弃用告警列表
+ * - 同步重置 rc-util 的告警状态
+ */
 export function resetWarned() {
   deprecatedWarnList = null;
   rcResetWarned();
@@ -19,7 +30,7 @@ if (process.env.NODE_ENV !== 'production') {
   warning = (valid, component, message) => {
     rcWarning(valid, `[ant-design-web3: ${component}] ${message}`);
 
-    // StrictMode will inject console which will not throw warning in React 17.
+    // React 17 的 StrictMode 会注入 console，导致告警不抛出，测试环境下需重置
     if (process.env.NODE_ENV === 'test') {
       resetWarned();
     }
@@ -29,9 +40,9 @@ if (process.env.NODE_ENV !== 'production') {
 type BaseTypeWarning = (
   valid: boolean,
   /**
-   * - deprecated: Some API will be removed in future but still support now.
-   * - usage: Some API usage is not correct.
-   * - breaking: Breaking change like API is removed.
+   * - deprecated：API 未来将移除，目前仍可用
+   * - usage：API 使用方式不正确
+   * - breaking：破坏性变更（API 已移除）
    */
   type: 'deprecated' | 'usage' | 'breaking',
   message?: string,
@@ -48,9 +59,8 @@ export interface WarningContextProps {
 export const WarningContext = React.createContext<WarningContextProps>({});
 
 /**
- * This is a hook but we not named as `useWarning`
- * since this is only used in development.
- * We should always wrap this in `if (process.env.NODE_ENV !== 'production')` condition
+ * 这是一个仅用于开发环境的 Hook，但未命名为 `useWarning`
+ * 使用时应始终置于 `if (process.env.NODE_ENV !== 'production')` 条件分支内
  */
 export const devUseWarning: (component: string) => TypeWarning =
   process.env.NODE_ENV !== 'production'
@@ -71,7 +81,7 @@ export const devUseWarning: (component: string) => TypeWarning =
                 deprecatedWarnList[component].push(message || '');
               }
 
-              // Warning for the first time
+              // 首次出现弃用告警时输出汇总信息
               if (!existWarning) {
                 // eslint-disable-next-line no-console
                 console.warn(

@@ -11,6 +11,7 @@ export const WalletFactory: WalletFactoryBuilder = (adapter, metadata) => {
     create: () => {
       return {
         ...metadata,
+        /** 使用适配器名称覆盖钱包名称，保持与 adapter 一致 */
         name: adapter.name,
         remark: metadata.remark,
         adapter: adapter,
@@ -19,7 +20,7 @@ export const WalletFactory: WalletFactoryBuilder = (adapter, metadata) => {
   };
 };
 
-// For Standard wallets
+// 用于标准钱包：不依赖 WalletConnect 的常规钱包
 export const StandardWalletFactory: StandardWalletFactoryBuilder = (metadata) => {
   return {
     create: () => {
@@ -31,7 +32,7 @@ export const StandardWalletFactory: StandardWalletFactoryBuilder = (metadata) =>
   };
 };
 
-// For `WalletConnect`
+// 用于 `WalletConnect`：支持二维码连接、延迟初始化 Provider
 export const WalletConnectWalletFactory: WalletConnectWalletFactoryBuilder = (
   adapter,
   metadata,

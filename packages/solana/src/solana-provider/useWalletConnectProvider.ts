@@ -7,6 +7,7 @@ export const useWalletConnectProvider = (walletConnect?: UniversalProviderOpts) 
   const [promiseResolves, setPromiseResolves] = useState<((value: IUniversalProvider) => void)[]>(
     [],
   );
+  /** 避免重复初始化 Universal Provider 的标记 */
   const [mounted, setMounted] = useState(false);
 
   const [walletConnectProvider, setWalletConnectProvider] = useState<IUniversalProvider | null>(
@@ -16,8 +17,10 @@ export const useWalletConnectProvider = (walletConnect?: UniversalProviderOpts) 
 
   /* v8 ignore next 9 */
   const getWalletConnectProvider = useCallback(async () => {
+    /** 若已初始化则直接返回当前 Provider */
     if (walletConnectProvider) return Promise.resolve(walletConnectProvider);
 
+    /** 若尚未初始化则通过 Promise 返回 Provider，待异步初始化完成后 resolve */
     const promise = new Promise<IUniversalProvider>((resolve) => {
       setPromiseResolves((prev) => [...prev, resolve]);
     });
@@ -36,6 +39,7 @@ export const useWalletConnectProvider = (walletConnect?: UniversalProviderOpts) 
 
       setWalletConnectProvider(provider);
 
+      /** 逐个触发之前挂起的 resolve，通知 Provider 可用 */
       promiseResolvesRef.current.forEach((resolve) => {
         resolve(provider);
       });

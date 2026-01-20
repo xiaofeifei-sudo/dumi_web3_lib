@@ -17,7 +17,7 @@ coverDark: https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*SXbqSKo3tlAAAA
 
 ### 代码演示
 
-下面的示例通过 `Web3ConfigProvider` 提供模拟了连接。通常来说，你的应用中会使用[适配器](../../../../docs/guide/adapter.zh-CN.md)，所以你并不需要像示例中这么做，而是直接使用 `useConnection` 即可。
+下面的示例基于 Solana 适配器进行真实连接，你可以安装并使用支持的插件钱包（如 Phantom）。在实际项目中，推荐通过[适配器](../../../../docs/guide/adapter.zh-CN.md)统一管理连接能力，然后在自定义交互里调用 `useConnection`。
 
 <code src="./demos/useConnection.tsx"></code>
 

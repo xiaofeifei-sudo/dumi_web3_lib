@@ -1,97 +1,144 @@
+/**
+ * 公共类型与枚举定义
+ * - 覆盖账户、链、余额、钱包、国际化、签名等核心领域模型
+ * - 供各链实现与 UI 组件复用
+ */
 // biome-ignore lint/suspicious/noConstEnum: <explanation>
 export const enum ConnectStatus {
+  // 已连接
   Connected = 'connected',
+  // 未连接
   Disconnected = 'disconnected',
+  // 已签名（应用层认证成功）
   Signed = 'signed',
 }
 
 export interface Account {
+  // 地址（不同链可能格式不同）
   address: string;
+  // 显示名称（可选）
   name?: string;
+  // 头像链接或节点（可选）
   avatar?: string;
+  // 多地址集合（EVM 类链可使用 0x 前缀）
   addresses?: [`0x${string}`, ...`0x${string}`[]] | readonly `0x${string}`[];
+  // 连接状态（可选）
   status?: ConnectStatus;
 }
 
 export enum ChainIds {
+  // 以太坊主网
   Mainnet = 1,
+  // Polygon
   Polygon = 137,
+  // BNB Smart Chain
   BSC = 56,
+  // Arbitrum One
   Arbitrum = 42_161,
+  // Optimism
   Optimism = 10,
+  // Goerli 测试网
   Goerli = 5,
+  // Avalanche
   Avalanche = 43_114,
+  // OKX X1 测试网
   X1Testnet = 195,
+  // Sepolia 测试网
   Sepolia = 11_155_111,
+  // Holesky 测试网
   Holesky = 17_000,
+  // Scroll 主网
   Scroll = 534_352,
+  // Scroll Sepolia
   ScrollSepolia = 534_351,
+  // Hardhat 本地
   Hardhat = 31_337,
+  // 本地链
   Localhost = 1_337,
+  // Base 主网
   Base = 8453,
 }
 
 export enum SolanaChainIds {
+  // Solana 主网 Beta
   MainnetBeta = 2,
+  // 开发网
   Devnet = 3,
+  // 测试网
   Testnet = 4,
 }
 
 export enum SuiChainIds {
+  // 主网
   Mainnet = 1,
+  // 测试网
   Testnet = 2,
+  // 开发网
   Devnet = 3,
+  // 本地网
   Localnet = 4,
 }
 
 export type BrowserLinkType = 'address' | 'transaction';
 
 export type BalanceMetadata = {
+  // 币种图标
   icon?: React.ReactNode;
+  // 精度（decimals）
   decimals?: number;
+  // 符号（如 ETH、SOL）
   symbol?: string;
 };
 
 export enum ChainType {
   /**
-   * Ethereum virtual machine and EVM compatible chains
+   * 以太坊虚拟机及其兼容链
    */
   EVM = 'EVM',
 
   /**
-   * Solana virtual machine
+   * Solana 虚拟机
    */
   SVM = 'SVM',
 
   /**
-   * Bitcoin chain
+   * 比特币链
    */
   Bitcoin = 'Bitcoin',
 
   /**
-   * Sui chain
+   * Sui 链
    */
   Sui = 'Sui',
 }
 
 export interface Chain {
+  // 链 ID（预置枚举或自定义数值）
   id: ChainIds | number;
+  // 链名称
   name: string;
+  // 虚拟机类型
   type?: ChainType;
+  // 链图标
   icon?: React.ReactNode;
+  // 区块浏览器配置
   browser?: {
     icon?: React.ReactNode;
     getBrowserLink?: (address: string, type: BrowserLinkType) => string;
   };
+  // 原生币信息（带币种元数据）
   nativeCurrency?: BalanceMetadata & {
     name: string;
   };
 }
 
 export interface NFTMetadata {
+  // 名称与描述
   name?: string;
   description?: string;
+  // 图片链接
   image?: string;
+  // 链上/生成器相关信息
   dna?: string;
   edition?: string | number;
   date?: number;
@@ -99,27 +146,36 @@ export interface NFTMetadata {
     trait_type?: string;
     value?: string;
   }[];
+  // 编译器或生成器来源
   compiler?: string;
 }
 
 export interface ConnectOptions {
+  // 连接方式：浏览器扩展/二维码/打开移动端
   connectType?: 'extension' | 'qrCode' | 'openMobile';
 }
 
+/**
+ * Web3 Provider 通用接口
+ * - 抽象跨链、跨钱包的统一能力
+ * - 用于 UI 层与业务逻辑的解耦
+ */
 export interface UniversalWeb3ProviderInterface {
-  // current connected account
+  // 当前已连接账户
   account?: Account;
-  // current connected chain
+  // 当前已连接链
   chain?: Chain;
-  // current account balance
+  // 当前账户余额
   balance?: Balance;
 
+  // 可用钱包与可用链（用于选择面板）
   availableWallets?: Wallet[];
   availableChains?: Chain[];
 
+  // 是否从父级继承上下文
   extendsContextFromParent?: boolean;
 
-  /** Such as `0x` */
+  /** 例如 `0x` 前缀 */
   addressPrefix?: string | false;
 
   // biome-ignore lint/suspicious/noConfusingVoidType: by design
@@ -127,10 +183,10 @@ export interface UniversalWeb3ProviderInterface {
   disconnect?: () => Promise<void>;
   switchChain?: (chain: Chain) => Promise<void>;
 
-  // For Bitcoin, tokenId is undefined.
+  // 对于比特币链，tokenId 不适用（为 undefined）
   getNFTMetadata?: (params: { address: string; tokenId?: bigint }) => Promise<NFTMetadata>;
 
-  // For Sign
+  // 应用层签名配置
   sign?: SignConfig;
 }
 
@@ -138,8 +194,10 @@ export interface Wallet extends WalletMetadata {
   _standardWallet?: any;
   _isMobileWallet?: boolean;
 
+  // 是否就绪/是否安装扩展
   hasWalletReady?: () => Promise<boolean>;
   hasExtensionInstalled?: () => Promise<boolean>;
+  // 获取二维码（如 WalletConnect）
   getQrCode?: () => Promise<{ uri: string }>;
   customQrCodePanel?: boolean;
 }
@@ -150,64 +208,52 @@ export interface Wallet extends WalletMetadata {
 export type WalletExtensionItem = {
   /**
    * @desc 支持的浏览器的 key
-   * @descEn The key of the supported browser
    */
   key: 'Chrome' | 'Firefox' | 'Edge' | 'Safari' | (string & {});
   /**
    * @desc 浏览器扩展程序的链接
-   * @descEn Link to browser extension
    */
   link: string;
   /**
    * @desc 浏览器扩展程序的图标
-   * @descEn Icon of browser extension
    */
   browserIcon: React.ReactNode | string;
   /**
    * @desc 浏览器扩展程序的名称
-   * @descEn Name of browser extension
    */
   browserName: string;
   /**
    * @desc 浏览器扩展程序的描述
-   * @descEn Description of browser extension
    */
   description: string;
 };
 
 /**
  * @desc 钱包
- * @descEn Wallet
  */
 export type WalletMetadata = {
   /**
    * @desc 钱包名称
-   * @descEn Wallet name
    */
   name: string;
   /**
    * @desc 钱包简介
-   * @descEn Wallet introduction
    */
   remark: string;
   /**
    * @desc 钱包的 key
-   * @descEn The key of Wallet
    */
   key?: React.Key;
   /**
    * @desc 钱包图标
-   * @descEn Wallet icon
    */
   icon?: string | React.ReactNode;
   /**
    * @desc 该钱包支持的浏览器扩展程序列表
-   * @descEn The list of browser extensions supported by the wallet
    */
   extensions?: false | WalletExtensionItem[];
   /**
    * @desc 该钱包是否支持 APP 调用
-   * @descEn Whether the wallet supports APP calls
    */
   app?:
     | false
@@ -216,34 +262,28 @@ export type WalletMetadata = {
       };
   /**
    * @desc 钱包所属分组名称
-   * @descEn The name of the group to which the wallet belongs
    */
   group?: string;
   /**
    * @desc 是否是通用协议
-   * @descEn Whether it is a universal protocol
    */
   universalProtocol?: {
     link: string;
   };
   /**
    * @desc 支持的链虚拟机类型
-   * @descEn Supported chain virtual machine types
    */
   supportChainTypes?: ChainType[];
   /**
    * @desc 快捷扫码的参数是否支持
-   * @descEn Whether the parameters of fast scan code are supported
    */
   transferQRCodeFormatter?: (params: Record<string, any>) => string;
   /**
    * @desc 钱包支持的 Universal Link 配置
-   * @descEn Wallet Universal Link configuration
    */
   deeplink?: {
     /**
      * @desc Universal Link 的 URL 模板，用于构建钱包的通用链接
-     * @descEn URL template for Universal Link, used to build universal links for the wallet
      * @example "https://phantom.com/ul/browse/${url}?ref=${ref}"
      */
     urlTemplate: string;
@@ -251,11 +291,14 @@ export type WalletMetadata = {
 };
 
 export type Balance = BalanceMetadata & {
+  // 余额（bigint 表示）
   value?: bigint;
+  // 是否覆盖地址显示（如仅显示余额）
   coverAddress?: boolean;
 };
 
 export interface ConnectorTriggerProps {
+  // 触发组件所需的上下文属性
   account?: Account;
   loading?: boolean;
   onConnectClick?: (wallet?: Wallet) => void;
@@ -268,6 +311,7 @@ export interface ConnectorTriggerProps {
 }
 
 export interface RequiredLocale {
+  // 国际化必填项（各组件所需文案）
   ConnectButton: {
     connect: string;
     disconnect: string;
@@ -335,6 +379,7 @@ export interface RequiredLocale {
 }
 
 export interface Locale {
+  // 允许按需提供部分文案（Partial）
   ConnectButton?: Partial<RequiredLocale['ConnectButton']>;
   ConnectModal?: Partial<RequiredLocale['ConnectModal']>;
   NFTCard?: Partial<RequiredLocale['NFTCard']>;
@@ -345,14 +390,19 @@ export interface Locale {
 }
 
 export interface UniversalEIP6963Config {
+  // 是否自动添加注入的钱包（EIP-6963）
   autoAddInjectedWallets?: boolean;
 }
 
 export type Token = {
+  // 名称与符号
   name: string;
   symbol: string;
+  // 图标节点
   icon: React.ReactNode;
+  // 小数位
   decimal: number;
+  // 不同链的合约地址
   availableChains: {
     chain: Chain;
     contract?: string;
@@ -360,13 +410,13 @@ export type Token = {
 };
 
 export interface SignConfig {
-  // required
+  // 必填方法
   signIn: (address: string) => Promise<void>;
   signOut?: () => Promise<void>;
 
-  // signOutOnDisconnect?: boolean; // defaults true
-  // signOutOnAccountChange?: boolean; // defaults true
-  // signOutOnNetworkChange?: boolean; // defaults true
+  // signOutOnDisconnect?: boolean; // 断开连接时自动登出（默认 true）
+  // signOutOnAccountChange?: boolean; // 账户变更时自动登出（默认 true）
+  // signOutOnNetworkChange?: boolean; // 网络变更时自动登出（默认 true）
 }
 
 export type ConnectingStatus = 'signing' | 'connecting';

@@ -7,7 +7,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 let locationSpy: ReturnType<typeof vi.spyOn> = undefined as any;
 const createMessage = vi.fn(() => 'message');
@@ -54,7 +54,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
@@ -67,7 +67,7 @@ describe('Wagmi siwe sign', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -112,7 +112,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         siwe={{
           getNonce,
           createMessage,
@@ -130,7 +130,7 @@ describe('Wagmi siwe sign', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -168,7 +168,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         siwe={{
           getNonce,
@@ -186,7 +186,7 @@ describe('Wagmi siwe sign', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -216,7 +216,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
@@ -224,7 +224,7 @@ describe('Wagmi siwe sign', () => {
         <Connector>
           <ConnectButton />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -252,7 +252,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
@@ -265,7 +265,7 @@ describe('Wagmi siwe sign', () => {
         <Connector>
           <ConnectButton signBtnTextRender={renderText} />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 
@@ -292,7 +292,7 @@ describe('Wagmi siwe sign', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
@@ -313,7 +313,7 @@ describe('Wagmi siwe sign', () => {
             }}
           />
         </Connector>
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
 

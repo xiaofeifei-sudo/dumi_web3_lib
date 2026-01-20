@@ -1,3 +1,9 @@
+/**
+ * Web3ConfigProvider
+ * - 负责在多层 Provider 场景下合并与传递配置
+ * - 支持 ignoreConfig 跳过本层配置合并（用于多链切换避免闪屏）
+ * - 支持 extendsContextFromParent 控制是否继承父级上下文
+ */
 import React, { useMemo } from 'react';
 import { merge } from 'lodash-es';
 
@@ -12,7 +18,7 @@ const ProviderChildren: React.FC<
 > = (props) => {
   const { children, parentContext, ignoreConfig, ...rest } = props;
 
-  // Calculate mergeLocale before conditional return to satisfy React Hooks rules
+  // 按照 React Hooks 规则，提前计算 mergeLocale（避免条件分支下的 Hook 调用）
   const mergeLocale = useMemo(() => {
     if (parentContext?.locale && rest.locale) {
       return merge(parentContext.locale, rest.locale);
@@ -20,7 +26,7 @@ const ProviderChildren: React.FC<
     return undefined;
   }, [parentContext?.locale, rest.locale]);
 
-  // If ignoreConfig is true, don't merge this provider's config, just pass through parent context
+  // 当 ignoreConfig 为 true：跳过合并，仅透传父级上下文
   if (ignoreConfig) {
     const passThroughConfig = parentContext ? { ...parentContext } : {};
     return (
@@ -30,10 +36,10 @@ const ProviderChildren: React.FC<
     );
   }
 
-  // Normal merge logic when ignoreConfig is false or undefined
+  // 正常合并逻辑（ignoreConfig 为 false 或未设置）
   const config = { ...parentContext };
 
-  // Filter out ignoreConfig and extendsContextFromParent from rest to avoid merging them
+  // 从待合并属性中排除 ignoreConfig 与 extendsContextFromParent
   const skipKeys = ['ignoreConfig', 'extendsContextFromParent'];
   Object.keys(rest).forEach((key) => {
     // biome-ignore lint/suspicious/noExplicitAny: skip keys need to check string

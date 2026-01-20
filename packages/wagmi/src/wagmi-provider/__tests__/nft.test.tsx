@@ -7,7 +7,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { wagmiBaseMock } from '../__mocks__/wagmiBaseMock';
 import { MetaMask } from '../../wallets';
-import { AntDesignWeb3ConfigProvider } from '../config-provider';
+import { PelicanWeb3ConfigProvider } from '../config-provider';
 
 vi.mock('wagmi/actions', () => ({
   readContract: async () => {
@@ -58,13 +58,13 @@ describe('WagmiWeb3ConfigProvider getMetadata', () => {
     });
 
     const App = () => (
-      <AntDesignWeb3ConfigProvider
+      <PelicanWeb3ConfigProvider
         walletFactories={[MetaMask()]}
         chainAssets={[Mainnet]}
         wagimConfig={config}
       >
         <NFTCard tokenId={213} address="0x1234" />
-      </AntDesignWeb3ConfigProvider>
+      </PelicanWeb3ConfigProvider>
     );
     const { baseElement } = render(<App />);
     await waitFor(() => {
