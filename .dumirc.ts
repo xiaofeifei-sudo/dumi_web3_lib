@@ -110,9 +110,16 @@ export default defineConfig({
     logo: false,
     name: 'Web3 Examples',
     rtl: false,
+    lastUpdated: false,
     nav: {
-      'en-US': [{ title: 'Components', link: '/components/overview' }],
-      'zh-CN': [{ title: '组件', link: '/components/overview-cn' }],
+      'en-US': [
+        { title: 'Components', link: '/components/overview' },
+        { title: 'Theme', link: '/theme' },
+      ],
+      'zh-CN': [
+        { title: '组件', link: '/components/overview-cn' },
+        { title: '主题', link: '/theme-cn' },
+      ],
     },
     localesEnhance: [
       { id: 'en-US', switchPrefix: '中' },
