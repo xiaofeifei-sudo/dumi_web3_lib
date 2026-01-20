@@ -70,9 +70,9 @@ export interface WagmiWeb3ConfigProviderProps {
   transports?: Record<number, Transport>;
   siwe?: SIWEConfig;
   /**
-   * If true, this provider's configuration will be ignored when merging with parent context.
-   * This is useful when you have multiple chain providers and want to switch between them
-   * without causing page flickering. Only the active provider should not have this flag set.
+   * 如果为 true，在与父级 context 合并时会忽略该 Provider 的配置。
+   * 适用于存在多个链 Provider 并在它们之间切换的场景，可避免页面闪烁。
+   * 只有当前激活的 Provider 不应设置该标记。
    */
   ignoreConfig?: boolean;
 }

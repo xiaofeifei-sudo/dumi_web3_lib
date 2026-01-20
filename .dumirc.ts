@@ -62,7 +62,7 @@ export default defineConfig({
         useStream: false,
       }
     : false,
-  mfsu: true,
+  mfsu: false,
   alias,
   metas: [
     {
