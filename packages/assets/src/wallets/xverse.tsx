@@ -1,3 +1,4 @@
+// 说明：Xverse 钱包的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, XverseColorful } from 'pelican-web3-lib-icons';
 

@@ -1,3 +1,4 @@
+// 说明：Phantom 钱包的展示元数据与 DeepLink 模板
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, PhantomColorful } from 'pelican-web3-lib-icons';
 

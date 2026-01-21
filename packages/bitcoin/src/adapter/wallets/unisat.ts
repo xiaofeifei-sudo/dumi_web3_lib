@@ -1,4 +1,6 @@
 /* v8 ignore start */
+// 说明：Unisat 钱包适配器实现
+// 能力：连接、余额查询、消息签名、转账、PSBT 签名、获取铭文
 import type { Account, Balance } from 'pelican-web3-lib-common';
 
 import { NoAddressError, NoProviderError } from '../../error';
@@ -22,6 +24,7 @@ export class UnisatBitcoinWallet implements BitcoinWallet {
       throw new NoProviderError();
     }
     try {
+      // 请求账户地址并缓存为当前账户
       const accounts = await this.provider.requestAccounts();
       this.account = { address: accounts[0] };
     } catch (e) {
@@ -34,6 +37,7 @@ export class UnisatBitcoinWallet implements BitcoinWallet {
     if (!this.provider) {
       throw new NoProviderError();
     }
+    // 仅使用 confirmed 数值构造余额对象
     const { confirmed } = await this.provider.getBalance();
     const balance = getBalanceObject(confirmed);
     return balance;
@@ -53,6 +57,7 @@ export class UnisatBitcoinWallet implements BitcoinWallet {
     }
     let txid = '';
     try {
+      // 进行比特币转账，返回交易 ID
       txid = await this.provider.sendBitcoin(to, sats, options);
     } catch (e) {
       // biome-ignore lint/complexity/noUselessCatch: re-throw error
@@ -96,6 +101,7 @@ export class UnisatBitcoinWallet implements BitcoinWallet {
     if (!this.provider) {
       throw new NoProviderError();
     }
+    // 获取当前账户的铭文列表
     const inscriptions = await this.provider.getInscriptions(offset, size);
     return inscriptions;
   };

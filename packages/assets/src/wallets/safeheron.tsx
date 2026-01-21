@@ -1,3 +1,4 @@
+// 说明：Safeheron 钱包的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, SafeheronColorful } from 'pelican-web3-lib-icons';
 

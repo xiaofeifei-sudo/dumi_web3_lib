@@ -1,3 +1,4 @@
+// 说明：Solana 生态的链信息与区块浏览器配置
 import { createGetBrowserLink, SolanaChainIds, type Chain } from 'pelican-web3-lib-common';
 import { SolanaColorful } from 'pelican-web3-lib-icons';
 
@@ -5,6 +6,7 @@ export interface SolanaChain extends Chain {
   id: SolanaChainIds;
 }
 
+// Solana 主网
 export const Solana: SolanaChain = {
   id: SolanaChainIds.MainnetBeta,
   name: 'Solana',
@@ -16,6 +18,7 @@ export const Solana: SolanaChain = {
   nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
 };
 
+// Solana Devnet
 export const SolanaDevnet: SolanaChain = {
   id: SolanaChainIds.Devnet,
   name: 'Solana Devnet',
@@ -28,6 +31,7 @@ export const SolanaDevnet: SolanaChain = {
   nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
 };
 
+// Solana Testnet
 export const SolanaTestnet: SolanaChain = {
   id: SolanaChainIds.Testnet,
   name: 'Solana Testnet',

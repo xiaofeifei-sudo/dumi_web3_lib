@@ -1,4 +1,6 @@
 /* v8 ignore start */
+// 说明：Phantom 钱包的比特币适配器实现
+// 能力：连接、余额查询（payment 地址）、消息签名、PSBT 签名、获取铭文
 import type { Account } from 'pelican-web3-lib-common';
 import { fromHex, fromUtf8, toBase64, toHex } from 'uint8array-tools';
 
@@ -41,6 +43,7 @@ export class PhantomBitcoinWallet implements BitcoinWallet {
     }
 
     try {
+      // 请求账户列表，区分 ordinals 与 payment 两类地址
       const accounts: AccountType[] = await this.provider.requestAccounts();
       const ordinals = accounts.find((acc) => acc.purpose === 'ordinals');
       const payment = accounts.find((acc) => acc.purpose === 'payment');
@@ -58,6 +61,7 @@ export class PhantomBitcoinWallet implements BitcoinWallet {
       throw new NoAddressError();
     }
 
+    // 使用 payment 地址查询余额
     const balance = await getBalanceByMempool(this.payment);
     return balance;
   };
@@ -71,6 +75,7 @@ export class PhantomBitcoinWallet implements BitcoinWallet {
       throw new NoAddressError();
     }
 
+    // Phantom 的签名返回二进制，需转为 Base64 展示
     const { signature } = await this.provider.signMessage(this.account.address, fromUtf8(message));
 
     return toBase64(signature);
@@ -85,6 +90,7 @@ export class PhantomBitcoinWallet implements BitcoinWallet {
       throw new NoAddressError();
     }
 
+    // PSBT 需序列化为二进制后交由 Phantom 签名
     const serializedPsbt = fromHex(psbt);
 
     const {
@@ -122,6 +128,7 @@ export class PhantomBitcoinWallet implements BitcoinWallet {
       throw new NoAddressError();
     }
 
+    // 通过 Hiro API 查询铭文列表
     const inscriptions = await getInscriptionsByAddress({
       address: this.account.address,
       offset,

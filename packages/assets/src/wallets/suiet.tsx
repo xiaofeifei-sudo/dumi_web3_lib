@@ -1,3 +1,4 @@
+// 说明：Suiet 钱包的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, SuietColorful } from 'pelican-web3-lib-icons';
 

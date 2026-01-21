@@ -1,3 +1,4 @@
+// 说明：补充浏览器环境下的全局对象声明，便于类型安全地访问钱包提供者
 declare interface Window {
   unisat?: Unisat.Provider;
   // TODO: 与其他 okx 冲突
@@ -6,6 +7,7 @@ declare interface Window {
 }
 
 declare namespace Unisat {
+  // 说明：Unisat 钱包的 Provider 能力声明
   interface Provider {
     requestAccounts: () => Promise<string[]>;
     getBalance: () => Promise<{ confirmed: number; unconfirmed: number; total: number }>;
@@ -34,6 +36,7 @@ declare namespace Unisat {
     ) => Promise<string>;
   }
 
+  // 说明：Ordinals 铭文对象结构定义
   interface Inscription {
     address: string;
     content: string;

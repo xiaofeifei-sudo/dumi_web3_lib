@@ -33,6 +33,10 @@ export enum ChainIds {
   Polygon = 137,
   // BNB Smart Chain
   BSC = 56,
+
+  // BNB Smart Chain Testnet
+  BSCTestNet = 97,
+
   // Arbitrum One
   Arbitrum = 42_161,
   // Optimism
@@ -79,6 +83,18 @@ export enum SuiChainIds {
   Localnet = 4,
 }
 
+
+/**
+ * 波场链IDS
+ */
+export enum TronChainIds {
+  Mainnet = '0x2b6653dc',
+  Shasta = '0x94a9059e',
+  Nile = '0xcd8690dc'
+}
+
+
+
 export type BrowserLinkType = 'address' | 'transaction';
 
 export type BalanceMetadata = {
@@ -114,7 +130,7 @@ export enum ChainType {
 
 export interface Chain {
   // 链 ID（预置枚举或自定义数值）
-  id: ChainIds | number;
+  id: ChainIds | number | TronChainIds;
   // 链名称
   name: string;
   // 虚拟机类型

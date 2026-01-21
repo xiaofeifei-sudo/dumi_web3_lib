@@ -1,3 +1,4 @@
+// 说明：常见钱包的元数据导出（图标、应用链接、浏览器扩展等）
 export * from './meta-mask';
 export * from './wallet-connect';
 export * from './coinbase-wallet';

@@ -1,3 +1,4 @@
+// 说明：Unisat Wallet 的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, UnisatColorful } from 'pelican-web3-lib-icons';
 

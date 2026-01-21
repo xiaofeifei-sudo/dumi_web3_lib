@@ -1,3 +1,4 @@
+// 说明：TokenPocket 钱包的展示元数据
 import { ChainType, type WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, TokenPocketColorful } from 'pelican-web3-lib-icons';
 

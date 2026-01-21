@@ -7,7 +7,7 @@ import {
   type WalletProviderProps,
 } from '@solana/wallet-adapter-react';
 import type { UniversalProviderOpts } from '@walletconnect/universal-provider';
-import { Solana, SolanaDevnet, SolanaTestnet } from 'pelican-web3-lib-assets/solana';
+import { Solana, SolanaDevnet, SolanaTestnet } from 'pelican-web3-lib-assets';
 import type { Locale } from 'pelican-web3-lib-common';
 
 import { solana, type SolanaChainConfig } from '../chains';

@@ -1,4 +1,6 @@
 /* v8 ignore start */
+// 说明：Xverse 钱包适配器实现（基于 sats-connect）
+// 能力：连接、余额查询（payment 地址）、消息签名、转账、PSBT 签名、获取铭文
 import type { Account, Balance } from 'pelican-web3-lib-common';
 import { AddressPurpose, getProviderById, request } from 'sats-connect';
 
@@ -22,6 +24,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
     if (!this.provider) {
       throw new NoProviderError();
     }
+    // 请求 Ordinals 与 Payment 两种地址
     const response = await request('getAccounts', {
       purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
     });
@@ -37,6 +40,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
     if (!this.payment) {
       throw new NoAddressError();
     }
+    // 使用 payment 地址通过 mempool 查询余额
     const balance = await getBalanceByMempool(this.payment);
     return balance;
   };
@@ -48,6 +52,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
     if (!this.account?.address) {
       throw new NoAddressError();
     }
+    // 通过 sats-connect 进行消息签名
     const response = await request('signMessage', {
       address: this.account.address,
       message: msg,
@@ -61,6 +66,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
 
   sendTransfer = async ({ to, sats }: TransferParams): Promise<string> => {
     let txid = '';
+    // 由 sats-connect 发起转账，Xverse 处理交易构造与广播
     const response = await request('sendTransfer', {
       recipients: [
         {
@@ -82,6 +88,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
       throw new NoProviderError();
     }
     // API: https://docs.xverse.app/sats-connect/bitcoin-methods/signpsbt
+    // 通过 sats-connect 对 PSBT 进行签名，可选择广播
     const response = await request('signPsbt', {
       psbt,
       signInputs: options?.signInputs ?? {},
@@ -98,6 +105,7 @@ export class XverseBitcoinWallet implements BitcoinWallet {
     if (!this.account?.address) {
       throw new NoAddressError();
     }
+    // 通过 Hiro API 获取当前账户的铭文列表
     const inscriptions = await getInscriptionsByAddress({
       address: this.account?.address,
       offset,

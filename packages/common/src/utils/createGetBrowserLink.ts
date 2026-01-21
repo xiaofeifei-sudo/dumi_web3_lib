@@ -15,3 +15,17 @@ export const createGetBrowserLink = (url: string) => (address: string, type: str
   }
   throw new Error(`getBrowserLink unsupported type ${type}`);
 };
+
+
+/**
+ * 获取Tron区块链浏览器链接地址
+ * @param url
+ */
+export const createGetTronBrowserLink = (url: string) => (address: string, type: string) => {
+  if (type === 'address') {
+    return `${url}/address/${address}`;
+  } else if (type === 'transaction') {
+    return `${url}/transaction/${address}`;
+  }
+  throw new Error(`getBrowserLink unsupported type ${type}`);
+};

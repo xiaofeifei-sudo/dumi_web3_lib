@@ -1,4 +1,5 @@
 /* v8 ignore start */
+// 说明：统一的错误类型定义，便于上层捕获与展示用户友好的文案
 export class NoProviderError extends Error {
   name: string;
 

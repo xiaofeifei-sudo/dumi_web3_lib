@@ -1,3 +1,8 @@
+/**
+ * Sui 链配置定义
+ * - 提供 mainnet / testnet / devnet / localnet 的基本信息
+ * - 包含浏览器链接、图标与原生代币精度
+ */
 import React from 'react';
 import { SUI_DECIMALS } from '@mysten/sui/utils';
 import type { Chain } from 'pelican-web3-lib-common';

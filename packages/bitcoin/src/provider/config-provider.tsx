@@ -1,3 +1,5 @@
+// 说明：BitcoinConfigProvider 作为通用 Web3ConfigProvider 的适配层
+// - 负责余额拉取与 NFT 元数据（铭文图片）解析
 import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
 import { Web3ConfigProvider, type Balance, type Wallet } from 'pelican-web3-lib-common';
 
@@ -23,6 +25,7 @@ export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderPr
 
   useEffect(() => {
     if (!showBalance) return;
+    // 拉取当前账户余额（若适配器支持）
     getBalance?.().then((b) => setBalance(b));
   }, [showBalance, getBalance]);
 
@@ -34,12 +37,14 @@ export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderPr
       balance={balance}
       account={account}
       connect={async (wallet) => {
+        // 由外层传入的选择钱包逻辑
         selectWallet(wallet);
       }}
       disconnect={async () => {
         selectWallet(null);
       }}
       getNFTMetadata={async ({ address }) => {
+        // 将 Ordinals 铭文地址解析为可展示的图片链接
         const image = await getInscriptionContentById(address);
         return {
           image,

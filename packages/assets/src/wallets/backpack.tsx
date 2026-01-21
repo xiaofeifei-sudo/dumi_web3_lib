@@ -1,3 +1,4 @@
+// 说明：Backpack 钱包的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { BackpackColorful, ChromeCircleColorful } from 'pelican-web3-lib-icons';
 

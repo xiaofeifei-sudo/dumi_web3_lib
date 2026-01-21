@@ -1,3 +1,4 @@
+// 说明：OKX Wallet 的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, OkxWalletColorful } from 'pelican-web3-lib-icons';
 

@@ -1,4 +1,6 @@
 /* v8 ignore start */
+// 说明：OKX 钱包的比特币适配器实现
+// 能力：连接、余额查询、消息签名、转账、PSBT 签名、获取铭文
 import type { Account, Balance } from 'pelican-web3-lib-common';
 
 import { NoAddressError, NoProviderError } from '../../error';
@@ -23,6 +25,7 @@ export class OkxBitcoinWallet implements BitcoinWallet {
     }
 
     try {
+      // 请求当前账户地址
       const accounts = await this.provider.requestAccounts();
       this.account = { address: accounts[0] };
     } catch (error) {
@@ -36,6 +39,7 @@ export class OkxBitcoinWallet implements BitcoinWallet {
       throw new NoProviderError();
     }
 
+    // 仅使用 confirmed 数值构造余额对象
     const { confirmed } = await this.provider.getBalance();
     return getBalanceObject(confirmed);
   };
@@ -55,6 +59,7 @@ export class OkxBitcoinWallet implements BitcoinWallet {
 
     let txid = '';
     try {
+      // 发起转账交易
       txid = await this.provider.sendBitcoin(to, sats, options);
     } catch (error) {
       // biome-ignore lint/complexity/noUselessCatch: re-throw error
@@ -74,6 +79,7 @@ export class OkxBitcoinWallet implements BitcoinWallet {
     const { broadcast = false, signInputs = {}, signHash } = options;
     const toSignInputs = [];
 
+    // 将 signInputs 转为 OKX 兼容的 toSignInputs 结构
     for (const address in signInputs) {
       for (const input of signInputs[address]) {
         toSignInputs.push({
@@ -100,6 +106,7 @@ export class OkxBitcoinWallet implements BitcoinWallet {
     if (!this.provider) {
       throw new NoProviderError();
     }
+    // 获取当前账户铭文
     const inscriptions = await this.provider.getInscriptions(offset, size);
     return inscriptions;
   };

@@ -1,3 +1,4 @@
+// 说明：MetaMask 钱包的展示元数据与二维码格式化规则
 import { ChainType, type WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, MetaMaskColorful } from 'pelican-web3-lib-icons';
 
@@ -19,6 +20,7 @@ export const metadata_MetaMask: WalletMetadata = {
   ],
   group: 'Popular',
   transferQRCodeFormatter: (params) => {
+    // EIP-681 兼容的二维码格式，支持普通转账或 Token 转账
     const { toAddress, chainId, amount, tokenAddress = '', decimal } = params;
     if (tokenAddress) {
       return `ethereum:${tokenAddress}@${chainId}/transfer?address=${toAddress}&uint256=${

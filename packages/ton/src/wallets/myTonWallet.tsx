@@ -2,6 +2,10 @@ import { ChromeCircleColorful, MytonWalletCircleColorful } from 'pelican-web3-li
 
 import type { TonWalletMetadata } from './type';
 
+/**
+ * MyTonWallet 钱包元数据
+ * - 功能丰富的浏览器扩展，包含多账户、NFT、TON DNS 等
+ */
 export const myTonWallet: TonWalletMetadata = {
   key: 'mytonwallet',
   icon: <MytonWalletCircleColorful />,

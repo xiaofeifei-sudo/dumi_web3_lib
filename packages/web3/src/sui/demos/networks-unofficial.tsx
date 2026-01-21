@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNetworkConfig } from '@mysten/dapp-kit';
 import { Suiet, SuiWeb3ConfigProvider } from 'pelican-web3-lib-sui';
+import Connector from '../../components/Connector';
+import { ConnectButton } from '../../components/connect-button';
 
 const { networkConfig } = createNetworkConfig({
   testnet: { url: `https://api.zan.top/node/v1/sui/testnet/${YOUR_ZAN_API_KEY}` },
@@ -9,11 +11,11 @@ const { networkConfig } = createNetworkConfig({
 
 const App: React.FC = () => {
   return (
-    <SuiWeb3ConfigProvider
-      wallets={[Suiet()]}
-      balance
-      networkConfig={networkConfig}
-    ></SuiWeb3ConfigProvider>
+    <SuiWeb3ConfigProvider wallets={[Suiet()]} balance networkConfig={networkConfig}>
+      <Connector>
+        <ConnectButton />
+      </Connector>
+    </SuiWeb3ConfigProvider>
   );
 };
 

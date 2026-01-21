@@ -2,6 +2,10 @@ import { ChromeCircleColorful, OpenmaskCircleColorful } from 'pelican-web3-lib-i
 
 import type { TonWalletMetadata } from './type';
 
+/**
+ * OpenMask 钱包元数据
+ * - 包含浏览器扩展信息与展示图标
+ */
 export const openmask: TonWalletMetadata = {
   key: 'openmask',
   icon: <OpenmaskCircleColorful />,
