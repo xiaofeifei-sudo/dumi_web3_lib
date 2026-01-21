@@ -10,8 +10,8 @@ import { getFullnodeUrl } from '@mysten/sui/client';
 import { QueryClient, QueryClientContext, QueryClientProvider } from '@tanstack/react-query';
 import type { Locale } from 'pelican-web3-lib-common';
 
-import type { SuiChain } from '../../../assets/src/chains/sui';
-import { suiDevnet, suiLocalnet, suiMainnet, suiTestnet } from '../../../assets/src/chains/sui';
+import type { SuiChain } from 'pelican-web3-lib-assets';
+import { suiDevnet, suiLocalnet, suiMainnet, suiTestnet } from 'pelican-web3-lib-assets';
 import type { WalletFactory } from '../wallets/types';
 import { PelicanWeb3ConfigProvider } from './config-provider';
 

@@ -1,12 +1,12 @@
-import { Token } from "pelican-web3-lib-common";
-import {Mainnet, Sepolia} from "../chains/ethereum";
-import { DAICircleColorful } from "pelican-web3-lib-icons";
+import type {Token} from "pelican-web3-lib-common";
+import {Mainnet, Sepolia} from "../chains";
+import {DAICircleColorful} from "pelican-web3-lib-icons";
 
 export const DAI: Token = {
   name: 'DAI',
   symbol: 'DAI',
   decimal: 6,
-  icon: <DAICircleColorful />,
+  icon: <DAICircleColorful/>,
   availableChains: [
     {
       chain: Mainnet,

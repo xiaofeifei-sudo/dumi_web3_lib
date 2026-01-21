@@ -1,14 +1,14 @@
 // 说明：ETH 代币元数据（EVM 主网原生资产）
-import type { Token } from 'pelican-web3-lib-common';
-import { EthereumColorful } from 'pelican-web3-lib-icons';
+import type {Token} from 'pelican-web3-lib-common';
+import {EthereumColorful} from 'pelican-web3-lib-icons';
 
-import { BSC, Mainnet } from '../chains/ethereum';
+import {BSC, Mainnet} from '../chains';
 
 export const ETH: Token = {
   name: 'Ethereum',
   symbol: 'ETH',
   decimal: 18,
-  icon: <EthereumColorful />,
+  icon: <EthereumColorful/>,
   availableChains: [
     {
       // 以太坊主网（无需合约地址）

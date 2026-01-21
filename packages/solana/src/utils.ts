@@ -1,4 +1,4 @@
-import { WalletReadyState } from '@solana/wallet-adapter-base';
+import {WalletReadyState} from '@solana/wallet-adapter-base';
 
 import type {
   AdapterWalletFactory as AdapterWalletFactoryType,
@@ -14,7 +14,7 @@ export const hasWalletReady = (readyState?: WalletReadyState) =>
 export const isWalletConnectFactory = (
   factory: WalletFactoryType,
 ): factory is WalletConnectWalletFactoryType =>
-  !!(factory as WalletConnectWalletFactoryType).isWalletConnect;
+  (factory as WalletConnectWalletFactoryType).isWalletConnect;
 
 /** 是否为 Adapter 钱包工厂（基于 @solana/wallet-adapter-* 的适配器） */
 export const isAdapterWalletFactory = (

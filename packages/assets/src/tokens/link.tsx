@@ -1,12 +1,12 @@
-import { LinkColorful } from "pelican-web3-lib-icons";
-import {BSC, BSCTestNet, Mainnet, Sepolia} from "../chains/ethereum";
-import { Token } from "pelican-web3-lib-common";
+import {LinkColorful} from "pelican-web3-lib-icons";
+import {BSC, BSCTestNet, Mainnet, Sepolia} from "../chains";
+import type {Token} from "pelican-web3-lib-common";
 
 export const LINK: Token = {
   name: 'LINK',
   symbol: 'LINK',
   decimal: 6,
-  icon: <LinkColorful />,
+  icon: <LinkColorful/>,
   availableChains: [
     // evm
     {

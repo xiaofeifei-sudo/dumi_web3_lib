@@ -1,15 +1,26 @@
 // 说明：USDC 代币元数据（含多链合约地址）
-import type { Token } from 'pelican-web3-lib-common';
-import { UsdcColorful } from 'pelican-web3-lib-icons';
+import type {Token} from 'pelican-web3-lib-common';
+import {UsdcColorful} from 'pelican-web3-lib-icons';
 
-import { Arbitrum, Avalanche, Mainnet, Optimism, Polygon, Sepolia } from '../chains/ethereum';
-import { Solana, SolanaDevnet, suiMainnet, suiTestnet, TronMainnet } from '../chains';
+import {
+  Arbitrum,
+  Avalanche,
+  Mainnet,
+  Optimism,
+  Polygon,
+  Sepolia,
+  Solana,
+  SolanaDevnet,
+  suiMainnet,
+  suiTestnet,
+  TronMainnet
+} from '../chains';
 
 export const USDC: Token = {
   name: 'USDC',
   symbol: 'USDC',
   decimal: 6,
-  icon: <UsdcColorful />,
+  icon: <UsdcColorful/>,
 
   // Data Source:
   //   https://developers.circle.com/stablecoins/docs/usdc-on-main-networks
@@ -51,7 +62,7 @@ export const USDC: Token = {
     },
 
 
-     // sui
+    // sui
     {
       chain: suiMainnet,
       contract: '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC'
@@ -60,7 +71,7 @@ export const USDC: Token = {
       chain: suiTestnet,
       contract: '0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC'
     },
-    
+
     // tron
     {
       chain: TronMainnet,

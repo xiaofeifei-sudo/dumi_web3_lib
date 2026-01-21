@@ -1,13 +1,12 @@
 // 说明：BitcoinWeb3ConfigProvider 负责钱包适配器的创建、选择与自动连接
 // - 在 children 外层注入 BitcoinAdapterContext 和通用 Web3ConfigProvider
-import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
-import type { Locale, Wallet } from 'pelican-web3-lib-common';
+import {type FC, type PropsWithChildren, useEffect, useState} from 'react';
+import type {Locale, Wallet} from 'pelican-web3-lib-common';
 
-import { type BitcoinWallet } from '../adapter';
-import { BitcoinAdapterContext, useBitcoinWallet } from '../adapter/useBitcoinWallet';
-import type { WalletFactory, WalletWithAdapter } from '../wallets/types';
-import { useLatestWallet } from '../wallets/useLatestWallet';
-import { BitcoinConfigProvider } from './config-provider';
+import {BitcoinAdapterContext, type BitcoinWallet, useBitcoinWallet} from '../adapter';
+import type {WalletFactory, WalletWithAdapter} from '../wallets/types';
+import {useLatestWallet} from '../wallets/useLatestWallet';
+import {BitcoinConfigProvider} from './config-provider';
 
 export interface BitcoinWeb3ConfigProviderProps {
   // 可用钱包工厂列表，工厂生成具体适配器
@@ -21,19 +20,19 @@ export interface BitcoinWeb3ConfigProviderProps {
 }
 
 export const BitcoinWeb3ConfigProvider: FC<PropsWithChildren<BitcoinWeb3ConfigProviderProps>> = ({
-  children,
-  wallets: initWallets = [],
-  balance = false,
-  locale,
-  autoConnect,
-}) => {
+                                                                                                   children,
+                                                                                                   wallets: initWallets = [],
+                                                                                                   balance = false,
+                                                                                                   locale,
+                                                                                                   autoConnect,
+                                                                                                 }) => {
   // 当前选择的适配器（钱包）
   const [adapter, setAdapter] = useState<BitcoinWallet>({} as BitcoinWallet);
   // 所有可用的钱包（包含元数据与适配器）
   const [wallets, setWallets] = useState<WalletWithAdapter[]>([]);
-  const { name: adapterName } = useBitcoinWallet();
+  const {name: adapterName} = useBitcoinWallet();
 
-  const { latestWalletNameRef, cacheSelectedWallet } = useLatestWallet();
+  const {latestWalletNameRef, cacheSelectedWallet} = useLatestWallet();
 
   useEffect(() => {
     if (initWallets.length === 0) return;

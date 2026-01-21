@@ -5,7 +5,7 @@
  * - 支持链切换、余额展示、SNS 解析、NFT 元数据读取等能力
  * - ignoreConfig 用于多链并存时只让激活的 Provider 参与配置合并
  */
-import React, { useCallback, useMemo } from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   useConnectWallet,
   useCurrentAccount,
@@ -15,13 +15,13 @@ import {
   useSuiClientQuery,
   useWallets,
 } from '@mysten/dapp-kit';
-import { SUI } from 'pelican-web3-lib-assets/tokens';
-import type { Account, Locale, UniversalWeb3ProviderInterface } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider, type Wallet } from 'pelican-web3-lib-common';
-import { SuiColorful } from 'pelican-web3-lib-icons';
+import {SUI} from 'pelican-web3-lib-assets/tokens';
+import type {Account, Locale, UniversalWeb3ProviderInterface} from 'pelican-web3-lib-common';
+import {type Wallet, Web3ConfigProvider} from 'pelican-web3-lib-common';
+import {SuiColorful} from 'pelican-web3-lib-icons';
 
-import type { SuiChain } from '../../../assets/src/chains/sui';
-import type { WalletFactory } from '../wallets/types';
+import type {SuiChain} from 'pelican-web3-lib-assets';
+import type {WalletFactory} from '../wallets/types';
 
 type GetNFTMetadata = NonNullable<UniversalWeb3ProviderInterface['getNFTMetadata']>;
 
@@ -52,24 +52,24 @@ export interface PelicanWeb3ConfigProviderProps {
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({
-  balance: showBalance,
-  locale,
-  availableChains,
-  availableWallets,
-  currentChain,
-  sns,
-  onCurrentChainChange,
-  ignoreConfig,
-  children,
-}) => {
+       balance: showBalance,
+       locale,
+       availableChains,
+       availableWallets,
+       currentChain,
+       sns,
+       onCurrentChainChange,
+       ignoreConfig,
+       children,
+     }) => {
   const account = useCurrentAccount();
   const standardWallets = useWallets();
-  const { mutateAsync: connectAsync } = useConnectWallet();
-  const { mutateAsync: disconnectAsync } = useDisconnectWallet();
-  const { data: snsData } = useResolveSuiNSName(sns ? account?.address : undefined);
+  const {mutateAsync: connectAsync} = useConnectWallet();
+  const {mutateAsync: disconnectAsync} = useDisconnectWallet();
+  const {data: snsData} = useResolveSuiNSName(sns ? account?.address : undefined);
   const client = useSuiClient();
 
-  const { data: balanceData } = useSuiClientQuery(
+  const {data: balanceData} = useSuiClientQuery(
     'getBalance',
     {
       owner: account?.address ?? '',
@@ -84,9 +84,9 @@ export const PelicanWeb3ConfigProvider: React.FC<
   /** 把 dapp-kit 的账户信息适配成通用 Account 数据结构 */
   const accountData: Account | undefined = account
     ? {
-        address: account.address,
-        name: sns && snsData ? snsData : undefined,
-      }
+      address: account.address,
+      name: sns && snsData ? snsData : undefined,
+    }
     : undefined;
 
   /**
@@ -126,8 +126,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
    * - 根据 moveObject 的 fields 提取自定义属性
    */
   const getNFTMetadataFunc = useCallback<GetNFTMetadata>(
-    async ({ address }) => {
-      const { data: nftData } = await client.getObject({
+    async ({address}) => {
+      const {data: nftData} = await client.getObject({
         id: address,
         options: {
           showContent: true,
@@ -160,11 +160,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
       balance={
         showBalance
           ? {
-              symbol: SUI.symbol,
-              decimals: SUI.decimal,
-              value: balanceData,
-              icon: <SuiColorful />,
-            }
+            symbol: SUI.symbol,
+            decimals: SUI.decimal,
+            value: balanceData,
+            icon: <SuiColorful/>,
+          }
           : undefined
       }
       connect={async (wallet) => {
@@ -174,7 +174,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
           throw new Error(`Can not find wallet ${wallet?.name}`);
         }
 
-        const { accounts } = await connectAsync({ wallet: foundWallet });
+        const {accounts} = await connectAsync({wallet: foundWallet});
         const defaultAccount = accounts[0];
         const addresses = accounts.map((item) => item.address) as unknown as Account['addresses'];
 

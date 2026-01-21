@@ -1,13 +1,12 @@
-import { Token } from "pelican-web3-lib-common";
-import {BSC, Mainnet} from "../chains/ethereum";
-import {TronMainnet} from "../chains/tron";
-import { TusdCircleColorful } from "pelican-web3-lib-icons";
+import type {Token} from "pelican-web3-lib-common";
+import {BSC, Mainnet, TronMainnet} from "../chains";
+import {TusdCircleColorful} from "pelican-web3-lib-icons";
 
 export const TUSD: Token = {
   name: 'TUSD',
   symbol: 'TUSD',
   decimal: 6,
-  icon: <TusdCircleColorful />,
+  icon: <TusdCircleColorful/>,
   availableChains: [
     // evm
     {

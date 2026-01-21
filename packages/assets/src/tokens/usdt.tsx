@@ -1,15 +1,14 @@
 // 说明：USDT 代币元数据（含多链合约地址）
-import type { Token } from 'pelican-web3-lib-common';
-import { USDTColorful } from 'pelican-web3-lib-icons';
+import type {Token} from 'pelican-web3-lib-common';
+import {USDTColorful} from 'pelican-web3-lib-icons';
 
-import { Arbitrum, BSC, BSCTestNet, Mainnet, Optimism, Polygon, Sepolia } from '../chains/ethereum';
-import { TronMainnet, TronNileNet } from '../chains';
+import {Arbitrum, BSC, BSCTestNet, Mainnet, Optimism, Polygon, Sepolia, TronMainnet, TronNileNet} from '../chains';
 
 export const USDT: Token = {
   name: 'Tether USD',
   symbol: 'USDT',
   decimal: 6,
-  icon: <USDTColorful />,
+  icon: <USDTColorful/>,
   availableChains: [
     {
       chain: TronMainnet,

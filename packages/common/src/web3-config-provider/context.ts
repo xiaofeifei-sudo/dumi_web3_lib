@@ -5,7 +5,7 @@
  */
 import React from 'react';
 
-import type { Locale, RequiredLocale, UniversalWeb3ProviderInterface } from '../types';
+import type {Locale, UniversalWeb3ProviderInterface} from '../types';
 
 export interface Web3ConfigProviderProps extends UniversalWeb3ProviderInterface {
   children?: React.ReactNode;
