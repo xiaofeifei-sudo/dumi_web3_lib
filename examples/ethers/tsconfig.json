@@ -7,7 +7,7 @@
       "pelican-web3-lib-assets": ["../../packages/assets/src"],
       "pelican-web3-lib-assets/*": ["../../packages/assets/src/*"],
       "pelican-web3-lib-icons": ["../../packages/icons/src"],
-      "pelican-web3-lib-wagmi": ["../../packages/wagmi/src"],
+      "pelican-web3-lib-evm": ["../../packages/evm/src"],
       "pelican-web3-lib-ethers": ["../../packages/ethers/src"],
       "pelican-web3-lib-ethers/*": ["../../packages/ethers/src/*"]
     }

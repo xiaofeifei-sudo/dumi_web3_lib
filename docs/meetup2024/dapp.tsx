@@ -5,7 +5,7 @@ import {
   TokenPocket,
   WagmiWeb3ConfigProvider,
   WalletConnect,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
 
 import SBT from './sbt';
 

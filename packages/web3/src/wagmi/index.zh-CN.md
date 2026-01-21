@@ -9,18 +9,18 @@ group:
 
 # Wagmi
 
- `pelican-web3-lib-wagmi`（wagmi + viem）来适配以太坊与各类 EVM L2，它通过 Web3ConfigProvider 为 `pelican-web3-lib` 的组件提供连接、钱包管理、ENS、余额与 SIWE 等能力。
+ `pelican-web3-lib-evm`（wagmi + viem）来适配以太坊与各类 EVM L2，它通过 Web3ConfigProvider 为 `pelican-web3-lib` 的组件提供连接、钱包管理、ENS、余额与 SIWE 等能力。
 
 ## 为什么选用 Wagmi
 - 与 wagmi/viem 生态对齐，获得更完备的钱包与链支持。
-- 将 UI 与链交互解耦：UI 由 `pelican-web3-lib` 提供，链连接由 `pelican-web3-lib-wagmi` 提供。
+- 将 UI 与链交互解耦：UI 由 `pelican-web3-lib` 提供，链连接由 `pelican-web3-lib-evm` 提供。
 - 内置 EIP6963、WalletConnect、ENS、余额与 SIWE 的最佳实践，减少样板代码。
 
 ## 安装
 - 仅安装需要的包，常见安装如下：
 
 ```bash
-pnpm add pelican-web3-lib pelican-web3-lib-wagmi wagmi viem @tanstack/react-query antd
+pnpm add pelican-web3-lib pelican-web3-lib-evm wagmi viem @tanstack/react-query antd
 ```
 
 - 先决条件：
@@ -43,7 +43,7 @@ pnpm add pelican-web3-lib pelican-web3-lib-wagmi wagmi viem @tanstack/react-quer
 
 ## Provider 参数说明
 - config：传入自定义 wagmi `createConfig` 可完全接管，且会覆盖默认配置。
-- chains：由 `pelican-web3-lib-wagmi` 暴露的链预设（如 Mainnet、Polygon），用于控制可用网络与切链能力。
+- chains：由 `pelican-web3-lib-evm` 暴露的链预设（如 Mainnet、Polygon），用于控制可用网络与切链能力。
 - transports：为每个 `chain.id` 提供 `http()` 或自定义 transport 以启用 RPC。
 - eip6963：设置 `autoAddInjectedWallets: true` 自动发现注入式钱包。
 - wallets：仅引入必要的钱包工厂以减少包体积。

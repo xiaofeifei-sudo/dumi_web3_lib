@@ -26,7 +26,7 @@ export default defineConfig({
           'pelican-web3-lib-assets/tokens': resolve('./packages/assets/dist/esm/tokens/index'),
           'pelican-web3-lib-assets/wallets': resolve('./packages/assets/dist/esm/wallets/index'),
           'pelican-web3-lib-assets': resolve('./packages/assets/dist/esm/index'),
-          'pelican-web3-lib-wagmi': resolve('./packages/wagmi/dist/esm/index'),
+          'pelican-web3-lib-evm': resolve('./packages/evm/dist/esm/index'),
           'pelican-web3-lib-ethers-v5': resolve('./packages/ethers-v5/dist/esm/index'),
           'pelican-web3-lib-ethers': resolve('./packages/ethers/dist/esm/index'),
           'pelican-web3-lib-ethers/provider': resolve(
@@ -47,7 +47,7 @@ export default defineConfig({
           'pelican-web3-lib-assets/tokens': resolve('./packages/assets/src/tokens/index'),
           'pelican-web3-lib-assets/wallets': resolve('./packages/assets/src/wallets/index'),
           'pelican-web3-lib-assets': resolve('./packages/assets/src/index'),
-          'pelican-web3-lib-wagmi': resolve('./packages/wagmi/src/index'),
+          'pelican-web3-lib-evm': resolve('./packages/evm/src/index'),
           'pelican-web3-lib-ethers-v5': resolve('./packages/ethers-v5/src/index'),
           'pelican-web3-lib-ethers': resolve('./packages/ethers/src/index'),
           'pelican-web3-lib-ethers/provider': resolve(

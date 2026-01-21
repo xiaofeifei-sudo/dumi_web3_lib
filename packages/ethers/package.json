@@ -33,21 +33,6 @@
     "CHANGELOG.md",
     "README.md"
   ],
-  "keywords": [
-    "ant",
-    "design",
-    "web3",
-    "antd",
-    "component",
-    "components",
-    "framework",
-    "frontend",
-    "react",
-    "react-component",
-    "ui",
-    "ethers",
-    "ethersjs"
-  ],
   "scripts": {
     "dev": "father dev",
     "build": "father build"
@@ -55,7 +40,7 @@
   "dependencies": {
     "pelican-web3-lib-assets": "workspace:*",
     "pelican-web3-lib-common": "workspace:*",
-    "pelican-web3-lib-wagmi": "workspace:*",
+    "pelican-web3-lib-evm": "workspace:*",
     "@tanstack/react-query": "^5.51.11",
     "debug": "^4.4.0",
     "viem": "^2.33.2",

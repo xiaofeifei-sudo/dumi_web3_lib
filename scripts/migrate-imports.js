@@ -31,7 +31,7 @@ function migrate() {
     ['@ant-design/web3-ethers-v5/wagmi', 'pelican-web3-lib-ethers-v5/wagmi'],
     ['@ant-design/web3-ethers-v5', 'pelican-web3-lib-ethers-v5'],
     ['@ant-design/web3-ethers', 'pelican-web3-lib-ethers'],
-    ['@ant-design/web3-wagmi', 'pelican-web3-lib-wagmi'],
+    ['@ant-design/web3-wagmi', 'pelican-web3-lib-evm'],
     ['@ant-design/web3-eth-web3js', 'pelican-web3-lib-eth-web3js'],
     ['@ant-design/web3-solana', 'pelican-web3-lib-solana'],
     ['@ant-design/web3-sui', 'pelican-web3-lib-sui'],

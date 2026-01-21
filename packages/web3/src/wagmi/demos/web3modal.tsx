@@ -1,4 +1,4 @@
-import { WagmiWeb3ConfigProvider, MetaMask, WalletConnect } from "pelican-web3-lib-wagmi";
+import { WagmiWeb3ConfigProvider, MetaMask, WalletConnect } from "pelican-web3-lib-evm";
 import Connector from "../../components/Connector";
 import { ConnectButton } from "../../components/connect-button";
 

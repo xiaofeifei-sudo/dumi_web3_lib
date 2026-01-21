@@ -1,5 +1,5 @@
 import React from 'react';
-import { WagmiWeb3ConfigProvider, Mainnet, Optimism, Polygon, Arbitrum, Base, BSC, Hardhat, Localhost, MetaMask, WalletConnect, X1Testnet } from 'pelican-web3-lib-wagmi';
+import { WagmiWeb3ConfigProvider, Mainnet, Optimism, Polygon, Arbitrum, Base, BSC, Hardhat, Localhost, MetaMask, WalletConnect, X1Testnet } from 'pelican-web3-lib-evm';
 import { http } from 'viem';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';

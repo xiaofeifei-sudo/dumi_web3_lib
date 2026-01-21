@@ -48,19 +48,6 @@
     "CHANGELOG.md",
     "README.md"
   ],
-  "keywords": [
-    "ant",
-    "design",
-    "web3",
-    "antd",
-    "component",
-    "components",
-    "framework",
-    "frontend",
-    "react",
-    "react-component",
-    "ui"
-  ],
   "scripts": {
     "dev": "father dev",
     "build": "father build"

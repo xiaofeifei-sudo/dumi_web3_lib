@@ -8,7 +8,7 @@ import {
   MobileWallet,
   WalletConnect,
   ImToken,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
 import { ConnectButton } from '../../components/connect-button';
 import Connector from '../../components/Connector';
 

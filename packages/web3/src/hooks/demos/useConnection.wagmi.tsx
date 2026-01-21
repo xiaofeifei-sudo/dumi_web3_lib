@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Space } from 'antd';
 import { useAccount, useConnection, useProvider } from 'pelican-web3-lib';
-import { WagmiWeb3ConfigProvider, MetaMask } from 'pelican-web3-lib-wagmi';
+import { WagmiWeb3ConfigProvider, MetaMask } from 'pelican-web3-lib-evm';
 
 const Demo: React.FC = () => {
   const { account } = useAccount();

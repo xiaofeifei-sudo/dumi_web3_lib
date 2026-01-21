@@ -1,5 +1,5 @@
 import React from 'react';
-import { WagmiWeb3ConfigProvider, UniversalWallet, TokenPocket, MetaMask } from 'pelican-web3-lib-wagmi';
+import { WagmiWeb3ConfigProvider, UniversalWallet, TokenPocket, MetaMask } from 'pelican-web3-lib-evm';
 import { injected } from 'wagmi/connectors';
 import { EthereumCircleColorful } from 'pelican-web3-lib-icons';
 import Connector from '../../components/Connector';

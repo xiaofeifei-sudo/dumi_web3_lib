@@ -7,7 +7,7 @@ import {
   OkxWallet,
   WalletConnect,
   Mainnet,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
 import { QueryClient } from '@tanstack/react-query';
 import { http } from 'wagmi';
 import Connector from '../../components/Connector';

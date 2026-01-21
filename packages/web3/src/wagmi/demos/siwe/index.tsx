@@ -6,7 +6,7 @@ import { useConnection } from 'pelican-web3-lib';
 
 import { getNonce, verifyMessage } from './mock-api';
 import { Account } from 'pelican-web3-lib-common';
-import { MetaMask, OkxWallet, Sepolia, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect } from 'pelican-web3-lib-wagmi';
+import { MetaMask, OkxWallet, Sepolia, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect } from 'pelican-web3-lib-evm';
 
 import Connector from '../../../components/Connector';
 import { ConnectButton } from '../../../components/connect-button';

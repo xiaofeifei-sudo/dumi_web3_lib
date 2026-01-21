@@ -5,7 +5,7 @@ import {
   Mainnet,
   MetaMask,
   WalletConnect,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
 import { createConfig, http } from 'wagmi';
 import { injected, walletConnect as wagmiWalletConnect } from 'wagmi/connectors';
 import { mainnet } from 'wagmi/chains';

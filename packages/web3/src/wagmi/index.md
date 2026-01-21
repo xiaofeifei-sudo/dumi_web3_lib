@@ -8,18 +8,18 @@ group:
 
 # Wagmi
 
-`pelican-web3-lib-wagmi` (wagmi + viem). It offers connection, wallet management, ENS, balance, and SIWE capabilities to `pelican-web3-lib` components through Web3ConfigProvider.
+`pelican-web3-lib-evm` (wagmi + viem). It offers connection, wallet management, ENS, balance, and SIWE capabilities to `pelican-web3-lib` components through Web3ConfigProvider.
 
 ## Why Wagmi integration
 - Aligns with wagmi/viem ecosystem for robust wallet and chain support.
-- Keeps UI and blockchain logic separate: UI via `pelican-web3-lib`, providers via `pelican-web3-lib-wagmi`.
+- Keeps UI and blockchain logic separate: UI via `pelican-web3-lib`, providers via `pelican-web3-lib-evm`.
 - Built‑in patterns for EIP6963, WalletConnect, ENS, balance, and SIWE to reduce boilerplate.
 
 ## Installation
 - Install only the packages you need. Typical setup:
 
 ```bash
-pnpm add pelican-web3-lib pelican-web3-lib-wagmi wagmi viem @tanstack/react-query antd
+pnpm add pelican-web3-lib pelican-web3-lib-evm wagmi viem @tanstack/react-query antd
 ```
 
 - Prerequisites:
@@ -43,7 +43,7 @@ Code reference: [recommend.tsx](file:///Users/abc/WebstormProjects/dumi_web3_lib
 
 ## Provider props reference
 - config: Use your own wagmi `createConfig` to take full control; when provided, defaults are overridden.
-- chains: Pelican chain presets exposed by `pelican-web3-lib-wagmi` (e.g., Mainnet, Polygon). Determines available networks and chain switching.
+- chains: Pelican chain presets exposed by `pelican-web3-lib-evm` (e.g., Mainnet, Polygon). Determines available networks and chain switching.
 - transports: Map `chain.id` to `http()` or custom transports to enable RPC access.
 - eip6963: Set `autoAddInjectedWallets: true` to discover injected wallets automatically.
 - wallets: Import only the wallet factories you need to keep bundle size small.
@@ -78,7 +78,7 @@ Code reference: [eip6963.tsx](file:///Users/abc/WebstormProjects/dumi_web3_lib/p
 
 ## Add more wallets
 
-To reduce bundle size, configure `wallets` to import only what you need from `pelican-web3-lib-wagmi`.
+To reduce bundle size, configure `wallets` to import only what you need from `pelican-web3-lib-evm`.
 
 <code src="./demos/more-wallets.tsx">Normal Mode</code>
 

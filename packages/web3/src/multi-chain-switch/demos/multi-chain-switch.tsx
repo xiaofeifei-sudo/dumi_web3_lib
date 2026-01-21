@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { Space, Button } from "antd";
 import { SolanaWeb3ConfigProvider, PhantomWallet } from "pelican-web3-lib-solana";
 import { SuiWeb3ConfigProvider, Suiet } from "pelican-web3-lib-sui";
-import { WagmiWeb3ConfigProvider, MetaMask, WalletConnect, Mainnet } from "pelican-web3-lib-wagmi";
+import { WagmiWeb3ConfigProvider, MetaMask, WalletConnect, Mainnet } from "pelican-web3-lib-evm";
 import { useState } from "react";
 import { http } from "viem";
 import Connector from "../../components/Connector";

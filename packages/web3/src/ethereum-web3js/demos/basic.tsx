@@ -1,7 +1,7 @@
 import { EthWeb3jsConfigProvider, useWeb3js } from 'pelican-web3-lib-eth-web3js';
 import React from 'react';
 import Connector from '../../components/Connector';
-import { Mainnet } from 'pelican-web3-lib-wagmi';
+import { Mainnet } from 'pelican-web3-lib-evm';
 import { ConnectButton } from '../../components/connect-button';
 
 

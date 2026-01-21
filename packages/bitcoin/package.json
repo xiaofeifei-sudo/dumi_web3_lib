@@ -15,20 +15,6 @@
     "CHANGELOG.md",
     "README.md"
   ],
-  "keywords": [
-    "ant",
-    "design",
-    "web3",
-    "antd",
-    "component",
-    "components",
-    "framework",
-    "frontend",
-    "react",
-    "react-component",
-    "ui",
-    "bitcoin"
-  ],
   "scripts": {
     "dev": "father dev",
     "build": "father build"

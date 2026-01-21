@@ -100,7 +100,7 @@ importers:
       pelican-web3-lib-tron:
         specifier: workspace:*
         version: link:packages/tron
-      pelican-web3-lib-wagmi:
+      pelican-web3-lib-evm:
         specifier: workspace:*
         version: link:packages/evm
       react:
@@ -413,7 +413,7 @@ importers:
       pelican-web3-lib-common:
         specifier: workspace:*
         version: link:../common
-      pelican-web3-lib-wagmi:
+      pelican-web3-lib-evm:
         specifier: workspace:*
         version: link:../evm
       viem:
@@ -450,7 +450,7 @@ importers:
       pelican-web3-lib-common:
         specifier: workspace:*
         version: link:../common
-      pelican-web3-lib-wagmi:
+      pelican-web3-lib-evm:
         specifier: workspace:*
         version: link:../evm
       viem:
@@ -490,7 +490,7 @@ importers:
       pelican-web3-lib-ethers:
         specifier: workspace:*
         version: link:../ethers
-      pelican-web3-lib-wagmi:
+      pelican-web3-lib-evm:
         specifier: workspace:*
         version: link:../evm
       viem:
@@ -816,7 +816,7 @@ importers:
       pelican-web3-lib-tron:
         specifier: workspace:*
         version: link:../tron
-      pelican-web3-lib-wagmi:
+      pelican-web3-lib-evm:
         specifier: workspace:*
         version: link:../evm
       typescript:

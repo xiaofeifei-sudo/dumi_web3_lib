@@ -7,4 +7,4 @@ export {
   UniversalWallet,
   OkxWallet,
   ImToken,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';

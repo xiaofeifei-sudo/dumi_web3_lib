@@ -8,7 +8,6 @@ group:
 
 # Bitcoin
 
-Ant Design Web3 officially provides `@ant-design/web3-bitcoin` to adapt to Bitcoin, which provides the ability for `@ant-design/web3` components to connect to Bitcoin. You don't need to handle the connection status of the components yourself. It will provide relevant global states and interfaces for the components through `Web3ConfigProvider`. At the same time, you don't need to customize the handling of wallets. `useBitcoinWallet` exposes common methods such as signing and transactions, which can be directly called. Of course, you can still call the unique APIs of different wallets through `provider`.
 
 The wallets currently supported are as follows, and we also welcome you to submit GitHub issues or PRs to support other wallets.
 

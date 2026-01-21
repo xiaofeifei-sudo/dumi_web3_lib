@@ -8,19 +8,6 @@
   ],
   "packageManager": "pnpm@9.14.4",
   "files": [],
-  "keywords": [
-    "ant",
-    "design",
-    "web3",
-    "antd",
-    "component",
-    "components",
-    "framework",
-    "frontend",
-    "react",
-    "react-component",
-    "ui"
-  ],
   "scripts": {
     "start": "dumi dev --max-old-space-size=4096",
     "dev": "dumi dev --max-old-space-size=4096",
@@ -122,7 +109,7 @@
     "pelican-web3-lib-sui": "workspace:*",
     "pelican-web3-lib-ton": "workspace:*",
     "pelican-web3-lib-tron": "workspace:*",
-    "pelican-web3-lib-wagmi": "workspace:*",
+    "pelican-web3-lib-evm": "workspace:*",
     "@mysten/dapp-kit": "^0.14.50",
     "@mysten/sui": "^1.37.1",
     "@solana/wallet-adapter-coinbase": "^0.1.22",

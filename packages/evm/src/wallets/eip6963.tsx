@@ -5,7 +5,7 @@ import type { EthereumWallet } from '../interface';
 
 export const EIP6963_CONNECTOR = 'EIP6963';
 
-// EIP6963Wallet 不从 pelican-web3-lib-wagmi 导出，仅在内部使用
+// EIP6963Wallet 不从 pelican-web3-lib-evm 导出，仅在内部使用
 /**
  * EIP6963 注入式钱包工厂
  * - 根据注入的 Connector 生成钱包元数据

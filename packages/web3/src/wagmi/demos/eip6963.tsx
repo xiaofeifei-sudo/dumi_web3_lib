@@ -1,5 +1,5 @@
 import React from 'react';
-import { WagmiWeb3ConfigProvider, Mainnet } from 'pelican-web3-lib-wagmi';
+import { WagmiWeb3ConfigProvider, Mainnet } from 'pelican-web3-lib-evm';
 import { Space } from 'antd';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';

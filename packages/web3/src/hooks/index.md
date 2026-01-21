@@ -33,7 +33,7 @@ Sui (Adapter: pelican-web3-lib-sui)
 Bitcoin (Adapter: pelican-web3-lib-bitcoin)
 <code src="./demos/useConnection.bitcoin.tsx"></code>
 
-Ethereum (Adapter: pelican-web3-lib-wagmi)
+Ethereum (Adapter: pelican-web3-lib-evm)
 <code src="./demos/useConnection.wagmi.tsx"></code>
 
 TRON (Adapter: pelican-web3-lib-tron)
@@ -41,7 +41,7 @@ TRON (Adapter: pelican-web3-lib-tron)
 
 ### Adapter Setup
 
-- Ethereum (EVM, wagmi): Use WagmiWeb3ConfigProvider from pelican-web3-lib-wagmi; for WalletConnect, set walletConnect.projectId on the Provider.
+- Ethereum (EVM, wagmi): Use WagmiWeb3ConfigProvider from pelican-web3-lib-evm; for WalletConnect, set walletConnect.projectId on the Provider.
 - Ethereum (EVM, ethers): Use EthersWeb3ConfigProvider from pelican-web3-lib-ethers.
 - Ethereum (EVM, web3.js): Use EthWeb3jsConfigProvider from pelican-web3-lib-eth-web3js.
 - Solana: Use SolanaWeb3ConfigProvider from pelican-web3-lib-solana.

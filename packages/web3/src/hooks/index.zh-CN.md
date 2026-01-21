@@ -34,7 +34,7 @@ Sui（适配器：pelican-web3-lib-sui）
 Bitcoin（适配器：pelican-web3-lib-bitcoin）
 <code src="./demos/useConnection.bitcoin.tsx"></code>
 
-以太坊（适配器：pelican-web3-lib-wagmi）
+以太坊（适配器：pelican-web3-lib-evm）
 <code src="./demos/useConnection.wagmi.tsx"></code>
 
 TRON（适配器：pelican-web3-lib-tron）
@@ -43,7 +43,7 @@ TRON（适配器：pelican-web3-lib-tron）
 
 ### 适配器选择
 
-- 以太坊（EVM，wagmi）：使用 pelican-web3-lib-wagmi 的 WagmiWeb3ConfigProvider；如需 WalletConnect，请在 Provider 上配置 walletConnect.projectId。
+- 以太坊（EVM，wagmi）：使用 pelican-web3-lib-evm 的 WagmiWeb3ConfigProvider；如需 WalletConnect，请在 Provider 上配置 walletConnect.projectId。
 - 以太坊（EVM，ethers）：使用 pelican-web3-lib-ethers 的 EthersWeb3ConfigProvider。
 - 以太坊（EVM，web3.js）：使用 pelican-web3-lib-eth-web3js 的 EthWeb3jsConfigProvider。
 - Solana：使用 pelican-web3-lib-solana 的 SolanaWeb3ConfigProvider。

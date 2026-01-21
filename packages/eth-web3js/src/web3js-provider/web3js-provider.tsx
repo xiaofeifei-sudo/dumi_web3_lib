@@ -4,7 +4,7 @@ import {
   WagmiWeb3ConfigProvider,
   WalletConnect,
   type WagmiWeb3ConfigProviderProps,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
 import type { Chain } from 'viem';
 import { createConfig, http, type CreateConnectorFn, type Storage } from 'wagmi';
 import * as wagmiChains from 'wagmi/chains';

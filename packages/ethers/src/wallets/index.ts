@@ -1,4 +1,4 @@
-/** 透出常用钱包适配器（来源：pelican-web3-lib-wagmi） */
+/** 透出常用钱包适配器（来源：pelican-web3-lib-evm） */
 export {
   MetaMask,
   CoinbaseWallet,
@@ -7,4 +7,4 @@ export {
   UniversalWallet,
   OkxWallet,
   ImToken,
-} from 'pelican-web3-lib-wagmi';
+} from 'pelican-web3-lib-evm';
