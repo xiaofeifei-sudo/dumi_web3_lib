@@ -130,7 +130,7 @@ export enum ChainType {
 
 export interface Chain {
   // 链 ID（预置枚举或自定义数值）
-  id: ChainIds | number | TronChainIds;
+  id: ChainIds | number | TronChainIds | any;
   // 链名称
   name: string;
   // 虚拟机类型
