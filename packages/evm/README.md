@@ -1,1 +1,232 @@
 # pelican-web3-lib-evm
+
+EVM（以太坊及兼容链）接入库。提供 Provider 组件、钱包工厂、链映射与通用资产，兼容 wagmi 与 viem。文档遵循 Lark 风格，覆盖每个用法与模型，避免依赖源码阅读即可完成对接。
+
+## 安装
+- 依赖（peer）：wagmi、viem、@tanstack/react-query
+- 建议使用 pnpm 或 npm 安装
+
+```bash
+pnpm add pelican-web3-lib-evm wagmi viem @tanstack/react-query
+```
+
+## 导出结构
+- Provider：WagmiWeb3ConfigProvider（含 WalletConnect、EIP-6963、SIWE 等配置）
+- 钱包工厂：MetaMask、OKXWallet、TokenPocket、RainbowWallet、ImToken、CoinbaseWallet、MobileWallet、WalletConnect、Safeheron、UniversalWallet
+- 类型接口：WalletFactory、WalletUseInWagmiAdapter、EIP6963Config、ChainAssetWithWagmiChain、SIWEConfig、CreateWalletOptions
+- 链映射：Mainnet、Polygon、Arbitrum、Optimism、Avalanche、Base、Scroll、ScrollSepolia、Hardhat、Localhost、X1Testnet 等
+- 资产导出：tokens（主流代币元数据）、wallets（钱包元数据）
+
+## 快速开始
+- 将 Provider 包裹在应用根节点或路由级节点
+- 配置链（chains）、钱包（wallets）、WalletConnect（含 projectId）、EIP-6963、SIWE（可选）
+- 开启 ENS、余额查询（可选）
+
+```tsx
+import React from 'react';
+import { WagmiWeb3ConfigProvider } from 'pelican-web3-lib-evm';
+import { Mainnet, Polygon } from 'pelican-web3-lib-evm';
+import { MetaMask, WalletConnect } from 'pelican-web3-lib-evm';
+
+export default function App() {
+  return (
+    <WagmiWeb3ConfigProvider
+      chains={[Mainnet, Polygon]}
+      wallets={[
+        MetaMask(),
+        WalletConnect({ useWalletConnectOfficialModal: true }),
+      ]}
+      walletConnect={{
+        projectId: 'YOUR_WALLETCONNECT_PROJECT_ID',
+        metadata: {
+          name: 'Your DApp',
+          description: 'Connect with WalletConnect',
+          url: 'https://your.site',
+          icons: ['https://your.site/icon.png'],
+        },
+        useWalletConnectOfficialModal: true,
+      }}
+      eip6963={true}
+      ens
+      balance
+    >
+      {/* your app */}
+    </WagmiWeb3ConfigProvider>
+  );
+}
+```
+
+## Provider 用法
+- 自动生成或复用 wagmi Config：
+  - 未传入 config 时，根据 chains、wallets、walletConnect 自动生成
+  - 传入 config 时默认补充 Mainnet 资产映射
+- 支持多 Provider 合并与切换：
+  - ignoreConfig: true 时忽略该 Provider 的配置，适合多链 Provider 切换避免闪烁
+- QueryClient 自动合并：
+  - 未传入 queryClient 时内部创建
+- 余额与 ENS：
+  - balance: true 时查询余额（符号/数值/精度/图标）
+  - ens: true 时获取 ENS 名称与头像
+
+核心属性说明（简述）：
+- chains: 链资产与 wagmi 链映射集合
+- wallets: 钱包工厂集合，用于生成连接器与钱包
+- walletConnect: WalletConnect 配置或关闭（false）
+- eip6963: 注入式钱包自动发现与生成
+- siwe: Sign-In With Ethereum 登录配置
+- transports: 自定义 RPC Transport（按链 id 映射）
+- ignoreConfig: 多 Provider 场景下的合并控制
+
+## 链映射
+- 使用内置链资产映射，或自定义 ChainAssetWithWagmiChain
+- 仅需在 Provider 的 chains 中传入映射集合即可
+- 未在映射中出现的 wagmi 链会提示需配置
+
+示例：
+- Mainnet、Polygon、Arbitrum、Optimism、Avalanche、Base、Scroll、ScrollSepolia、Hardhat、Localhost、X1Testnet
+
+## 钱包接入
+- 工厂模式（WalletFactory）统一返回 WalletUseInWagmiAdapter
+- create 方法接收连接器列表与可选项，返回具备以下能力的钱包：
+  - getWagmiConnector(options): 根据连接方式与安装状态返回合适的连接器
+  - hasExtensionInstalled(): 检测是否安装浏览器扩展
+  - hasWalletReady(): 检测钱包是否就绪（扩展或 WalletConnect）
+  - getQrCode(): WalletConnect 获取二维码（监听 display_uri 事件）
+  - customQrCodePanel: 是否使用官方二维码弹窗
+
+常用钱包工厂：
+- MetaMask、OKXWallet、TokenPocket、RainbowWallet、ImToken：基于 Injected + WalletConnect（由 UniversalWallet 推断）
+- CoinbaseWallet：自带连接器工厂
+- MobileWallet：移动端能力封装（深链/跳转）
+- WalletConnect：显式 WalletConnect 工厂，可独立启用官方二维码弹窗
+- Safeheron：基于注入式连接器检测安装与就绪
+
+## EIP‑6963（注入式钱包自动发现）
+- eip6963 配置为 true 或对象时启用自动发现
+- 自动将页面注入的 injected 连接器转换为钱包并追加到列表
+- 适用于用户安装但未在 wallets 显式配置的钱包
+- 自动发现的钱包具备 hasExtensionInstalled 和 hasWalletReady 能力
+
+## SIWE（Sign‑In With Ethereum）
+- siwe 配置对象包含 getNonce(address)、createMessage(params)、verifyMessage(message, signature)
+- signIn 流程：
+  - 获取 nonce
+  - 生成消息（包含 domain、address、uri、nonce、version、chainId）
+  - 发起签名并验证
+  - 状态更新为 Signed
+- 若抛出错误，可在上层捕获并提示用户重试或更换链/钱包
+
+## WalletConnect 配置
+- 必须配置 projectId，否则无法连接
+- 可启用官方二维码弹窗（useWalletConnectOfficialModal）
+- 支持 metadata、relayUrl、storageOptions、qrModalOptions 等
+- 与钱包工厂同时生效：Provider 内生成 WalletConnect 连接器，工厂内提供二维码与弹窗控制
+
+## RPC Transports
+- 按链 id 映射 Transport（viem http）
+- 未传入时默认为 Mainnet 的 http()
+- 建议为业务相关链配置稳定的 RPC
+
+## 能力矩阵（钱包）
+
+| 钱包 | Injected 扩展检测 | WalletConnect | 二维码获取 | 官方二维码弹窗 | 移动端深链/跳转 |
+| --- | --- | --- | --- | --- | --- |
+| MetaMask | 是 | 是 | 是 | 受控 | 否 |
+| OKXWallet | 是 | 是 | 是 | 受控 | 否 |
+| TokenPocket | 是 | 是 | 是 | 受控 | 否 |
+| RainbowWallet | 是 | 是 | 是 | 受控 | 否 |
+| ImToken | 是 | 是 | 是 | 受控 | 否 |
+| CoinbaseWallet | 是 | 是 | 是 | 受控 | 否 |
+| Safeheron | 是 | 否 | 否 | 否 | 否 |
+| WalletConnect | 否 | 是 | 是 | 受控 | 否 |
+| MobileWallet | 否 | 是 | 是 | 受控 | 是 |
+
+说明：
+- “受控”表示可通过 useWalletConnectOfficialModal 或 Provider 的 walletConnect.useWalletConnectOfficialModal 控制
+- Injected 检测通过 connector.getProvider() 判断
+
+## API 模型（接口）
+
+WalletFactory
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| name | string | 工厂名称 |
+| connectors | string[] | 支持连接器名称列表 |
+| create | function(connector[],options) | 创建钱包适配对象 |
+| createWagmiConnector | function() | 创建 wagmi 连接器（可选） |
+
+WalletUseInWagmiAdapter
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| getWagmiConnector | function(options) | 返回合适的连接器（二维码/扩展） |
+| hasExtensionInstalled | function() | 是否安装扩展 |
+| hasWalletReady | function() | 钱包是否就绪 |
+| getQrCode | function() | WalletConnect 二维码获取（可选） |
+| customQrCodePanel | boolean | 是否启用官方二维码弹窗 |
+
+EIP6963Config
+
+| 类型 | 说明 |
+| --- | --- |
+| boolean | 启用/关闭自动发现 |
+| object | 通用 EIP‑6963 配置（UniversalEIP6963Config） |
+
+ChainAssetWithWagmiChain
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | number | 链 ID |
+| name | string | 链名称 |
+| icon | ReactNode | 链图标 |
+| wagmiChain | object | 对应 wagmi 链对象 |
+
+SIWEConfig
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| getNonce | function(address,chainId?) | 获取地址 nonce |
+| createMessage | function(params) | 生成签名消息 |
+| verifyMessage | function(message,signature) | 验证签名有效性 |
+
+CreateWalletOptions
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| useWalletConnectOfficialModal | boolean | 是否启用官方二维码弹窗 |
+
+WalletConnectOptions（Provider）
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| projectId | string | WalletConnect 项目 ID（必填） |
+| metadata | object | 应用元数据（名称/描述/URL/图标） |
+| disableProviderPing | boolean | 禁用 ping（可选） |
+| isNewChainsStale | boolean | 新链是否陈旧（可选） |
+| relayUrl | string | 中继 URL（可选） |
+| storageOptions | object | 存储配置（可选） |
+| qrModalOptions | object | 二维码弹窗配置（可选） |
+| useWalletConnectOfficialModal | boolean | 是否使用官方二维码弹窗 |
+
+## 常见问题（FAQ）
+- 无法连接 WalletConnect：请确保在 Provider 的 walletConnect 中配置了有效的 projectId<mccoremem id="01KFD2N4QMDC3GP5XKW3BNPHN9" />
+- 钱包未显示：若已安装扩展但未在 wallets 显式配置，可启用 eip6963 自动发现
+- 多链切换闪烁：在非激活 Provider 上设置 ignoreConfig: true，避免合并时闪烁
+- ENS/余额为空：检查是否在 Provider 上启用 ens 与 balance，并确认 RPC 可用
+- 移动端二维码：WalletConnect 工厂提供 getQrCode；如需官方弹窗设置 useWalletConnectOfficialModal
+
+## Lark 表格粘贴提示
+- 如直接粘贴 CSV 到 Lark 表格出现整段进入首格现象：
+  - 先将 CSV 内容粘贴到 Excel 或 WPS
+  - 使用“数据分列”或自动识别逗号分隔
+  - 选中分列后的整块单元格复制到 Lark 表格
+
+## 版本与发布
+- 私有 npm 仓库：支持发布到 Verdaccio（示例：192.168.1.50:4873）
+- 建议通过 CI/CD 管理版本与发布流程
+
+## 注意
+- Provider 与钱包工厂的配置需保持一致性（例如链集合、WalletConnect 项目 ID）
+- 避免在生产环境使用不稳定的 RPC
+- 文档未包含源码链接，所有用法均已在模型与示例中详细说明
