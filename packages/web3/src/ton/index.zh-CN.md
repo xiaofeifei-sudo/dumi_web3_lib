@@ -1,5 +1,6 @@
 ---
 nav: 组件
+subtitle: 开放网络
 order: 6
 group:
   title: 连接链

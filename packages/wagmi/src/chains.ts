@@ -93,7 +93,7 @@ export const Base: ChainAssetWithWagmiChain = {
 export const X1Testnet: ChainAssetWithWagmiChain = {
   ...X1TestnetAsset,
   wagmiChain: {
-    id: X1TestnetAsset.id,
+    id: X1TestnetAsset.id as number,
     name: X1TestnetAsset.name,
     nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
     rpcUrls: {
