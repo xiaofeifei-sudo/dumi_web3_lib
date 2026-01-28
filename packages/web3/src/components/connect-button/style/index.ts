@@ -1,3 +1,13 @@
+/**
+ * ConnectButton 样式系统
+ * - 基于 antd 主题 token 生成组件样式，支持 SSR 注入
+ *
+ * 结构说明
+ * - componentCls：组件根类名，派生出各子元素的样式（content、avatar、chain-select 等）
+ * - quick-connect：快速连接按钮的尺寸与图标适配
+ * - profile-modal：账户资料弹窗的布局与字号设定
+ * - tooltip：地址提示的标题与正文样式
+ */
 import { TinyColor } from '@ctrl/tinycolor';
 
 import {

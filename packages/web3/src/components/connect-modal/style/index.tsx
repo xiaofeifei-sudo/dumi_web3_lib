@@ -1,3 +1,18 @@
+/**
+ * ConnectModal 样式系统
+ * - 基于 antd 主题 token 生成弹窗样式，适配亮暗主题与 SSR 注入
+ *
+ * Token 说明
+ * - selectedWalletBg/Color：选中条目的背景与文本颜色
+ * - hoverWalletBg：悬停态背景，依据主题动态计算
+ * - panelSplitLineColor：列表与主面板的分隔线颜色
+ * - modalTitleStart/EndColor：标题渐变色
+ * - walletGroupTextColor / descriptionColor：分组标题与描述颜色
+ * - getWalletCardBg：安装卡片背景
+ * - walletIconSize：钱包图标尺寸
+ * - simpleGuideBg：简易模式提示背景
+ * - walletListWidth/Height / modalMinHeight：布局尺寸
+ */
 import type { CSSInterpolation } from '@ant-design/cssinjs';
 import { TinyColor } from '@ctrl/tinycolor';
 

@@ -1,3 +1,8 @@
+/**
+ * WalletIcon 钱包图标组件
+ * - 支持字符串 URL 与 React 节点两种图标形式
+ * - 统一使用 prefixCls 控制样式类名
+ */
 import React, { useContext } from 'react';
 
 import { connectModalContext } from '../context';

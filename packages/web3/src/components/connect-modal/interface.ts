@@ -1,3 +1,14 @@
+/**
+ * ConnectModal 类型定义说明
+ * - GuideInfoItem / DefaultGuide：新手指引面板的结构化数据
+ * - ConnectModalProps：弹窗核心配置（钱包列表、分组、模式、指引、连接状态等）
+ * - PanelRoute：面板内部的路由枚举
+ *
+ * 设计要点
+ * - 支持 group / groupOrder 两种分组排序配置（优先使用 group.groupOrder）
+ * - actionRef 暴露 selectWallet 方法以供外部触发
+ * - connecting 支持外部控制连接/签名状态文案与行为
+ */
 import type React from 'react';
 import type {
   ConnectingStatus,

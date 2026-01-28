@@ -1,3 +1,8 @@
+/**
+ * MainPanel 次级面板容器
+ * - 根据 panelRoute 渲染 WalletCard / LinkPanel / QrCode 等子面板
+ * - simple 模式控制二维码展示尺寸与布局
+ */
 import React, { useContext } from 'react';
 
 import { connectModalContext } from '../context';

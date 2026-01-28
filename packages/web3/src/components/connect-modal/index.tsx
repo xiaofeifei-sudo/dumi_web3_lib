@@ -1,3 +1,13 @@
+/**
+ * ConnectModal 组件入口
+ * - 提供钱包连接弹窗，支持「普通/简易/自动」三种模式
+ * - 集成钱包列表、二维码连接、浏览器插件/移动端唤起、安装指南等面板
+ *
+ * 关键点
+ * - mode: 'simple' | 'normal' | 'auto'（auto 根据断点切换简易模式）
+ * - ModalPanel: 主内容面板，包含路由与上下文管理
+ * - devUseWarning: 检测 groupOrder 旧用法并给出迁移提示
+ */
 import React from 'react';
 import { devUseWarning } from 'pelican-web3-lib-common';
 import { ConfigProvider, Modal } from 'antd';

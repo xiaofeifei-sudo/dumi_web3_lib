@@ -1,3 +1,18 @@
+/**
+ * ConnectModal 辅助工具方法
+ *
+ * mergeReactNodeProps
+ * - 合并字符串/节点型 props，支持对字符串进行包装
+ *
+ * defaultGroupOrder
+ * - 分组默认排序：Popular 优先、More 置后，其余按字母序
+ *
+ * isDarkTheme
+ * - 根据 token 的填充与背景计算明暗程度
+ *
+ * getPlatform
+ * - 从公共工具中复用平台判断（浏览器环境）
+ */
 import type React from 'react';
 import { TinyColor } from '@ctrl/tinycolor';
 import type { GlobalToken } from 'antd';

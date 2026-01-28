@@ -1,3 +1,14 @@
+/**
+ * ConnectButtonInner 组件
+ * - 负责按钮的具体形态渲染：普通按钮或带下拉的快速连接按钮
+ * - 根据已安装钱包动态生成快速连接列表，并注入到 Dropdown.Button
+ *
+ * 关键点
+ * - showQuickConnect 为 true 且识别到至少一个钱包时，展示「主按钮 + 更多钱包」下拉
+ * - firstInstallWallet：优先使用第一个可用的钱包作为主点击目标
+ * - availableWallets 支持 universalProtocol 的钱包追加到快速连接列表
+ * - preContent：在按钮左侧插入自定义内容（如链选择器）
+ */
 import React, { useContext, useEffect, useState } from 'react';
 import { MoreOutlined } from '@ant-design/icons';
 import type { Wallet } from 'pelican-web3-lib-common';
@@ -43,6 +54,10 @@ export const ConnectButtonInner: React.FC<ConnectButtonInnerProps> = (props) => 
     );
   };
 
+  // 生成快速连接下拉项：
+  // - 过滤出已安装扩展的钱包
+  // - 追加 universalProtocol 的通用协议钱包
+  // - 记录第一个钱包为主按钮点击目标，其余作为下拉项
   const generateQuickConnectItems = async (wallets: Wallet[] = []) => {
     if (!showQuickConnect) {
       setFirstInstallWallet(undefined);
@@ -97,6 +112,9 @@ export const ConnectButtonInner: React.FC<ConnectButtonInnerProps> = (props) => 
     generateQuickConnectItems(availableWallets);
   }, [availableWallets, showQuickConnect]);
 
+  // 根据快速连接模式选择渲染：
+  // - 有 firstInstallWallet 时使用 Dropdown.Button（主按钮连接 + 下拉更多）
+  // - 否则使用普通 Button
   const buttonContent =
     showQuickConnect && firstInstallWallet ? (
       <Dropdown.Button
@@ -126,6 +144,7 @@ export const ConnectButtonInner: React.FC<ConnectButtonInnerProps> = (props) => 
       </Button>
     );
 
+  // 支持在按钮前插入 preContent（如链选择器），并保持紧凑布局
   return preContent ? (
     <Space.Compact>
       {preContent}

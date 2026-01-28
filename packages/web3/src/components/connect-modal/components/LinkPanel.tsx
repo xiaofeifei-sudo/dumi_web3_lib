@@ -1,3 +1,8 @@
+/**
+ * LinkPanel 连接过程面板
+ * - 展示钱包图标与涟漪动画，提示当前连接/签名状态
+ * - 当外部不再提供 connecting 时，自动回到初始化列表
+ */
 import React, { useContext } from 'react';
 import { Avatar } from 'antd';
 

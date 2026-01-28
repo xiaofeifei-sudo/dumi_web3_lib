@@ -1,3 +1,19 @@
+/**
+ * ConnectButton 组件
+ * - 用于展示 Web3 钱包连接状态与快捷操作（复制地址、断开连接、切链等）
+ * - 支持可选的链选择器、用户资料弹窗、动作菜单以及登录签名流程
+ *
+ * 关键概念
+ * - account: 当前账户信息（地址、名称、头像、连接状态）
+ * - chain: 当前链信息（名称、图标）
+ * - balance: 资产价格展示（可与地址同时展示或覆盖地址）
+ * - sign: 登录签名配置，连接后可进行一次性签名
+ *
+ * 常用交互
+ * - 点击按钮：未连接时触发连接；已连接时打开资料弹窗或执行签名
+ * - 下拉菜单：复制地址、断开连接，以及可扩展的自定义菜单项
+ * - Tooltip：悬浮显示地址并支持一键复制
+ */
 import React, { useContext, useMemo, useState } from 'react';
 import { CopyOutlined, LoginOutlined, UserOutlined } from '@ant-design/icons';
 import { ConnectStatus, type Chain, type Wallet } from 'pelican-web3-lib-common';
@@ -55,8 +71,11 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [showMenu, setShowMenu] = useState(false);
 
+  // balance 配置兼容：允许以对象或布尔传入；当 coverAddress=true 时用价格覆盖地址展示
   const { coverAddress = true } = typeof balance !== 'object' ? { coverAddress: true } : balance;
+  // 是否需要执行登录签名：仅在已连接状态且 sign.signIn 存在时启用
   const needSign = !!(sign?.signIn && account?.status === ConnectStatus.Connected && account);
+  // 按钮主文案：优先 children，其次显示账户信息与价格
   let buttonText: React.ReactNode = children || "连接钱包";
   if (account) {
     buttonText = (
@@ -75,6 +94,9 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     );
   }
 
+  // 按钮属性与点击逻辑：
+  // - 已连接且开启 profileModal 时，点击按钮会打开资料弹窗
+  // - needSign=true 时点击按钮触发签名流程（异常通过 message 提示）
   const buttonProps: ButtonProps = {
     style: props.style,
     size: props.size,
@@ -100,6 +122,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     ...restProps,
   };
 
+  // 链选择器属性：用于在按钮左侧选择网络
   const chainProps: ChainSelectProps = {
     hashId,
     onSwitchChain,
@@ -111,6 +134,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     },
   };
 
+  // 资料弹窗配置：展示头像、地址（带前缀）、价格等
   const chainIcon = account?.avatar ?? chain?.icon;
   const profileModalProps: ProfileModalProps = {
     open: profileOpen,
@@ -138,11 +162,13 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     size: props.size,
   };
 
+  // 左侧链选择器渲染：仅当开启且有多个可选链时显示
   const chainSelectRender =
     chainSelect && availableChains && availableChains.length > 1 ? (
       <ChainSelect {...chainProps} />
     ) : null;
 
+  // 登录签名模式下的按钮文案处理：可定制 signBtnTextRender
   if (needSign) {
     buttonText = signBtnTextRender ? (
       signBtnTextRender(buttonText, account)
@@ -154,6 +180,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     );
   }
 
+  // 按钮内部结构：文本与头像并排，支持 Divider 分隔
   const buttonInnerText = (
     <div className={`${prefixCls}-content`}>
       <div className={`${prefixCls}-content-inner`}>
@@ -170,6 +197,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     </div>
   );
 
+  // 包装按钮为可选的「快速连接」模式与链选择器前缀
   const buttonContent = (
     <ConnectButtonInner
       {...buttonProps}
@@ -187,6 +215,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     </ConnectButtonInner>
   );
 
+  // 默认动作菜单项：复制地址、断开连接
   const defaultMenuItems: MenuItemType[] = useMemo(
     () => [
       {
@@ -215,6 +244,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     [account?.address, messageApi, onDisconnectClick],
   );
 
+  // 合并外部动作菜单：支持完全覆盖 items 或在默认项后追加 extraItems
   const mergedMenuItems = useMemo<MenuItemType[]>(() => {
     if (!actionsMenu) {
       return [];
@@ -237,6 +267,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     return combinedItems;
   }, [actionsMenu, defaultMenuItems, account]);
 
+  // 当有合并后的菜单项时以 Dropdown 包裹按钮
   const content =
     mergedMenuItems.length > 0 ? (
       <Dropdown
@@ -253,6 +284,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
       buttonContent
     );
 
+  // Tooltip 复制能力：布尔或对象模式；title 可外部覆盖
   const mergedTooltipCopyable: ConnectButtonTooltipProps['copyable'] =
     typeof tooltip === 'object' ? tooltip.copyable !== false : !!tooltip;
 
@@ -264,6 +296,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     tooltipTitle = tooltip.title;
   }
 
+  // 主渲染：注入 Tooltip、Dropdown、ProfileModal，并通过样式封装 wrapSSR
   const main = (
     <>
       {contextHolder}

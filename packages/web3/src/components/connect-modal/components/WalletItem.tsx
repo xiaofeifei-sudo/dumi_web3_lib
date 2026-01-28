@@ -1,3 +1,12 @@
+/**
+ * WalletItem 钱包列表项
+ * - 展示钱包图标与名称，支持二维码按钮与插件提示
+ *
+ * 行为说明
+ * - showPluginTag：根据是否安装扩展与是否走通用链接决定是否展示「浏览器插件」标签
+ * - 二维码按钮：阻止冒泡，仅在未禁用时触发 onQrCodeSelect
+ * - 选中态：依据 wallet.key 或 wallet.name 与 selectedWallet 比较
+ */
 import React, { useState } from 'react';
 import { QrcodeOutlined } from '@ant-design/icons';
 import { Button, List, Space, Typography } from 'antd';

@@ -1,3 +1,20 @@
+/**
+ * WalletList 钱包列表
+ * - 负责渲染钱包集合，支持分组与排序
+ * - 暴露 selectWallet 方法以便外部通过 ref 触发选择流程
+ *
+ * 选择逻辑
+ * - 已安装扩展：connectType='extension'
+ * - 移动端钱包：connectType='openMobile'
+ * - 移动端通用链接：直接跳转 deeplink
+ * - 支持二维码连接：connectType='qrCode'
+ * - 其他情况：默认调用 updateSelectedWallet(wallet, {})
+ *
+ * 分组与排序
+ * - internalGroup=false 关闭分组
+ * - internalGroup 或 groupKeys>1 时启用分组
+ * - 排序优先级：internalGroup.groupOrder > groupOrder > defaultGroupOrder
+ */
 import {
   forwardRef,
   ForwardRefRenderFunction,
@@ -51,6 +68,7 @@ const WalletList: ForwardRefRenderFunction<ConnectModalActionType, WalletListPro
   const needGrouping =
     internalGroup !== false && (internalGroup !== undefined || groupKeys.length > 1);
 
+  // 移动端通用链接跳转
   const openInUniversalLink = (wallet: Wallet) => {
     const url = wallet.deeplink?.urlTemplate
       .replace('${url}', encodeURIComponent(window.location.href))
@@ -60,6 +78,7 @@ const WalletList: ForwardRefRenderFunction<ConnectModalActionType, WalletListPro
     }
   };
 
+  // 选择钱包并根据能力决定连接方式与面板路由
   const selectWallet = async (wallet: Wallet) => {
     const hasWalletReady = await wallet.hasWalletReady?.();
     if (hasWalletReady) {

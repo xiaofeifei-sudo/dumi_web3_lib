@@ -1,3 +1,17 @@
+/**
+ * ModalPanel 主面板
+ * - 管理弹窗内部路由（init/guide/wallet/qrCode/downloadQrCode/link）
+ * - 负责钱包选择、连接方式判定与事件上报
+ *
+ * 状态说明
+ * - selectedWallet：当前选中钱包
+ * - panelRoute：当前面板路由；routeStack 维护返回栈
+ * - isSimple：根据 mode 或断点决定是否使用简易布局
+ *
+ * 交互流程
+ * - updateSelectedWallet：根据 connectType 切换到二维码/链接面板，否则返回列表
+ * - panelRouteBack：按栈返回，回到 init 时清空选中钱包
+ */
 import React from 'react';
 import type { ConnectOptions } from 'pelican-web3-lib-common';
 import { Button, ConfigProvider } from 'antd';

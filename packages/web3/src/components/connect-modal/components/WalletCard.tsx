@@ -1,3 +1,12 @@
+/**
+ * WalletCard 钱包安装卡片
+ * - 根据当前平台展示浏览器扩展安装入口
+ * - 同时提供移动端 App 的下载二维码入口
+ *
+ * 逻辑说明
+ * - selectedExtension：依据 getPlatform() 从 extensions 中选出当前平台项
+ * - 点击 App 卡片切换到 downloadQrCode 面板
+ */
 /* eslint-disable react/no-unknown-property */
 import type { ReactNode } from 'react';
 import { useContext, useMemo } from 'react';

@@ -1,3 +1,8 @@
+/**
+ * MainPanelHeader 面板头
+ * - 提供返回按钮与标题展示
+ * - 支持自定义 onBack，返回值为 false 时阻止默认返回
+ */
 import { useContext } from 'react';
 import { LeftOutlined } from '@ant-design/icons';
 

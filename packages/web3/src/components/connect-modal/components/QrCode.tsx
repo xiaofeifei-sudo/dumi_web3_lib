@@ -1,3 +1,14 @@
+/**
+ * QrCode 二维码面板
+ * - 根据钱包能力展示连接二维码或下载二维码
+ * - 支持 simple 模式等比例缩放展示
+ *
+ * 行为说明
+ * - download=true：优先使用 wallet.app.link 作为二维码内容，用于下载/安装
+ * - 否则：调用 wallet.getQrCode() 获取连接 URI
+ * - 右侧按钮：当可用时跳转到二维码链接；loading 时禁用
+ * - 底部按钮：存在 universalProtocol 时提供通用协议连接，否则引导安装/详情
+ */
 import { useContext, useEffect, useState } from 'react';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Flex, QRCode, Space } from 'antd';
