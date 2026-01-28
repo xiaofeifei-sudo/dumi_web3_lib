@@ -30,7 +30,6 @@ interface TonConfigProviderProps
  */
 const TonConfigProvider: React.FC<PropsWithChildren<TonConfigProviderProps>> = ({
   children,
-  locale,
   balance: showBalance,
   wallets,
   ignoreConfig,
@@ -61,7 +60,6 @@ const TonConfigProvider: React.FC<PropsWithChildren<TonConfigProviderProps>> = (
   return (
     <Web3ConfigProvider
       addressPrefix={false}
-      locale={locale}
       availableWallets={wallets}
       balance={
         balance

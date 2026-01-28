@@ -3,17 +3,12 @@ import { CopyOutlined } from '@ant-design/icons';
 import { message, Tooltip } from 'antd';
 import classNames from 'classnames';
 
-import type { IntlType } from '../../hooks/useIntl';
 import { formatAddress, writeCopyText } from '../../utils';
 import type { ConnectButtonTooltipProps } from './interface';
 
 export const ConnectButtonTooltip: React.FC<
-  PropsWithChildren<
-    ConnectButtonTooltipProps & {
-      intl: IntlType;
-    }
-  >
-> = ({ title, intl, copyable, children, format, prefixCls, __hashId__, ...restProps }) => {
+  PropsWithChildren<ConnectButtonTooltipProps>
+> = ({ title, copyable, children, format, prefixCls, __hashId__, ...restProps }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const mergedFormat = useMemo(() => {
     if (typeof format === 'function') {

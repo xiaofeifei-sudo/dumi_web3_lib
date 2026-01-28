@@ -1,26 +1,11 @@
-import React from 'react';
-import { ConfigContext } from 'pelican-web3-lib-common';
-import type { ConfigConsumerProps, Locale, RequiredLocale } from 'pelican-web3-lib-common';
-
-type ComponentName = keyof Locale;
-
-interface IntlType<T extends ComponentName = any> {
-  messages: RequiredLocale[T];
+export interface IntlType<T extends string = string> {
+  messages: Record<T, string>;
   getMessage: (message: string, values?: Record<string, string>) => string;
 }
 
-export default function useIntl<T extends ComponentName = any>(
-  componentName: T,
-  componentLocale?: Locale[T],
-): IntlType<T> {
-  const context = React.useContext<ConfigConsumerProps>(ConfigContext);
-  const locale: RequiredLocale[T] = {
-    ...(context?.locale?.[componentName] as RequiredLocale[T]),
-    ...(componentLocale as RequiredLocale[T]),
-  };
-
+export default function useIntl<T extends string = string>(): IntlType<T> {
   return {
-    messages: locale,
+    messages: {} as Record<T, string>,
     getMessage: (message, values) => {
       if (values) {
         return message.replace(/\{([\w\.]+)\}/g, (_, key) => values[key]);
@@ -29,5 +14,3 @@ export default function useIntl<T extends ComponentName = any>(
     },
   };
 }
-
-export type { IntlType };

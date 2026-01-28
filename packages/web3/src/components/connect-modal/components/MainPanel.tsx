@@ -6,7 +6,7 @@ import LinkPanel from './LinkPanel';
 import QrCode from './QrCode';
 import WalletCard from './WalletCard';
 
-export type MainPanelProps = Pick<ConnectModalProps, 'guide' | 'walletList' | 'locale'> & {
+export type MainPanelProps = Pick<ConnectModalProps, 'guide' | 'walletList'> & {
   simple: boolean;
 };
 

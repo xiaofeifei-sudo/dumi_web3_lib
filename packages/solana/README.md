@@ -183,6 +183,36 @@ WalletConnect 适配器（核心能力）
 | signTransaction | function(tx) | 交易签名（兼容 VersionedTransaction 与 Transaction） |
 | disconnect | function() | 断开会话并清理监听 |
 
+## 错误码（连接钱包）
+- 基于 @solana/wallet-adapter 的错误通常以 Error 类或 WalletError 形式返回，包含 name/message
+
+常见错误类别（按 @solana/wallet-adapter-base）
+
+- WalletNotReadyError / Not Installed：钱包未安装或不可用（ReadyState 非 Installed/Loadable）
+- WalletConnectionError：建立连接失败（网络不匹配、会话异常、Provider 不可用等）
+- WalletDisconnectedError / WalletDisconnectionError：连接被断开或断开失败
+- WalletNotConnectedError：未建立连接即发起签名/交易
+- WalletPublicKeyError：公钥不可用或解析失败
+- WalletSignMessageError：消息签名失败（用户拒绝或适配器异常）
+- WalletSignTransactionError：交易签名失败（格式/版本错误、用户拒绝、适配器异常）
+
+WalletConnect 常见错误场景（适配器内的判定/事件）
+
+- WalletConnect config not available：未提供 walletConnect 初始化配置
+- Chain not supported：当前链 network 未映射到 WalletConnect Chain ID
+- WalletConnect provider not available：Provider 未初始化
+- session_delete：远端关闭会话，需重新连接或扫码
+- 连接封装错误：connect/signMessage/signTransaction 内部包装为 WalletConnectionError/WalletSign*Error
+
+处理建议
+
+- 未安装/未就绪：引导安装扩展或使用兼容钱包；刷新页面后重试
+- 连接失败：校验 network 与 RPC；检查是否正确设置 walletConnect.projectId 与 metadata
+- 会话断开：监听断开事件并清理状态；提供一键重连或重新扫码入口
+- 未连接即签名：在发起签名前统一校验连接状态；对未连接的操作进行拦截提示
+- 签名失败：区分用户拒绝与适配器异常；提示重试或更换钱包
+- WalletConnect：在二维码失败/超时场景引导重新生成二维码或更换网络
+
 ## 常见问题（FAQ）
 - WalletConnect 无法连接：确保 walletConnect.projectId 设置正确，且链 network 与 RPC 地址匹配
 - 扩展未检测到：检查 adapter.readyState 是否为 Installed 或 Loadable，刷新页面后重试

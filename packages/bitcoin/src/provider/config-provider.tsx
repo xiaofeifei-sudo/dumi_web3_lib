@@ -15,7 +15,6 @@ export interface BitcoinConfigProviderProps
 
 export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderProps>> = ({
   children,
-  locale,
   wallets,
   selectWallet,
   balance: showBalance,
@@ -32,7 +31,6 @@ export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderPr
   return (
     <Web3ConfigProvider
       addressPrefix={false}
-      locale={locale}
       availableWallets={wallets}
       balance={balance}
       account={account}

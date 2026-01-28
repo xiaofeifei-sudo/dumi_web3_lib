@@ -4,8 +4,7 @@
  * - 支持 ignoreConfig 跳过本层配置合并（用于多链切换避免闪屏）
  * - 支持 extendsContextFromParent 控制是否继承父级上下文
  */
-import React, { useMemo } from 'react';
-import { merge } from 'lodash-es';
+import React from 'react';
 
 import { ConfigContext, type ConfigConsumerProps, type Web3ConfigProviderProps } from './context';
 
@@ -17,14 +16,6 @@ const ProviderChildren: React.FC<
   }
 > = (props) => {
   const { children, parentContext, ignoreConfig, ...rest } = props;
-
-  // 按照 React Hooks 规则，提前计算 mergeLocale（避免条件分支下的 Hook 调用）
-  const mergeLocale = useMemo(() => {
-    if (parentContext?.locale && rest.locale) {
-      return merge(parentContext.locale, rest.locale);
-    }
-    return undefined;
-  }, [parentContext?.locale, rest.locale]);
 
   // 当 ignoreConfig 为 true：跳过合并，仅透传父级上下文
   if (ignoreConfig) {
@@ -51,8 +42,6 @@ const ProviderChildren: React.FC<
       (config as any)[typedKey] = rest[typedKey];
     }
   });
-
-  config.locale = mergeLocale ?? config.locale;
 
   return (
     <ConfigContext.Provider value={config as ConfigConsumerProps}>

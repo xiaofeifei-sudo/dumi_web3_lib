@@ -7,7 +7,6 @@ import classNames from 'classnames';
 
 import { CryptoPrice } from '../crypto-price';
 import { useProvider } from '../../hooks';
-import useIntl from '../../hooks/useIntl';
 import { fillWithPrefix, writeCopyText } from '../../utils';
 import { ChainSelect } from './chain-select';
 import type { ChainSelectProps } from './chain-select';
@@ -41,7 +40,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     onClick,
     balance,
     className,
-    locale,
     quickConnect,
     addressPrefix: addressPrefixProp,
     sign,
@@ -49,7 +47,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     children,
     ...restProps
   } = props;
-  const intl = useIntl('ConnectButton', locale);
   const { getPrefixCls } = useContext(ConfigProvider.ConfigContext);
   const { addressPrefix: addressPrefixContext } = useProvider();
   const prefixCls = getPrefixCls('web3-connect-button');
@@ -116,7 +113,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
 
   const chainIcon = account?.avatar ?? chain?.icon;
   const profileModalProps: ProfileModalProps = {
-    intl,
     open: profileOpen,
     __hashId__: hashId,
     onDisconnect: () => {
@@ -176,7 +172,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
 
   const buttonContent = (
     <ConnectButtonInner
-      intl={intl}
       {...buttonProps}
       preContent={chainSelectRender}
       showQuickConnect={quickConnect && !account}
@@ -274,7 +269,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
       {contextHolder}
       {tooltipTitle ? (
         <ConnectButtonTooltip
-          intl={intl}
           copyable={mergedTooltipCopyable}
           title={tooltipTitle}
           prefixCls={prefixCls}

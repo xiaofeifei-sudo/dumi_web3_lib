@@ -5,14 +5,13 @@ import {
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
-import type { Account, Locale, Wallet } from 'pelican-web3-lib-common';
+import type { Account, Wallet } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import { hasWalletReady } from '../utils';
 
 interface PelicanWeb3ConfigProviderProps {
   availableWallets?: Wallet[];
-  locale?: Locale;
   connectionError?: WalletError;
   /**
    * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
@@ -30,7 +29,7 @@ interface ConnectAsync {
 
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
-> = ({ availableWallets, locale, connectionError, ignoreConfig, children }) => {
+> = ({ availableWallets, connectionError, ignoreConfig, children }) => {
   const { address, wallet, wallets, connected, connect, disconnect, select } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
 
@@ -118,7 +117,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
       account={account}
       addressPrefix=""
       availableWallets={allWallets}
-      locale={locale}
       connect={async (_wallet) => {
         let resolve: any;
         let reject: any;

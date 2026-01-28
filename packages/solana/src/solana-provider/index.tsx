@@ -8,7 +8,6 @@ import {
 } from '@solana/wallet-adapter-react';
 import type { UniversalProviderOpts } from '@walletconnect/universal-provider';
 import { Solana, SolanaDevnet, SolanaTestnet } from 'pelican-web3-lib-assets';
-import type { Locale } from 'pelican-web3-lib-common';
 
 import { solana, type SolanaChainConfig } from '../chains';
 import { isAdapterWalletFactory, isWalletConnectFactory } from '../utils';
@@ -17,8 +16,6 @@ import { PelicanWeb3ConfigProvider } from './config-provider';
 import { useWalletConnectProvider } from './useWalletConnectProvider';
 
 export interface SolanaWeb3ConfigProviderProps {
-  /** 组件国际化配置（中文、英文等） */
-  locale?: Locale;
   /** 可用链列表（默认包含 Solana 主网/开发网/测试网） */
   chains?: SolanaChainConfig[];
   /** 钱工厂列表（用于生成 UI 层使用的钱包结构） */
@@ -54,7 +51,6 @@ export interface SolanaWeb3ConfigProviderProps {
 }
 
 export const SolanaWeb3ConfigProvider: FC<PropsWithChildren<SolanaWeb3ConfigProviderProps>> = ({
-  locale,
   chains = [solana],
   wallets: walletFactories = [],
   balance,
@@ -126,7 +122,6 @@ export const SolanaWeb3ConfigProvider: FC<PropsWithChildren<SolanaWeb3ConfigProv
         }}
       >
         <PelicanWeb3ConfigProvider
-          locale={locale}
           chainAssets={[Solana, SolanaDevnet, SolanaTestnet]}
           availableWallets={availableWallets}
           balance={balance}

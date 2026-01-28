@@ -16,7 +16,7 @@ import {
   useWallets,
 } from '@mysten/dapp-kit';
 import {SUI} from 'pelican-web3-lib-assets/tokens';
-import type {Account, Locale, UniversalWeb3ProviderInterface} from 'pelican-web3-lib-common';
+import type {Account, UniversalWeb3ProviderInterface} from 'pelican-web3-lib-common';
 import {type Wallet, Web3ConfigProvider} from 'pelican-web3-lib-common';
 import {SuiColorful} from 'pelican-web3-lib-icons';
 
@@ -28,8 +28,6 @@ type GetNFTMetadata = NonNullable<UniversalWeb3ProviderInterface['getNFTMetadata
 export interface PelicanWeb3ConfigProviderProps {
   /** 是否展示账户余额（SUI） */
   balance?: boolean;
-  /** 组件内文案/格式使用的语言 */
-  locale?: Locale;
   /** 可用的 Sui 链列表（mainnet/testnet/devnet/localnet） */
   availableChains?: SuiChain[];
   /** 可用的钱包工厂列表（非标准钱包） */
@@ -53,7 +51,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({
        balance: showBalance,
-       locale,
        availableChains,
        availableWallets,
        currentChain,
@@ -154,7 +151,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
     <Web3ConfigProvider
       availableChains={availableChains}
       availableWallets={allWallets}
-      locale={locale}
       account={accountData}
       chain={currentChain}
       balance={

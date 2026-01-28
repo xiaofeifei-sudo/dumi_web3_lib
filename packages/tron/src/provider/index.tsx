@@ -4,7 +4,7 @@ import { BybitWalletAdapter } from '@tronweb3/tronwallet-adapter-bybit';
 import { OkxWalletAdapter } from '@tronweb3/tronwallet-adapter-okxwallet';
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { TronLinkAdapter } from '@tronweb3/tronwallet-adapter-tronlink';
-import type { Locale, Wallet } from 'pelican-web3-lib-common';
+import type { Wallet } from 'pelican-web3-lib-common';
 
 import { PelicanWeb3ConfigProvider } from './config-provider';
 
@@ -12,7 +12,6 @@ export interface TronWeb3ConfigProviderProps {
   wallets?: Wallet[];
   onError?: (error: Error) => void;
   autoConnect?: boolean;
-  locale?: Locale;
   walletProviderProps?: Omit<React.PropsWithChildren<TronWeb3ConfigProviderProps>, 'children'>;
   /**
    * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
@@ -25,7 +24,6 @@ export interface TronWeb3ConfigProviderProps {
 export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigProviderProps>> = ({
   wallets,
   onError,
-  locale,
   autoConnect,
   ignoreConfig,
   children,
@@ -52,7 +50,6 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       {...walletProviderProps}
     >
       <PelicanWeb3ConfigProvider
-        locale={locale}
         connectionError={connectionError}
         availableWallets={wallets}
         ignoreConfig={ignoreConfig}

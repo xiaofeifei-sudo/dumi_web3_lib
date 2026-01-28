@@ -1,6 +1,72 @@
+/**
+ * wagmi-provider/index.tsx
+ * 提供基于 wagmi + TanStack Query + PelicanWeb3 的完整上下文 Provider，
+ * 在 React 应用中统一管理账户、链、钱包、余额与 SIWE 登录能力。
+ *
+ * 设计要点：
+ * - 支持用户传入自定义 wagmi Config 或自动生成；
+ * - 支持 WalletConnect 官方二维码弹窗与自定义参数；
+ * - 支持多链配置与自定义 transports（RPC）；
+ * - 通过 PelicanWeb3ConfigProvider 合并底层配置与业务能力；
+ * - 可通过 ignoreConfig 在多 Provider 切换时避免页面闪烁。
+ *
+ * 使用示例：
+ * <WagmiWeb3ConfigProvider walletConnect={{ projectId: 'your_project_id' }}>
+ *   <App />
+ * </WagmiWeb3ConfigProvider>
+ *
+ * 自定义 Config 示例（高级用法）：
+ * 
+ * ```tsx
+ * import { WagmiWeb3ConfigProvider } from '@pelican-web3/evm';
+ * import { createConfig, http } from 'wagmi';
+ * import { mainnet, sepolia } from 'wagmi/chains';
+ * import { walletConnect } from 'wagmi/connectors';
+ * 
+ * // 1) 自定义 connectors（示例：仅启用 WalletConnect，关闭官方二维码）
+ * const connectors = [
+ *   walletConnect({
+ *     projectId: 'your_project_id',
+ *     showQrModal: false,
+ *     metadata: {
+ *       name: 'Your dApp',
+ *       description: 'Your dApp description',
+ *       url: 'https://your.app',
+ *       icons: ['https://your.app/icon.png'],
+ *     },
+ *   }),
+ * ];
+ * 
+ * // 2) 自定义 RPC transports（按链 ID 映射）
+ * const transports = {
+ *   [mainnet.id]: http('https://eth-mainnet.g.alchemy.com/v2/<YOUR_KEY>'),
+ *   [sepolia.id]: http('https://eth-sepolia.g.alchemy.com/v2/<YOUR_KEY>'),
+ * };
+ * 
+ * // 3) 创建自定义 wagmi Config
+ * const customConfig = createConfig({
+ *   chains: [mainnet, sepolia],
+ *   connectors,
+ *   transports,
+ * });
+ * 
+ * // 4) 在 Provider 中直接传入 config（优先使用该配置）
+ * function Root() {
+ *   return (
+ *     <WagmiWeb3ConfigProvider
+ *       config={customConfig}
+ *       // 其他可选能力，例如 SIWE、多钱包等
+ *       // siwe={{ ... }}
+ *       // wallets={[...]}
+ *     >
+ *       <App />
+ *     </WagmiWeb3ConfigProvider>
+ *   );
+ * }
+ * ```
+ */
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { Locale } from 'pelican-web3-lib-common';
 import type { Transport, Chain as WagmiChain } from 'viem';
 import { createConfig, http, WagmiProvider } from 'wagmi';
 import type { Config, State } from 'wagmi';
@@ -41,7 +107,6 @@ export interface WalletConnectOptions
 /**
  * WagmiWeb3ConfigProviderProps
  * - config: 自定义的 wagmi Config（存在时优先使用）
- * - locale: 本地化配置
  * - wallets: 钱包工厂列表（用于生成连接器与钱包）
  * - chains: 链资产与 wagmi 链的映射
  * - ens: 是否启用 ENS
@@ -57,7 +122,6 @@ export interface WalletConnectOptions
  */
 export interface WagmiWeb3ConfigProviderProps {
   config?: Config;
-  locale?: Locale;
   wallets?: WalletFactory[];
   chains?: ChainAssetWithWagmiChain[];
   ens?: boolean;
@@ -85,7 +149,6 @@ export interface WagmiWeb3ConfigProviderProps {
 export function WagmiWeb3ConfigProvider({
   children,
   config,
-  locale,
   wallets = [],
   chains = [],
   ens,
@@ -105,15 +168,26 @@ export function WagmiWeb3ConfigProvider({
     : chains?.length
       ? chains
       : [Mainnet];
+  /**
+   * 根据 WalletConnect、链与钱包列表生成唯一标识，
+   * 当依赖项变化时用于判断是否需要重建 wagmi 配置。
+   */
   const generateConfigFlag = () => {
     return `${JSON.stringify(walletConnect)}-${chains.map((item) => item.id).join(',')}-${wallets.map((item) => item.name).join(',')}`;
   };
 
+  /**
+   * 自动生成 wagmi Config：
+   * - 构建 connectors（WalletConnect + 自定义钱包）
+   * - 映射链配置与 RPC transports（默认 mainnet http）
+   * - 返回包含唯一标识 flag 的对象，便于变更检测
+   */
   const generateConfig = () => {
     // 自动生成 wagmi 配置
     const connectors = [];
     // biome-ignore lint/complexity/useOptionalChain: <explanation>
     if (walletConnect && walletConnect.projectId) {
+      // 根据用户设置决定是否使用 WalletConnect 官方二维码弹窗
       connectors.push(
         wagmiWalletConnect({
           ...walletConnect,
@@ -121,12 +195,15 @@ export function WagmiWeb3ConfigProvider({
         }),
       );
     }
+    // 追加通过钱包工厂创建的自定义连接器
     wallets.forEach((wallet) => {
+      // 兼容未实现 createWagmiConnector 的钱包工厂
       const connector = wallet.createWagmiConnector?.();
       if (connector) {
         connectors.push(connector);
       }
     });
+    // 创建 wagmi 配置：链映射 + RPC transports + connectors
     const autoGenerateConfig = createConfig({
       chains: chainAssets.map((chain) => chain.wagmiChain) as [WagmiChain, ...WagmiChain[]],
       transports: transports ?? {
@@ -135,11 +212,16 @@ export function WagmiWeb3ConfigProvider({
       connectors,
     });
     return {
+      // flag 用于和依赖项进行比较，决定是否重建 config
       flag: generateConfigFlag(),
       config: autoGenerateConfig,
     };
   };
 
+  /**
+   * autoConfig 存储自动生成的 wagmi 配置与唯一标识。
+   * 初始化时若存在用户传入的 config 则直接复用，否则按当前参数生成。
+   */
   const [autoConfig, setAutoConfig] = React.useState<{
     flag?: string;
     config: Config;
@@ -152,10 +234,18 @@ export function WagmiWeb3ConfigProvider({
     return generateConfig();
   });
 
+  /**
+   * 合并（或延迟创建）TanStack Query 客户端。
+   * 若外部未传入 queryClient，则按需创建一个默认实例以复用。
+   */
   const mergedQueryClient = React.useMemo(() => {
     return queryClient ?? new QueryClient();
   }, [queryClient]);
 
+  /**
+   * 监听依赖项变化并在必要时重建 wagmi 配置。
+   * 若用户显式提供了 config，则不进行自动重建（保持外部控制）。
+   */
   React.useEffect(() => {
     if (config) {
       return;
@@ -167,13 +257,15 @@ export function WagmiWeb3ConfigProvider({
     }
   }, [config, wallets, chains, walletConnect]);
 
+  /**
+   * 统一获得当前生效的 wagmi 配置（优先使用外部传入）。
+   */
   const wagmiConfig = config || autoConfig.config;
 
   return (
     <WagmiProvider config={wagmiConfig} {...restProps}>
       <QueryClientProvider client={mergedQueryClient}>
         <PelicanWeb3ConfigProvider
-          locale={locale}
           siwe={siwe}
           chainAssets={chainAssets}
           walletFactories={wallets}
@@ -181,9 +273,11 @@ export function WagmiWeb3ConfigProvider({
           balance={balance}
           eip6963={eip6963}
           wagimConfig={wagmiConfig}
+          // 仅当 WalletConnect 为对象且用户开启 useWalletConnectOfficialModal 时启用官方二维码弹窗
           useWalletConnectOfficialModal={
             typeof walletConnect === 'object' && walletConnect?.useWalletConnectOfficialModal
           }
+          // 多 Provider 场景下用于避免合并配置导致的闪烁
           ignoreConfig={ignoreConfig}
         >
           {children}

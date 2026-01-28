@@ -3,7 +3,6 @@ import type { ConnectOptions } from 'pelican-web3-lib-common';
 import { Button, ConfigProvider } from 'antd';
 import classNames from 'classnames';
 
-import useIntl from '../../../hooks/useIntl';
 import useProvider from '../../../hooks/useProvider';
 import { ConnectModalContextProvider } from '../context';
 import useMode from '../hooks/useMode';
@@ -29,12 +28,10 @@ const ModalPanel: React.FC<ModalPanelProps> = (props) => {
     onWalletSelected,
     actionRef,
     defaultSelectedWallet,
-    locale,
     connecting,
     disabled = false,
     banner,
   } = props;
-  const intl = useIntl('ConnectModal', locale);
   const showQRCoodByDefault = defaultSelectedWallet?.getQrCode;
   const [panelRoute, setPanelRoute] = React.useState<PanelRoute>(
     showQRCoodByDefault ? 'qrCode' : 'init',
@@ -51,7 +48,7 @@ const ModalPanel: React.FC<ModalPanelProps> = (props) => {
 
   const mergedTitle = mergeReactNodeProps(
     title,
-    <h2 className={`${prefixCls}-title`}>{intl.messages.title}</h2>,
+    <h2 className={`${prefixCls}-title`}>{"连接钱包"}</h2>,
     (node) => <h2 className={`${prefixCls}-title`}>{node}</h2>,
   );
 
@@ -103,8 +100,13 @@ const ModalPanel: React.FC<ModalPanelProps> = (props) => {
         updatePanelRoute,
         panelRouteBack,
         canBack: routeStack.current.length > 1,
-        localeMessage: intl.messages,
-        getMessage: intl.getMessage,
+        localeMessage: {
+          title: "连接钱包",
+          walletListEmpty: "暂无可用钱包",
+          qrCodePanelDownloadTipForReady: "扫码下载并安装钱包",
+          getWalletUniversalProtocolBtnText: "使用通用协议连接",
+          getWalletBtnText: "前往安装钱包",
+        },
         connecting,
       }}
     >

@@ -1,9 +1,15 @@
 /* v8 ignore start */
 import React from 'react';
 import type { ConnectOptions } from 'pelican-web3-lib-common';
-
-import type { IntlType } from '../../../hooks/useIntl';
 import type { ConnectingStatusConfig, PanelRoute, Wallet } from '../interface';
+
+type ConnectModalLocaleMessages = {
+  title: string;
+  walletListEmpty: string;
+  qrCodePanelDownloadTipForReady: string;
+  getWalletUniversalProtocolBtnText: string;
+  getWalletBtnText: string;
+};
 
 export type ConnectModalContext = {
   prefixCls: string;
@@ -14,8 +20,7 @@ export type ConnectModalContext = {
   updatePanelRoute: (route: PanelRoute, clear?: boolean) => void;
   panelRouteBack: () => void;
   canBack: boolean;
-  localeMessage: IntlType<'ConnectModal'>['messages'];
-  getMessage: IntlType<'ConnectModal'>['getMessage'];
+  localeMessage: ConnectModalLocaleMessages;
   connecting?: ConnectingStatusConfig;
 };
 
@@ -28,8 +33,13 @@ export const connectModalContext = React.createContext<ConnectModalContext>({
   updatePanelRoute: () => {},
   panelRouteBack: () => {},
   canBack: false,
-  localeMessage: {} as any,
-  getMessage: () => '',
+  localeMessage: {
+    title: "连接钱包",
+    walletListEmpty: "暂无可用钱包",
+    qrCodePanelDownloadTipForReady: "扫码下载并安装钱包",
+    getWalletUniversalProtocolBtnText: "使用通用协议连接",
+    getWalletBtnText: "前往安装钱包",
+  },
 });
 
 export const ConnectModalContextProvider = connectModalContext.Provider;

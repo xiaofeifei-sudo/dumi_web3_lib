@@ -8,7 +8,6 @@ import React, { useContext } from 'react';
 import { createNetworkConfig, SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
 import { QueryClient, QueryClientContext, QueryClientProvider } from '@tanstack/react-query';
-import type { Locale } from 'pelican-web3-lib-common';
 
 import type { SuiChain } from 'pelican-web3-lib-assets';
 import { suiDevnet, suiLocalnet, suiMainnet, suiTestnet } from 'pelican-web3-lib-assets';
@@ -18,8 +17,6 @@ import { PelicanWeb3ConfigProvider } from './config-provider';
 export interface SuiWeb3ConfigProviderProps {
   /** 是否展示余额 */
   balance?: boolean;
-  /** 本地化语言 */
-  locale?: Locale;
   /** 是否自动连接钱包 */
   autoConnect?: boolean;
   /** SuiClientProvider 的网络配置，未提供时使用 mainnet 默认配置 */
@@ -46,7 +43,6 @@ export const SuiWeb3ConfigProvider: React.FC<
 > = ({
   autoConnect,
   balance,
-  locale,
   networkConfig,
   defaultNetwork = 'mainnet',
   queryClient,
@@ -91,7 +87,6 @@ export const SuiWeb3ConfigProvider: React.FC<
       <SuiClientProvider networks={mergedNetworkConfig} network={network}>
         <WalletProvider autoConnect={autoConnect}>
           <PelicanWeb3ConfigProvider
-            locale={locale}
             availableChains={networks}
             availableWallets={wallets}
             currentChain={currentNetwork}

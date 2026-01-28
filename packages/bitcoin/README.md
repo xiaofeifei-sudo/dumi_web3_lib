@@ -105,6 +105,26 @@ export const Demo = () => {
 | NoInscriptionError | Failed to get inscriptions | 铭文查询失败 |
 | NotImplementedError | Not implemented | 能力尚未实现 |
 
+## 错误码（连接钱包）
+- 错误以标准 Error（包含 name/message）与本包提供的统一错误类型返回，便于在 UI 层映射友好提示
+
+常见场景与分类
+- 未安装/不可用：NoProviderError（window.unisat/okxwallet/phantom?.bitcoin 不存在；Xverse 的 sats-connect Provider 不可用）
+- 地址不可用：NoAddressError（拒绝授权或钱包异常导致无法读取地址）
+- 余额/铭文失败：NoBalanceError、NoInscriptionError（第三方服务异常或网络不稳定）
+- 用户拒绝/未授权：钱包原生错误（不同钱包 message 不同，建议按关键字匹配 “reject/denied/cancel”）
+- 会话与适配器异常：
+  - Xverse（sats-connect）：getAccounts/signMessage/signPsbt 返回 {status:'error', error.message}
+  - Phantom：requestAccounts/signMessage/signPsbt 抛出原生错误（可能包含签名索引、sighash 等校验失败）
+  - Unisat/OKX：requestAccounts/sendBitcoin/signMessage/signPsbt 直接抛出错误（message 为原生文案）
+
+处理建议
+- 安装与登录：引导用户安装相应扩展或应用，并确保钱包已登录；刷新页面后重试
+- 重试与切换：在连接失败或用户拒绝时提供重试入口，并允许切换其他钱包
+- Xverse：确认设备已安装并运行 Xverse，sats-connect Provider 可用；必要时重新发起会话
+- 余额与铭文：对第三方服务失败进行兜底提示，并允许用户稍后重试
+- PSBT/转账：在 UI 中明确 feeRate、签名输入索引、sighash 等选项；当校验失败时提示用户检查参数来源
+
 ### WalletFactory（钱包工厂）
 | 导出函数 | 描述 | 适配器 |
 | --- | --- | --- |

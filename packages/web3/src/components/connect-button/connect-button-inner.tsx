@@ -5,7 +5,6 @@ import type { ButtonProps, MenuProps } from 'antd';
 import { Button, ConfigProvider, Dropdown, Space } from 'antd';
 import classNames from 'classnames';
 
-import type { IntlType } from '../../hooks/useIntl';
 
 export interface ConnectButtonInnerProps extends ButtonProps {
   /** @internal */
@@ -14,7 +13,6 @@ export interface ConnectButtonInnerProps extends ButtonProps {
   showQuickConnect?: boolean;
   availableWallets?: Wallet[];
   onConnectClick?: (wallet?: Wallet) => void;
-  intl: IntlType;
 }
 
 export const ConnectButtonInner: React.FC<ConnectButtonInnerProps> = (props) => {
@@ -26,7 +24,6 @@ export const ConnectButtonInner: React.FC<ConnectButtonInnerProps> = (props) => 
     children,
     onClick,
     onConnectClick,
-    intl,
     __hashId__,
     className,
     ...restProps

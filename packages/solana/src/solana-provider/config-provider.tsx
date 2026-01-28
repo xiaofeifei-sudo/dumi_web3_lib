@@ -6,7 +6,7 @@ import {
   type WalletName,
 } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import type { Account, Chain, Locale, Wallet } from 'pelican-web3-lib-common';
+import type { Account, Chain, Wallet } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import type { SolanaChainConfig } from '../chains';
@@ -20,8 +20,6 @@ interface ConnectAsync {
 }
 
 export interface PelicanWeb3ConfigProviderProps {
-  /** 国际化配置 */
-  locale?: Locale;
   /** 链的展示资源（图标、名称等），与 availableChains 合并使用 */
   chainAssets?: Chain[];
   /** 可用的 Solana 链配置列表 */
@@ -241,7 +239,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
 
   return (
     <Web3ConfigProvider
-      locale={props.locale}
       account={account}
       chain={currentChain}
       balance={

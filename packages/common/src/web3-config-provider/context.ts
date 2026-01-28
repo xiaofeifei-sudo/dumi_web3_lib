@@ -5,11 +5,10 @@
  */
 import React from 'react';
 
-import type {Locale, UniversalWeb3ProviderInterface} from '../types';
+import type { UniversalWeb3ProviderInterface } from '../types';
 
 export interface Web3ConfigProviderProps extends UniversalWeb3ProviderInterface {
   children?: React.ReactNode;
-  locale?: Locale;
   /**
    * 若为 true：合并上下文时忽略当前 Provider 的配置
    * 适用于多个链 Provider 并存、需要在不同 Provider 间切换以避免页面闪烁的场景
@@ -19,7 +18,6 @@ export interface Web3ConfigProviderProps extends UniversalWeb3ProviderInterface 
 }
 
 export interface ConfigConsumerProps extends UniversalWeb3ProviderInterface {
-  locale?: Locale;
 }
 
 export const ConfigContext = React.createContext<ConfigConsumerProps>({});

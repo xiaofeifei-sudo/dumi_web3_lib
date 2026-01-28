@@ -5,13 +5,11 @@ import type { AvatarProps, ModalProps } from 'antd';
 import classNames from 'classnames';
 
 import { CryptoPrice } from '../crypto-price';
-import type { IntlType } from '../../hooks/useIntl';
 import { writeCopyText } from '../../utils';
 import { fillWithPrefix } from '../../utils/format';
 
 export interface ProfileModalProps {
   className?: string;
-  intl: IntlType;
   /** @internal */
   __hashId__: string;
   avatar?: AvatarProps;
@@ -28,7 +26,6 @@ export interface ProfileModalProps {
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({
   className,
-  intl,
   __hashId__,
   open,
   onClose,

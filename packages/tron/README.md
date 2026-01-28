@@ -129,6 +129,33 @@ PelicanWeb3ConfigProvider（内部）
 | --- | --- | --- | --- |
 | hasWalletReady | WalletReadyState | boolean | 适配器是否就绪（Found/Loading 视为就绪） |
 
+## 错误码（连接钱包）
+- 基于 @tronweb3 适配器的错误通常以 `WalletError` 形式提供，包含 `name` 与 `message`
+
+常见错误类别（name 或 message 可能不同，按场景归类）
+
+- WalletNotFound / Not Installed：未检测到对应钱包扩展或应用
+- WalletNotReady / Initializing：钱包尚未就绪（启动中或未登录）
+- UserRejected / User Cancelled：用户拒绝连接、签名或授权
+- NetworkNotSupported / Wrong Network：当前网络不受支持或与预期不匹配
+- ConnectionTimeout：建立连接超时（浏览器/扩展状态异常）
+- Disconnected / SessionClosed：连接已断开或会话被关闭
+
+WalletConnect（如使用 @tronweb3/tronwallet-adapter-walletconnect）
+
+- PROJECT_ID_INVALID：projectId 无效或未配置，无法建立会话
+- WC_MODAL_CLOSED：用户关闭二维码弹窗，连接中断
+- WC_CONNECTION_TIMEOUT：会话建立超时（网络或中继服务不稳定）
+- Session Deleted：会话被删除，需要重新扫描二维码
+
+处理建议
+
+- 未安装/未就绪：引导安装扩展或打开 App；刷新页面或重新登录后再试
+- 用户拒绝：提示用户确认操作并重试；保留当前选择状态方便再次尝试
+- 网络不支持：在 UI 中提示切换到目标网络（TRON 主网/特定侧链）
+- 连接超时/断开：触发重新连接流程；必要时清理本地会话并重试
+- WalletConnect：校验 projectId 与网络状况；二维码会话失败时重新发起
+
 ## 常见问题（FAQ）
 - 点击连接无反应：确保传入的钱包元数据 name 与实际 adapter.name 一致，否则无法匹配并连接
 - 自动重连失败：检查 autoConnect 是否开启，以及浏览器扩展是否已登录

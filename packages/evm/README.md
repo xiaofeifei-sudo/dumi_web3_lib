@@ -216,6 +216,41 @@ WalletConnectOptions（Provider）
 - ENS/余额为空：检查是否在 Provider 上启用 ens 与 balance，并确认 RPC 可用
 - 移动端二维码：WalletConnect 工厂提供 getQrCode；如需官方弹窗设置 useWalletConnectOfficialModal
 
+## 错误码（连接钱包）
+- 下列错误码与标识便于在连接钱包、切换链、签名时定位问题来源
+
+EIP‑1193（Provider 标准错误码）
+
+| 错误码 | 名称 | 说明 |
+| --- | --- | --- |
+| 4001 | User Rejected Request | 用户拒绝请求（如连接、签名、切链等） |
+| 4100 | Unauthorized | 未授权访问（当前账户/方法不允许） |
+| 4200 | Unsupported Method | 不支持的方法（钱包未实现该 RPC） |
+| 4900 | Disconnected | 提供者已断开连接（需重新初始化连接） |
+| 4901 | Chain Disconnected | 当前链未连接（切换或重新连接到目标链） |
+
+JSON‑RPC 常见错误码（由钱包或节点返回）
+
+| 错误码 | 说明 |
+| --- | --- |
+| -32601 | 方法不存在（节点或钱包不支持该 RPC） |
+| -32603 | 内部错误（钱包/节点内部异常） |
+| -32000 | 服务器错误（余额不足、nonce 异常等具体原因由返回信息给出） |
+
+WalletConnect 常见错误场景（标识/文案）
+
+- PROJECT_ID_INVALID：projectId 无效或未配置，无法建立会话
+- WC_MODAL_CLOSED：用户关闭二维码弹窗，连接中断
+- WC_CONNECTION_TIMEOUT：会话建立超时（网络或中继服务不稳定）
+- Peer Disconnected/Session Deleted：对端关闭或会话被删除，需要重新扫描二维码
+
+处理建议
+- 4001：提示用户确认操作或重试；必要时更换钱包
+- 4100/4200：检查调用方法与权限；避免使用钱包不支持的 RPC
+- 4900/4901：执行重新连接或切换到可用链，再重试操作
+- JSON‑RPC：根据返回 message 提示具体原因（余额、gas、nonce、方法）
+- WalletConnect：校验 projectId 与网络状态；必要时重启二维码会话
+
 ## Lark 表格粘贴提示
 - 如直接粘贴 CSV 到 Lark 表格出现整段进入首格现象：
   - 先将 CSV 内容粘贴到 Excel 或 WPS

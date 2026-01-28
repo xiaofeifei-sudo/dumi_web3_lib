@@ -4,7 +4,6 @@ import type {
   ConnectingStatusConfig,
   ConnectOptions,
   ConnectorTriggerProps,
-  Locale,
   Wallet,
 } from 'pelican-web3-lib-common';
 import type { EmptyProps, ModalProps } from 'antd';
@@ -141,12 +140,6 @@ export type ConnectModalProps = ModalProps &
      * @descEn modal mode
      */
     mode?: 'simple' | 'normal' | 'auto';
-    /**
-     * @desc 自定义本地化配置
-     * @descEn Custom localization configuration
-     */
-    locale?: Locale['ConnectModal'];
-
     addressPrefix?: string | false;
 
     /**

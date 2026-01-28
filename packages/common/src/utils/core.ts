@@ -89,7 +89,7 @@ export const CoreUtil = {
       return this.formatNativeUrl(appUrl, wcUri, name);
     }
     let safeAppUrl = appUrl;
-    //  Universal link required in telegram context
+    // 在 Telegram 环境中需要使用通用链接（Universal Link）
     if (safeAppUrl.startsWith("https://t.me")) {
       // eslint-disable-next-line require-unicode-regexp
       const formattedUri = Buffer.from(wcUri).toString("base64").replace(/[=]/g, "");

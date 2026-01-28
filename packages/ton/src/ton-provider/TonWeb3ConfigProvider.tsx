@@ -1,6 +1,5 @@
 import React, { useEffect, type PropsWithChildren } from 'react';
 import type { CHAIN, TonConnectOptions, Wallet } from '@tonconnect/sdk';
-import type { Locale } from 'pelican-web3-lib-common';
 
 import { TonWalletFactory } from '../wallets/factory';
 import type { TonBasicWallet, TonWalletMetadata } from '../wallets/type';
@@ -25,7 +24,6 @@ export const TonConnectorContext = React.createContext<TonConnectorContextProps 
 
 /**
  * TonWeb3ConfigProvider 组件的入参
- * - locale：国际化语言
  * - balance：是否展示余额
  * - wallets：可用的钱包列表（元数据）
  * - chain：连接的链（主网/测试网）
@@ -33,7 +31,6 @@ export const TonConnectorContext = React.createContext<TonConnectorContextProps 
  * - ignoreConfig：当为 true 时，合并上层上下文时忽略当前配置（用于多链切换避免闪烁）
  */
 export interface TonWeb3ConfigProviderProps extends TonConnectOptions {
-  locale?: Locale;
   balance?: boolean;
   wallets: TonWalletMetadata[];
   chain?: CHAIN;
@@ -54,7 +51,7 @@ export const TonWeb3ConfigProvider: React.FC<PropsWithChildren<TonWeb3ConfigProv
   children,
   ...restProps
 }) => {
-  const { balance, locale, wallets, chain, reconnect = true, ignoreConfig } = restProps;
+  const { balance, wallets, chain, reconnect = true, ignoreConfig } = restProps;
 
   const [tonConnectSdk, setTonConnectSdk] = React.useState<TonConnectSdk | null>(null);
   const [tonSelectWallet, setTonSelectWallet] = React.useState<Wallet | null>(null);
@@ -99,7 +96,6 @@ export const TonWeb3ConfigProvider: React.FC<PropsWithChildren<TonWeb3ConfigProv
       <TonConfigProvider
         wallets={tonWallets.map((w) => TonWalletFactory(w).create())}
         balance={balance}
-        locale={locale}
         ignoreConfig={ignoreConfig}
       >
         {children}

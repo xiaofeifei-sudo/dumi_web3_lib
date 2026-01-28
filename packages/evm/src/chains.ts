@@ -1,3 +1,12 @@
+/**
+ * chains.ts
+ * 提供 pelican-web3-lib-assets 中的链资产到 wagmi 链配置的映射集合。
+ * 
+ * 功能与用法：
+ * - 统一导出具备展示信息（id/name/icon/nativeCurrency）与底层连接信息（RPC/Explorer）的链对象；
+ * - 每个导出均符合 ChainAssetWithWagmiChain 类型，包含 wagmiChain 字段供 wagmi 使用；
+ * - 可在 WagmiWeb3ConfigProvider 中直接传入这些链以生成 wagmi Config。
+ */
 import {
   Arbitrum as ArbitrumAsset,
   Avalanche as AvalancheAsset,
@@ -39,57 +48,68 @@ import type { ChainAssetWithWagmiChain } from './interface';
  * - 将 pelican-web3-lib-assets 提供的链描述与 wagmi 的链配置关联
  * - 提供 id、name、icon 等展示信息与底层 RPC/Explorer 等连接信息
  */
+// 以太坊主网：生产环境主网，默认优先加入
 export const Mainnet: ChainAssetWithWagmiChain = {
   ...MainnetAsset,
   wagmiChain: mainnet,
 };
 
+// Goerli 测试网：已逐步废弃，保留以兼容历史环境
 export const Goerli: ChainAssetWithWagmiChain = {
   ...GoerliAsset,
   wagmiChain: goerli,
 };
 
+// Sepolia 测试网：当前主流以太坊测试网
 export const Sepolia: ChainAssetWithWagmiChain = {
   ...SepoliaAsset,
   wagmiChain: sepolia,
 };
 
+// Holesky 测试网：以太坊新测试网，适合更大规模验证
 export const Holesky: ChainAssetWithWagmiChain = {
   ...HoleskyAsset,
   wagmiChain: holesky,
 };
 
+// Polygon 主网
 export const Polygon: ChainAssetWithWagmiChain = {
   ...PolygonAsset,
   wagmiChain: polygon,
 };
 
+// BSC 主网
 export const BSC: ChainAssetWithWagmiChain = {
   ...BSCAsset,
   wagmiChain: bsc,
 };
 
+// Arbitrum 主网
 export const Arbitrum: ChainAssetWithWagmiChain = {
   ...ArbitrumAsset,
   wagmiChain: arbitrum,
 };
 
+// Optimism 主网
 export const Optimism: ChainAssetWithWagmiChain = {
   ...OptimismAsset,
   wagmiChain: optimism,
 };
 
+// Avalanche 主网
 export const Avalanche: ChainAssetWithWagmiChain = {
   ...AvalancheAsset,
   wagmiChain: avalanche,
 };
 
+// Base 主网
 export const Base: ChainAssetWithWagmiChain = {
   ...BaseAsset,
   wagmiChain: base,
 };
 
 // OKX X1 测试网：参考文档 https://www.okx.com/cn/x1/docs/developer/build-on-x1/quickstart
+// 该网络在 wagmi 中暂无内置定义，因此手动提供 wagmiChain 所需字段
 export const X1Testnet: ChainAssetWithWagmiChain = {
   ...X1TestnetAsset,
   wagmiChain: {
@@ -110,21 +130,25 @@ export const X1Testnet: ChainAssetWithWagmiChain = {
   },
 };
 
+// Scroll 主网
 export const Scroll: ChainAssetWithWagmiChain = {
   ...ScrollAsset,
   wagmiChain: scroll,
 };
 
+// Scroll Sepolia 测试网
 export const ScrollSepolia: ChainAssetWithWagmiChain = {
   ...ScrollSepoliaAsset,
   wagmiChain: scrollSepolia,
 };
 
+// Hardhat 本地开发网络
 export const Hardhat: ChainAssetWithWagmiChain = {
   ...HardhatAsset,
   wagmiChain: hardhat,
 };
 
+// Localhost 本地节点网络
 export const Localhost: ChainAssetWithWagmiChain = {
   ...LocalhostAsset,
   wagmiChain: localhost,

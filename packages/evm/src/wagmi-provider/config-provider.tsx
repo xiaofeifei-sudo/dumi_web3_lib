@@ -4,7 +4,6 @@ import {
   Web3ConfigProvider,
   type Account,
   type Chain,
-  type Locale,
   type Wallet,
 } from 'pelican-web3-lib-common';
 import type { Config as WagmiConfig } from 'wagmi';
@@ -36,7 +35,6 @@ import { getNFTMetadata } from './methods';
  * PelicanWeb3ConfigProvider 组件属性
  * - chainAssets: 支持的链资产列表（用于映射 wagmi 链到展示用链信息）
  * - walletFactories: 钱包工厂列表（根据连接器生成可用钱包）
- * - locale: 本地化配置
  * - children: 子节点
  * - ens: 是否启用 ENS 名称与头像解析
  * - balance: 是否查询账户余额
@@ -49,7 +47,6 @@ import { getNFTMetadata } from './methods';
 export interface PelicanWeb3ConfigProviderProps {
   chainAssets: Chain[];
   walletFactories: WalletFactory[];
-  locale?: Locale;
   children?: React.ReactNode;
   ens?: boolean;
   balance?: boolean;
@@ -77,7 +74,6 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     walletFactories,
     ens = true,
     balance,
-    locale,
     eip6963,
     wagimConfig,
     useWalletConnectOfficialModal,
@@ -263,7 +259,6 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       const { getNonce, createMessage, verifyMessage } = siwe!;
       let msg: string;
       let signature: `0x${string}`;
-
       try {
         // 获取 nonce
         const nonce = await getNonce(signAddress);
@@ -287,10 +282,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     },
     [siwe, currentChain, signMessageAsync],
   );
-
+  
   return (
     <Web3ConfigProvider
-      locale={locale}
       availableChains={chainList}
       chain={currentChain}
       account={account}
