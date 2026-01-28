@@ -1,6 +1,7 @@
 import { fillAddressWith0x, requestWeb3Asset, type NFTMetadata } from 'pelican-web3-lib-common';
 import type { Config } from 'wagmi';
 import { readContract } from 'wagmi/actions';
+import { normalizeEvmError } from '../../errors';
 
 /**
  * 获取 ERC-721/1155 NFT 的链上元数据
@@ -18,26 +19,30 @@ export async function getNFTMetadata(
   tokenId: bigint,
   chainId?: number,
 ): Promise<NFTMetadata> {
-  const tokenURI = await readContract(config as any, {
-    address: fillAddressWith0x(address),
-    args: [tokenId],
-    chainId,
-    abi: [
-      {
-        name: 'tokenURI',
-        inputs: [
-          {
-            name: 'tokenId',
-            type: 'uint256',
-          },
-        ],
-        outputs: [{ name: '', type: 'string' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-    functionName: 'tokenURI',
-  });
-  const metaInfo = await requestWeb3Asset(tokenURI as string);
-  return metaInfo;
+  try {
+    const tokenURI = await readContract(config as any, {
+      address: fillAddressWith0x(address),
+      args: [tokenId],
+      chainId,
+      abi: [
+        {
+          name: 'tokenURI',
+          inputs: [
+            {
+              name: 'tokenId',
+              type: 'uint256',
+            },
+          ],
+          outputs: [{ name: '', type: 'string' }],
+          stateMutability: 'view',
+          type: 'function',
+        },
+      ],
+      functionName: 'tokenURI',
+    });
+    const metaInfo = await requestWeb3Asset(tokenURI as string);
+    return metaInfo;
+  } catch (error: any) {
+    throw normalizeEvmError(error, { action: 'other', chainId });
+  }
 }

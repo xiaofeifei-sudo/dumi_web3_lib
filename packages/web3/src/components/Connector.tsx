@@ -7,6 +7,7 @@ import type {
   ConnectOptions,
   UniversalWeb3ProviderInterface,
   Wallet,
+  ProviderError,
 } from 'pelican-web3-lib-common';
 import useProvider from '../hooks/useProvider';
 import { ConnectModal, type ConnectModalProps } from './connect-modal';
@@ -51,32 +52,39 @@ const Connector: React.FC<ConnectorProps> = (props) => {
   const [messageApi, contextHolder] = message.useMessage();
   // simplified: ConnectModal 将负责展示与状态交互
 
+  /// 连接钱包
   const connectWallet = async (wallet?: Wallet, options?: ConnectOptions) => {
     onConnect?.();
-    try {
-      setConnecting(true);
-      if (wallet?.customQrCodePanel && options?.connectType === 'qrCode') {
-        setOpen(false);
-      }
-      const connectedAccount = await connect?.(wallet, options);
-      onConnected?.(connectedAccount ? (connectedAccount as Account) : undefined);
-      if (sign?.signIn && (connectedAccount as Account | undefined)?.address) {
-        setConnecting({
-          status: 'signing',
-        });
-        await sign.signIn((connectedAccount as Account).address);
-      }
+    setConnecting(true);
+    if (wallet?.customQrCodePanel && options?.connectType === 'qrCode') {
       setOpen(false);
-    } catch (e: any) {
-      if (typeof onConnectError === 'function') {
-        onConnectError(e);
-      } else {
-        messageApi.error(e?.message ?? String(e));
-        console.error(e);
-      }
-    } finally {
-      setConnecting(false);
     }
+    const connectPromise = connect ? connect(wallet, options) : Promise.resolve(undefined);
+    connectPromise
+      .then((connectedAccount) => {
+        onConnected?.(connectedAccount ? (connectedAccount as Account) : undefined);
+        if (sign?.signIn && (connectedAccount as Account | undefined)?.address) {
+          setConnecting({
+            status: 'signing',
+          });
+          return sign.signIn((connectedAccount as Account).address);
+        }
+        return undefined;
+      })
+      .then(() => {
+        setOpen(false);
+      })
+      .catch((err: ProviderError) => {
+        if (typeof onConnectError === 'function') {
+          onConnectError(err);
+        } else {
+          messageApi.error(err.message);
+          console.error(err);
+        }
+      })
+      .finally(() => {
+        setConnecting(false);
+      });
   };
 
   if (!React.isValidElement(children)) {
@@ -90,6 +98,7 @@ const Connector: React.FC<ConnectorProps> = (props) => {
       {React.cloneElement(children as React.ReactElement<any>, {
         account,
         onConnectClick: async (wallet?: Wallet) => {
+          console.log("连接钱包");
           if (!wallet) {
             setOpen(true);
             return;

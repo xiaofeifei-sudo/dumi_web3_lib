@@ -1,30 +1,23 @@
 import React from 'react';
-import { Space } from 'antd';
-import {
-  WagmiWeb3ConfigProvider,
-  MetaMask,
-  TokenPocket,
-  OkxWallet,
-  WalletConnect,
-  Mainnet,
-} from 'pelican-web3-lib-evm';
-import { QueryClient } from '@tanstack/react-query';
-import { http } from 'wagmi';
+import {Space} from 'antd';
+import {Mainnet, MetaMask, OkxWallet, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
+import {QueryClient} from '@tanstack/react-query';
+import {http} from 'wagmi';
 import Connector from '../../components/Connector';
-import { ConnectButton } from '../../components/connect-button';
+import {ConnectButton} from '../../components/connect-button';
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   return (
     <WagmiWeb3ConfigProvider
-       eip6963={{
+      eip6963={{
         autoAddInjectedWallets: true,
       }}
       ens
       balance
       chains={[Mainnet]}
-      wallets={[MetaMask(), TokenPocket(), OkxWallet(), WalletConnect({ useWalletConnectOfficialModal: false }),]}
+      wallets={[MetaMask(), TokenPocket(), OkxWallet(), WalletConnect({useWalletConnectOfficialModal: false}),]}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
       }}
@@ -35,7 +28,7 @@ const App: React.FC = () => {
     >
       <Space direction="vertical">
         <Connector>
-          <ConnectButton quickConnect />
+          <ConnectButton quickConnect/>
         </Connector>
       </Space>
     </WagmiWeb3ConfigProvider>

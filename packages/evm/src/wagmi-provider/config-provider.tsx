@@ -1,13 +1,8 @@
 import React from 'react';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider,} from 'pelican-web3-lib-common';
+import type {Config as WagmiConfig} from 'wagmi';
 import {
-  ConnectStatus,
-  Web3ConfigProvider,
-  type Account,
-  type Chain,
-  type Wallet,
-} from 'pelican-web3-lib-common';
-import type { Config as WagmiConfig } from 'wagmi';
-import {
+  type Connector as WagmiConnector,
   useAccount,
   useBalance,
   useConfig,
@@ -16,20 +11,15 @@ import {
   useEnsName,
   useSignMessage,
   useSwitchChain,
-  type Connector as WagmiConnector,
 } from 'wagmi';
-import { disconnect, getAccount } from 'wagmi/actions';
+import {disconnect, getAccount} from 'wagmi/actions';
 
-import { Mainnet } from '../chains';
-import type {
-  EIP6963Config,
-  SIWEConfig,
-  WalletFactory,
-  WalletUseInWagmiAdapter,
-} from '../interface';
-import { isEIP6963Connector } from '../utils';
-import { EIP6963Wallet } from '../wallets/eip6963';
-import { getNFTMetadata } from './methods';
+import {Mainnet} from '../chains';
+import { normalizeEvmError } from '../errors';
+import type {EIP6963Config, SIWEConfig, WalletFactory, WalletUseInWagmiAdapter,} from '../interface';
+import {isEIP6963Connector} from '../utils';
+import {EIP6963Wallet} from '../wallets/eip6963';
+import {getNFTMetadata} from './methods';
 
 /**
  * PelicanWeb3ConfigProvider 组件属性
@@ -80,14 +70,14 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     siwe,
     ignoreConfig,
   } = props;
-  const { address, isDisconnected, chain, addresses } = useAccount();
+  const {address, isDisconnected, chain, addresses} = useAccount();
   const config = useConfig();
-  const { connectAsync } = useConnect();
-  const { switchChain } = useSwitchChain();
-  const { data: balanceData } = useBalance({ address });
-  const { data: ensName } = useEnsName({ address });
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName ?? undefined });
-  const { signMessageAsync } = useSignMessage();
+  const {connectAsync} = useConnect();
+  const {switchChain} = useSwitchChain();
+  const {data: balanceData} = useBalance({address});
+  const {data: ensName} = useEnsName({address});
+  const {data: ensAvatar} = useEnsAvatar({name: ensName ?? undefined});
+  const {signMessageAsync} = useSignMessage();
 
   const [status, setStatus] = React.useState<ConnectStatus>(ConnectStatus.Disconnected);
 
@@ -98,12 +88,12 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const account: Account | undefined =
     address && !isDisconnected
       ? {
-          address,
-          name: ensName && ens ? ensName : undefined,
-          avatar: ensAvatar ?? undefined,
-          addresses,
-          status: status,
-        }
+        address,
+        name: ensName && ens ? ensName : undefined,
+        avatar: ensAvatar ?? undefined,
+        addresses,
+        status: status,
+      }
       : undefined;
 
   /**
@@ -229,9 +219,8 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       // 未连接任何链时，保持当前链不变
       let newChain = chainAssets?.find((item) => item?.id === chainId);
       if (!newChain && chainId) {
-        newChain = { id: chainId, name: chainName };
+        newChain = {id: chainId, name: chainName};
       }
-
       /* v8 ignore next */
       return newChain || prevChain;
     });
@@ -243,7 +232,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
    * 获取 NFT 元数据
    */
   const getNFTMetadataFunc = React.useCallback(
-    async ({ address: contractAddress, tokenId }: { address: string; tokenId?: bigint }) =>
+    async ({address: contractAddress, tokenId}: { address: string; tokenId?: bigint }) =>
       getNFTMetadata(config, contractAddress, tokenId!, chain?.id),
     [chain?.id],
   );
@@ -256,7 +245,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
    */
   const signIn = React.useCallback(
     async (signAddress: string) => {
-      const { getNonce, createMessage, verifyMessage } = siwe!;
+      const {getNonce, createMessage, verifyMessage} = siwe!;
       let msg: string;
       let signature: `0x${string}`;
       try {
@@ -272,17 +261,17 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           chainId: currentChain?.id ?? Mainnet.id,
         });
         if (signMessageAsync) {
-          signature = await signMessageAsync?.({ message: msg });
+          signature = await signMessageAsync?.({message: msg});
           await verifyMessage(msg!, signature!);
           setStatus(ConnectStatus.Signed);
         }
       } catch (error: any) {
-        throw new Error(error.message);
+        throw normalizeEvmError(error, { action: 'sign' });
       }
     },
     [siwe, currentChain, signMessageAsync],
   );
-  
+
   return (
     <Web3ConfigProvider
       availableChains={chainList}
@@ -296,46 +285,50 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       balance={
         balance
           ? {
-              symbol: balanceData?.symbol,
-              value: balanceData?.value,
-              decimals: balanceData?.decimals,
-              icon: currency?.icon,
-            }
+            symbol: balanceData?.symbol,
+            value: balanceData?.value,
+            decimals: balanceData?.decimals,
+            icon: currency?.icon,
+          }
           : undefined
       }
       availableWallets={wallets}
       addressPrefix="0x"
       connect={async (wallet, options) => {
         // 连接钱包：优先使用适配器提供的 wagmi 连接器，回退到名称匹配
-        let connector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(options);
-        if (!connector && wallet) {
-          connector = findConnectorByName(wallet.name);
+        try {
+          let connector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(options);
+          if (!connector && wallet) {
+            connector = findConnectorByName(wallet.name);
+          }
+          if (!connector) {
+            throw new Error(`Can not find connector for ${wallet?.name}`);
+          }
+          const {accounts} = await connectAsync({
+            connector,
+            chainId: currentChain?.id,
+          });
+          return {
+            address: accounts?.[0],
+            addresses: accounts,
+          };
+        } catch (e: any) {
+          throw normalizeEvmError(e, { action: 'connect', walletName: wallet?.name });
         }
-        if (!connector) {
-          throw new Error(`Can not find connector for ${wallet?.name}`);
-        }
-        const { accounts } = await connectAsync({
-          connector,
-          chainId: currentChain?.id,
-        });
-        return {
-          address: accounts?.[0],
-          addresses: accounts,
-        };
       }}
       disconnect={async () => {
         // await disconnectAsync();
         // TODO@jeasonstudio: wagmi useDisconnect hook 在处理多实例（config）共存时，
         // 存在一些状态处理的 bug，暂时用更低阶 API 代替。
-        const { connector } = getAccount(config);
-        await disconnect(config, { connector });
+        const {connector} = getAccount(config);
+        await disconnect(config, {connector});
       }}
       switchChain={async (newChain: Chain) => {
         if (!chain) {
           // 尚未连接任何链，直接更新当前链
           setCurrentChain(newChain);
         } else {
-          switchChain?.({ chainId: newChain.id });
+          switchChain?.({chainId: newChain.id});
         }
       }}
       getNFTMetadata={getNFTMetadataFunc}
