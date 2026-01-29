@@ -196,6 +196,8 @@ export interface UniversalWeb3ProviderInterface {
   balance?: Balance;
   // 余额获取状态
   balanceLoading?: BalanceStatusConfig;
+  // 实时获取余额（可选传入代币）
+  getBalance?: (params?: { token?: Token }) => Promise<Balance | undefined>;
 
   // 可用钱包与可用链（用于选择面板）
   availableWallets?: Wallet[];
@@ -214,6 +216,8 @@ export interface UniversalWeb3ProviderInterface {
 
   // 对于比特币链，tokenId 不适用（为 undefined）
   getNFTMetadata?: (params: { address: string; tokenId?: bigint }) => Promise<NFTMetadata>;
+
+  sendTransaction?: (params: TransferParams) => Promise<`0x${string}`>;
 
   // 应用层签名配置
   sign?: SignConfig;
@@ -365,6 +369,11 @@ export type Token = {
   }[];
 };
 
+export type TransferParams = {
+  to: string;
+  value?: number | bigint;
+  token?: Token;
+};
 
 /// 签名配置
 export interface SignConfig {

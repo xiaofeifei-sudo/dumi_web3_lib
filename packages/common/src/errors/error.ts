@@ -1,4 +1,4 @@
-export type Web3Action = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'other';
+export type Web3Action = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'transfer' | 'other';
 
 export class ProviderError extends Error {
   code?: number | string;

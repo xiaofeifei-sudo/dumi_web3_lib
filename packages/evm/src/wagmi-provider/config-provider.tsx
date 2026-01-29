@@ -13,13 +13,14 @@ import {
   useSwitchChain,
 } from 'wagmi';
 import {disconnect, getAccount} from 'wagmi/actions';
+import { getBalance as getBalanceRealtime } from './methods/getBalance';
 
 import {Mainnet} from '../chains';
 import { normalizeEvmError } from '../errors';
 import type {EIP6963Config, SIWEConfig, WalletFactory, WalletUseInWagmiAdapter,} from '../interface';
 import {isEIP6963Connector} from '../utils';
 import {EIP6963Wallet} from '../wallets/eip6963';
-import {getNFTMetadata} from './methods';
+import {getNFTMetadata, sendTransaction as sendTx} from './methods';
 
 /**
  * PelicanWeb3ConfigProvider 组件属性
@@ -294,6 +295,27 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       availableChains={chainList}
       chain={currentChain}
       account={account}
+      getBalance={async (params?: { token?: Token }) =>
+        address
+          ? getBalanceRealtime(
+              config,
+              address,
+              chainIdForBalance,
+              params?.token ?? token,
+              currency?.icon,
+            )
+          : undefined
+      }
+      sendTransaction={async (params) => {
+        try {
+          return await sendTx(config, {
+            ...params,
+            chainId: chain?.id ?? wagimConfig.chains?.[0]?.id,
+          });
+        } catch (error: any) {
+          throw normalizeEvmError(error, { action: 'transfer' });
+        }
+      }}
       sign={
         siwe && {
           signIn,

@@ -261,6 +261,23 @@ JSON‑RPC 常见错误码（由钱包或节点返回，EIP‑1474）
 | -32006 | 不支持的 JSON‑RPC 版本（使用兼容版本） |
 | -32042 | 方法不存在或不可用（与 -32601 含义相近） |
 
+自定义错误码（EVM 适配层）
+
+| 错误码 | 名称 | 说明 |
+| --- | --- | --- |
+| 5000 | ProviderNotFound | 未找到可用的钱包 Provider（未安装或未启用扩展/应用） |
+| 5001 | ConnectorNotFound | 未找到可用的钱包连接器（配置缺失或钱包未支持） |
+| 5002 | ConnectorChainMismatch | 连接器当前链与连接使用的链不一致 |
+| 5003 | ChainNotConfigured | 请求的链未在当前应用中配置 |
+| 5004 | ConnectorAlreadyConnected | 当前连接器已连接（避免重复连接或切换前需先断开） |
+| 5005 | SwitchChainNotSupported | 当前钱包不支持程序化切链或切链失败 |
+| 5012 | ConnectorUnavailableReconnecting | 连接器处于重连阶段，不可用（仅保证 id/name/type/uid 可用） |
+| 5016 | ConnectorNotConnected | 连接器未连接（需要先在钱包中连接账户） |
+
+说明：
+- 以上错误码主要由 wagmi 的错误类型（如 ProviderNotFoundError、ConnectorNotFoundError 等）在适配层映射得到
+- 便于前端统一根据 code 做文案与埋点统计，而无需感知具体实现库
+
 WalletConnect 常见错误场景（标识/文案）
 
 - PROJECT_ID_INVALID：projectId 无效或未配置，无法建立会话
@@ -275,11 +292,14 @@ WalletConnect 常见错误场景（标识/文案）
 - 4902：确认钱包支持目标链与切链参数正确；必要时提示手动切换
 - EIP‑5792：按能力错误提示调整能力选项或更换支持该能力的钱包
 - JSON‑RPC：根据返回 message 提示具体原因（余额、gas、nonce、方法、版本/限制/资源等）
+- 5000–5005/5012/5016：根据“自定义错误码（EVM 适配层）”表定位 Provider/Connector/链配置问题
 - WalletConnect：校验 projectId 与网络状态；必要时重启二维码会话
 
 库内行为（normalizeEvmError）
 - 对标准错误码进行中文说明与操作建议，并附加上下文提示（操作/钱包/链）
-- 当错误不包含标准 code 时使用 -1，并保留原始错误信息供排查
+- 当错误包含自定义错误码（5000+）时，输出对应中文说明，便于前端统一处理
+- 当错误不包含标准 code 且为已知错误类型（含明确 name）时，优先按 name 映射到上述自定义错误码
+- 当仍无法识别错误类型时使用 -1，并保留原始错误信息供排查
 
 ## Lark 表格粘贴提示
 - 如直接粘贴 CSV 到 Lark 表格出现整段进入首格现象：

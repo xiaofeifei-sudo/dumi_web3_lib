@@ -14,6 +14,7 @@ import { TronChainIds } from 'pelican-web3-lib-common';
 import { hasWalletReady, getNetworkInfoByTronWeb, resolveTronWeb, switchTronChain } from '../utils';
 import { normalizeTronError } from '../errors';
 import { trc20Abi } from '../abi/trc20';
+import { getBalance as getTronBalance } from './methods/getBalance';
 
 /// 提供 TRON 网络的 Web3 配置上下文的属性接口
 interface PelicanWeb3ConfigProviderProps {
@@ -299,6 +300,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
       availableWallets={allWallets}
       availableChains={availableChains}
       chain={currentChain}
+      getBalance={async (params?: { token?: Token }) => {
+        const tronWeb: any = resolveTronWeb(wallet?.adapter);
+        if (!tronWeb || !address) return undefined;
+        return getTronBalance(tronWeb, address, currentChain, params?.token ?? token);
+      }}
       balance={
         balance
           ? {

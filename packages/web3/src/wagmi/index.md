@@ -148,6 +148,26 @@ Notes:
 - Provide a token asset (e.g., USDT) with contract addresses per chain.
 - When a token is set, the balance reflects the ERC‑20 rather than native currency.
 
+## Send Transactions
+
+Use the unified `sendTransaction` method from context to send native or ERC‑20 transfers.
+
+<code src="./demos/send-transaction.tsx"></code>
+
+Notes:
+- The example sends native tokens to the connected address itself.
+- `sendTransaction` automatically uses the current chain from the provider.
+
+### Send USDT (ERC‑20)
+
+You can also send ERC‑20 tokens such as USDT by passing a token asset.
+
+<code src="./demos/send-usdt.tsx"></code>
+
+Notes:
+- The demo uses the exported `USDT` token asset with per‑chain contract addresses.
+- Amount is converted using the token `decimal` field before calling `sendTransaction`.
+
 ## Use web3modal for WalletConnect
 
 When using WalletConnect with official modal enabled, a QR dialog is shown.

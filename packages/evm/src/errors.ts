@@ -2,7 +2,7 @@ import type { Chain } from 'viem';
 import { BaseError, RpcError } from 'viem';
 import { ProviderError } from 'pelican-web3-lib-common';
 
-export type EvmAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'other';
+export type EvmAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'transfer' | 'other';
 
 /**
  * 错误码约定：
@@ -69,6 +69,17 @@ function ctxText(ctx?: NormalizeContext) {
   return parts.length ? `提示：${parts.join('，')}` : '';
 }
 
+const NAME_CODE_MAP = new Map<string, EvmErrorCode>([
+  ['ProviderNotFoundError', 5000],
+  ['ConnectorNotFoundError', 5001],
+  ['ConnectorChainMismatchError', 5002],
+  ['ChainNotConfiguredError', 5003],
+  ['ConnectorAlreadyConnectedError', 5004],
+  ['SwitchChainNotSupportedError', 5005],
+  ['ConnectorUnavailableReconnectingError', 5012],
+  ['ConnectorNotConnectedError', 5016],
+]);
+
 const CODE_MESSAGE_MAP = new Map<number, (ctx?: NormalizeContext) => string>([
   [4001, (ctx) => ['用户拒绝了当前请求。请在钱包界面确认后重试。', '如为签名或发送交易，请检查提示内容并确保授权。', ctxText(ctx)].filter(Boolean).join('\n')],
   [4100, (ctx) => ['请求的方法或账户未授权。请在钱包中授权访问或切换到已授权账户。', '如使用多账户，确认当前账户已授权该方法。', ctxText(ctx)].filter(Boolean).join('\n')],
@@ -76,6 +87,13 @@ const CODE_MESSAGE_MAP = new Map<number, (ctx?: NormalizeContext) => string>([
   [4900, (ctx) => ['钱包已与所有链断开连接。', '请重新连接钱包后再重试。', ctxText(ctx)].filter(Boolean).join('\n')],
   [4901, (ctx) => ['钱包未连接到请求的链。', '请在钱包中切换到目标链或添加该链。', ctxText(ctx)].filter(Boolean).join('\n')],
   [4902, (ctx) => ['尝试切换链时发生错误。', '请确认钱包支持该链并且链参数正确，稍后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5000, (ctx) => ['未找到可用的钱包 Provider。', '请确认已安装并启用钱包插件或打开钱包应用。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5001, (ctx) => ['未找到可用的钱包连接器。', '请检查是否正确配置了连接器或安装了对应钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5002, (ctx) => ['当前连接的链 ID 与预期不匹配。', '请在钱包中切换到目标链后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5003, (ctx) => ['请求的链未在当前应用中配置。', '请检查链配置或联系应用管理员添加该链。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5004, (ctx) => ['钱包连接器已连接。', '如需更换账户或钱包，请先断开当前连接。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5005, (ctx) => ['当前钱包不支持程序化切换链或切链失败。', '请在钱包中手动切换到目标链后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5016, (ctx) => ['钱包连接器未连接。', '请先在钱包中连接账户，然后重试当前操作。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5700, (ctx) => ['钱包不支持一个未标记为可选的能力。', '请移除该能力或使用支持该能力的钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5710, (ctx) => ['钱包不支持请求的链 ID。', '请更换到受支持的链或使用支持该链的钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5720, (ctx) => ['存在重复的 Bundle ID。', '请更换唯一的 ID 后重新提交。', ctxText(ctx)].filter(Boolean).join('\n')],
@@ -114,22 +132,37 @@ export function normalizeEvmError(
     error?.shortMessage ??
     error?.message ??
     (typeof error === 'string' ? error : 'Unexpected error');
+  let code: EvmErrorCode =
+    typeof error?.code === 'number' ? error.code : -1;
+  const name = typeof error?.name === 'string' ? error.name : undefined;
   if (error instanceof RpcError) {
+    console.error("RpcError", error);
     const generator = CODE_MESSAGE_MAP.get(error.code);
     if (generator) {
       message = generator(ctx);
     }
+    code = error.code;
   } else if (typeof error?.code === 'number') {
     const generator = CODE_MESSAGE_MAP.get(error.code);
     if (generator) {
       message = generator(ctx);
     }
   } else if (error instanceof BaseError) {
+    console.error("BaseError", error);
     message = [error.message, ctxText(ctx)].filter(Boolean).join('\n');
+  } else if ((code === -1 || !CODE_MESSAGE_MAP.has(code)) && name) {
+    const mappedCode = NAME_CODE_MAP.get(name);
+    if (typeof mappedCode === 'number') {
+      const generator = CODE_MESSAGE_MAP.get(mappedCode);
+      if (generator) {
+        message = generator(ctx);
+      }
+      code = mappedCode;
+    }
   }
   return new EvmProviderError({
     message,
-    code: typeof error?.code === 'number' ? error.code : -1,
+    code,
     action,
     cause: error,
     walletName,

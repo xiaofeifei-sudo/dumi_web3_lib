@@ -145,7 +145,27 @@ SIWE 是指 Sign‑In with Ethereum。你的网站可通过签名验证用户登
 <code src="./demos/token-balance.tsx"></code>
 
 说明：
-- 提供代币资产（如 USDT），其中包含按链的合约地址。
+ - 提供代币资产（如 USDT），其中包含按链的合约地址。
+
+## 发起交易
+
+通过上下文中的 `sendTransaction` 方法，可以统一发起原生代币或 ERC‑20 转账。
+
+<code src="./demos/send-transaction.tsx"></code>
+
+说明：
+- 示例演示将原生代币转账到当前连接地址自身。
+- `sendTransaction` 会自动使用 Provider 当前链信息。
+
+### 转账 USDT（ERC‑20）
+
+通过传入代币资产（例如 `USDT`），可以发起 ERC‑20 转账。
+
+<code src="./demos/send-usdt.tsx"></code>
+
+说明：
+- 示例使用导出的 `USDT` 代币资产（包含按链配置的合约地址）。
+- 在调用 `sendTransaction` 前会根据代币 `decimal` 将金额转换为最小单位。
 - 当设置了 `token` 时，余额显示为该代币的余额而非原生币。
 
 ## 使用 web3modal 连接 WalletConnect
