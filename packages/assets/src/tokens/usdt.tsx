@@ -16,7 +16,7 @@ export const USDT: Token = {
     },
     {
       chain: TronNileNet,
-      contract: 'TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj',
+      contract: 'TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf',
     },
     {
       chain: Mainnet,

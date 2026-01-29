@@ -5,7 +5,7 @@ import {
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
-import type { Account, Wallet, Token } from 'pelican-web3-lib-common';
+import type { Account, Wallet, Token, TransferParams } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider, type BalanceStatusConfig } from 'pelican-web3-lib-common';
 import type { Chain } from 'pelican-web3-lib-common';
 import { TronMainnet, TronNileNet, TronShastaNet } from 'pelican-web3-lib-assets';
@@ -13,8 +13,8 @@ import { TronChainIds } from 'pelican-web3-lib-common';
 
 import { hasWalletReady, getNetworkInfoByTronWeb, resolveTronWeb, switchTronChain } from '../utils';
 import { normalizeTronError } from '../errors';
-import { trc20Abi } from '../abi/trc20';
 import { getBalance as getTronBalance } from './methods/getBalance';
+import { sendTransaction as sendTronTransaction } from './methods/sendTransaction';
 
 /// 提供 TRON 网络的 Web3 配置上下文的属性接口
 interface PelicanWeb3ConfigProviderProps {
@@ -48,7 +48,7 @@ interface ConnectAsync {
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({ availableWallets, connectionError, ignoreConfig, balance, token, children, initialChain }) => {
-  const { address, wallet, wallets, connected, connect, disconnect, select } = useWallet();
+  const { address, wallet, wallets, connected, connect, disconnect, select, signTransaction } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
 
   const [account, setAccount] = useState<Account>();
@@ -77,61 +77,14 @@ export const PelicanWeb3ConfigProvider: React.FC<
         }
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
         if (!tronWeb) return;
-        // 优先查询 TRC-20 代币余额（若配置了 token 且当前链匹配到合约）
-        const contractOnChain = token?.availableChains?.find(
-          (item) => (item?.chain as any)?.id === (currentChain as any)?.id,
-        )?.contract;
-        if (contractOnChain) {
-          const contract = await tronWeb.contract(trc20Abi, contractOnChain);
-          const rawBalance = await contract.balanceOf(tronWeb.address.toHex(address)).call();
-          const rawDecimals = await contract.decimals().call();
-          console.log("跑到这里了", rawBalance, rawDecimals);
-          const toBigInt = (v: any): bigint => {
-            if (v === undefined || v === null) return 0n;
-            if (typeof v === 'bigint') return v;
-            if (typeof v === 'number') return BigInt(v);
-            if (typeof v === 'string') {
-              const s = v.startsWith('0x') ? v : `0x${v}`;
-              try {
-                return BigInt(s);
-              } catch {
-                try {
-                  return BigInt(v);
-                } catch {
-                  return 0n;
-                }
-              }
-            }
-            if (Array.isArray(v) && v.length > 0) {
-              return toBigInt(v[0]);
-            }
-            if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
-              return toBigInt(v.constantResult[0]);
-            }
-            return 0n;
-          };
-          const toNumber = (v: any): number => {
-            if (typeof v === 'number') return v;
-            if (typeof v === 'string') return Number(v);
-            if (Array.isArray(v) && v.length > 0) return Number(v[0]);
-            if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
-              const hex = v.constantResult[0];
-              try {
-                return Number(BigInt(hex.startsWith('0x') ? hex : `0x${hex}`));
-              } catch {
-                return Number(hex);
-              }
-            }
-            return token?.decimal ?? 6;
-          };
-          setBalanceData(toBigInt(rawBalance));
-          setTokenDecimals(toNumber(rawDecimals));
+        const result = await getTronBalance(tronWeb, address, currentChain, token);
+        if (!result) {
+          setBalanceData(undefined);
+          setTokenDecimals(undefined);
           return;
         }
-        // 默认查询原生 TRX 余额（单位：sun）
-        const sun: number = await tronWeb.trx.getBalance(address);
-        setBalanceData(BigInt(sun));
-        setTokenDecimals(undefined);
+        setBalanceData(result.value as bigint);
+        setTokenDecimals(result.decimals);
       } catch (e) {
         const normalized = normalizeTronError(e, {
           action: 'other',
@@ -304,6 +257,21 @@ export const PelicanWeb3ConfigProvider: React.FC<
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
         if (!tronWeb || !address) return undefined;
         return getTronBalance(tronWeb, address, currentChain, params?.token ?? token);
+      }}
+      sendTransaction={async (params: TransferParams) => {
+        try {
+          const tronWeb: any = resolveTronWeb(wallet?.adapter);
+          if (!tronWeb || !address) {
+            throw new Error('Wallet not connected');
+          }
+          return await sendTronTransaction(tronWeb, address, currentChain, signTransaction, params);
+        } catch (error) {
+          const normalized = normalizeTronError(error, {
+            action: 'other',
+            walletName: wallet?.adapter?.name,
+          });
+          throw normalized;
+        }
       }}
       balance={
         balance
