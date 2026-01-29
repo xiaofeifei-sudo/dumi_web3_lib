@@ -1,5 +1,6 @@
 import type { Chain } from 'viem';
 import { BaseError, RpcError } from 'viem';
+import { ProviderError } from 'pelican-web3-lib-common';
 
 export type EvmAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'other';
 
@@ -34,11 +35,7 @@ export type EvmAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'ot
  */
 export type EvmErrorCode = number;
 
-export class EvmProviderError extends Error {
-  code: EvmErrorCode;
-  action?: EvmAction;
-  cause?: unknown;
-  walletName?: string;
+export class EvmProviderError extends ProviderError {
   chainId?: Chain['id'];
   constructor(params: {
     message: string;
@@ -49,12 +46,14 @@ export class EvmProviderError extends Error {
     chainId?: Chain['id'];
     name?: string;
   }) {
-    super(params.message);
-    this.name = params.name ?? 'EvmProviderError';
-    this.code = params.code;
-    this.action = params.action;
-    this.cause = params.cause;
-    this.walletName = params.walletName;
+    super({
+      message: params.message,
+      code: params.code,
+      action: params.action,
+      cause: params.cause,
+      name: params.name ?? 'EvmProviderError',
+      walletName: params.walletName,
+    });
     this.chainId = params.chainId;
   }
 }

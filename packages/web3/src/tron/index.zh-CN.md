@@ -37,6 +37,10 @@ Tron 支持的钱包可以在 [tronwallet-adapter](https://github.com/web3-geek/
 
 <code src='./demos/transaction.tsx'></code>
 
+## 支持切换链
+
+<code src='./demos/chains.tsx'></code>
+
 使用建议：
 - TRON 常见代币（如 USDT-TRON）通常采用 6 位小数，请按需换算。
 - 可通过 connector 提供的方法完成消息与交易签名，无需手动维护连接状态。

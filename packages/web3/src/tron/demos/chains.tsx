@@ -1,19 +1,24 @@
+import React, { useState } from 'react';
 import {
   TronWeb3ConfigProvider,
   TronlinkWallet,
   BybitWallet,
   OkxTronWallet,
-  WalletConnectWallet,
   TokenPocketWallet,
   TrustWallet,
   ImTokenWallet,
   MetaMaskTronWallet,
+  WalletConnectWallet,
 } from 'pelican-web3-lib-tron';
+import type { TronChain } from 'pelican-web3-lib-assets';
+import { TronMainnet, TronShastaNet, TronNileNet } from 'pelican-web3-lib-assets';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
 
+const Chains: React.FC = () => {
+  const [currentChain, setCurrentChain] = useState(TronMainnet);
+  const chains = [TronMainnet, TronShastaNet, TronNileNet];
 
-const Basic = () => {
   return (
     <TronWeb3ConfigProvider
       autoConnect={false}
@@ -27,19 +32,21 @@ const Basic = () => {
         MetaMaskTronWallet,
         WalletConnectWallet,
       ]}
-      walletConnect={{
-        network: 'Nile',
-        options: {
-          projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID',
-        },
-      }}
-      onError={(error)=>console.error("TronWeb3ConfigProvider error:", error)}
     >
-      <Connector>
+      <Connector
+        availableChains={chains}
+        chain={currentChain}
+        switchChain={async (c: any) => {
+          setCurrentChain(c);
+        }}
+        modalProps={{
+          mode: 'simple',
+        }}
+      >
         <ConnectButton />
       </Connector>
     </TronWeb3ConfigProvider>
   );
 };
 
-export default Basic;
+export default Chains;

@@ -13,6 +13,7 @@ export const enum ConnectStatus {
   Signed = 'signed',
 }
 
+/// 账户信息
 export interface Account {
   // 地址（不同链可能格式不同）
   address: string;
@@ -26,6 +27,7 @@ export interface Account {
   status?: ConnectStatus;
 }
 
+/// 链IDS
 export enum ChainIds {
   // 以太坊主网
   Mainnet = 1,
@@ -63,6 +65,7 @@ export enum ChainIds {
   Base = 8453,
 }
 
+/// Solana 链IDS
 export enum SolanaChainIds {
   // Solana 主网 Beta
   MainnetBeta = 2,
@@ -72,6 +75,8 @@ export enum SolanaChainIds {
   Testnet = 4,
 }
 
+
+/// Sui 链IDS
 export enum SuiChainIds {
   // 主网
   Mainnet = 1,
@@ -95,8 +100,10 @@ export enum TronChainIds {
 
 
 
+/// 浏览器链接类型
 export type BrowserLinkType = 'address' | 'transaction';
 
+/// 余额元数据
 export type BalanceMetadata = {
   // 币种图标
   icon?: React.ReactNode;
@@ -106,6 +113,7 @@ export type BalanceMetadata = {
   symbol?: string;
 };
 
+/// 链类型
 export enum ChainType {
   /**
    * 以太坊虚拟机及其兼容链
@@ -128,6 +136,7 @@ export enum ChainType {
   Sui = 'Sui',
 }
 
+/// 链信息
 export interface Chain {
   // 链 ID（预置枚举或自定义数值）
   id: ChainIds | number | TronChainIds | any;
@@ -148,6 +157,7 @@ export interface Chain {
   };
 }
 
+/// 非同质化代币（NFT）元数据
 export interface NFTMetadata {
   // 名称与描述
   name?: string;
@@ -166,6 +176,7 @@ export interface NFTMetadata {
   compiler?: string;
 }
 
+/// 连接选项
 export interface ConnectOptions {
   // 连接方式：浏览器扩展/二维码/打开移动端
   connectType?: 'extension' | 'qrCode' | 'openMobile';
@@ -306,6 +317,7 @@ export type WalletMetadata = {
   };
 };
 
+/// 余额信息
 export type Balance = BalanceMetadata & {
   // 余额（bigint 表示）
   value?: bigint;
@@ -313,6 +325,7 @@ export type Balance = BalanceMetadata & {
   coverAddress?: boolean;
 };
 
+/// 连接器触发组件属性
 export interface ConnectorTriggerProps {
   // 触发组件所需的上下文属性
   account?: Account;
@@ -327,11 +340,14 @@ export interface ConnectorTriggerProps {
 }
 
 
+/// 通用 EIP-6963 配置
 export interface UniversalEIP6963Config {
   // 是否自动添加注入的钱包（EIP-6963）
   autoAddInjectedWallets?: boolean;
 }
 
+
+/// 令牌信息
 export type Token = {
   // 名称与符号
   name: string;
@@ -347,6 +363,8 @@ export type Token = {
   }[];
 };
 
+
+/// 签名配置
 export interface SignConfig {
   // 必填方法
   signIn: (address: string) => Promise<void>;
@@ -357,8 +375,11 @@ export interface SignConfig {
   // signOutOnNetworkChange?: boolean; // 网络变更时自动登出（默认 true）
 }
 
+/// 连接状态
 export type ConnectingStatus = 'signing' | 'connecting';
 
+
+/// 连接状态配置
 export type ConnectingStatusConfig =
   | boolean
   | {

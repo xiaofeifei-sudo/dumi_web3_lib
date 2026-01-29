@@ -36,6 +36,10 @@ Ensure a TRON wallet extension is installed and unlocked (e.g., TronLink). Most 
 
 <code src='./demos/transaction.tsx'></code>
 
+## Support chain switching
+
+<code src='./demos/chains.tsx'></code>
+
 Tips:
 - TRON tokens (e.g., USDT on TRON) often use 6 decimals. Adjust amounts accordingly.
 - Use the connector’s provided methods for signing messages and transactions without manual state management.

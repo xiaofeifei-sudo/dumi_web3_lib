@@ -10,7 +10,7 @@ pnpm add pelican-web3-lib pelican-web3-lib-tron
 
 ## 导出结构
 - Provider：TronWeb3ConfigProvider（封装 @tronweb3 WalletProvider）
-- 钱包元数据：TronlinkWallet、OkxTronWallet、BybitWallet、BitgetWallet
+- 钱包元数据：TronlinkWallet、OkxTronWallet、BybitWallet、TokenPocketWallet、TrustWallet、ImTokenWallet、MetaMaskTronWallet、WalletConnectWallet
 - 工厂类型：StandardWallet、StandardWalletFactory、AdapterWalletFactory、WalletFactoryBuilder、StandardWalletFactoryBuilder
 - 工具函数：hasWalletReady（判断适配器就绪状态）
 
@@ -22,22 +22,47 @@ pnpm add pelican-web3-lib pelican-web3-lib-tron
 ```tsx
 import { ConnectButton, Connector } from 'pelican-web3-lib';
 import {
-  BitgetWallet,
   BybitWallet,
   OkxTronWallet,
   TronlinkWallet,
+  TokenPocketWallet,
+  TrustWallet,
+  ImTokenWallet,
+  MetaMaskTronWallet,
+  WalletConnectWallet,
   TronWeb3ConfigProvider,
 } from 'pelican-web3-lib-tron';
 
 const Basic = () => {
   return (
     <TronWeb3ConfigProvider
-      wallets={[TronlinkWallet, OkxTronWallet, BitgetWallet, BybitWallet]}
+      wallets={[
+        TronlinkWallet,
+        OkxTronWallet,
+        BybitWallet,
+        TokenPocketWallet,
+        TrustWallet,
+        ImTokenWallet,
+        MetaMaskTronWallet,
+        WalletConnectWallet,
+      ]}
       autoConnect
       onError={(e) => {
         // 错误上报或提示
         console.error(e);
       }}
+      // WalletConnect（需 projectId）
+      walletConnect={{
+        projectId: 'YOUR_PROJECT_ID',
+        metadata: {
+          name: 'YourDApp',
+          description: 'TRON DApp',
+          url: 'https://your-dapp.example.com',
+          icons: ['https://your-dapp.example.com/icon.png'],
+        },
+      }}
+      // Ledger（如需配置）
+      ledgerAdapterConfig={{}}
       // 可选：覆盖底层适配器集合
       // walletProviderProps={{ adapters: [new TronLinkAdapter(), new OkxWalletAdapter(), new BybitWalletAdapter()] }}
     >
@@ -68,12 +93,16 @@ export default Basic;
 - onError: 错误回调
 - walletProviderProps: 透传给底层 WalletProvider 的属性（可覆盖 adapters 集合）
 - ignoreConfig: 多 Provider 场景下的合并控制
-- locale: 本地化配置
+- walletConnect: WalletConnect 适配器配置（需 projectId）
+- ledgerAdapterConfig: Ledger 适配器配置
 
 ## 钱包元数据
 - TronlinkWallet：包含图标、应用下载链接与 Chrome 扩展信息
 - OkxTronWallet：复用通用 OKX 钱包元数据并标识 key 与分组
-- BybitWallet、BitgetWallet：包含图标、应用下载与 Chrome 扩展信息
+- BybitWallet：包含图标、应用下载与 Chrome 扩展信息
+- TokenPocketWallet、TrustWallet、ImTokenWallet：复用通用元数据并标识 key 与分组
+- MetaMaskTronWallet：MetaMask Tron 专用元数据
+- WalletConnectWallet：WalletConnect 展示元数据（二维码连接）
 - 用于 UI 展示与选择；真实连接由底层适配器完成
 
 ## 能力矩阵（钱包）
@@ -83,7 +112,17 @@ export default Basic;
 | TronLink | 是 | 是 | 支持 | 支持 | 支持 |
 | OKX Wallet | 是 | 是 | 支持 | 支持 | 支持 |
 | Bybit | 是 | 是 | 支持 | 支持 | 支持 |
-| Bitget | 是 | 是 | 支持 | 支持 | 支持 |
+| TokenPocket | 是 | 是 | 支持 | 支持 | 支持 |
+| MetaMask Tron | 是 | 是 | 支持 | 支持 | 支持 |
+| Trust Wallet | 是 | 是 | 支持 | 支持 | 支持 |
+| imToken | 是 | 是 | 支持 | 支持 | 支持 |
+| WalletConnect | 否 | 是 | 支持 | 支持 | 支持 |
+| Ledger | N/A | 是 | 支持 | 支持 | 支持 |
+| Gate Wallet | 是 | 是 | 支持 | 支持 | 支持 |
+| FoxWallet | 是 | 是 | 支持 | 支持 | 支持 |
+| TomoWallet | 是 | 是 | 支持 | 支持 | 支持 |
+| Binance Wallet | 是 | 是 | 支持 | 支持 | 支持 |
+| Guarda | 是 | 是 | 支持 | 支持 | 支持 |
 
 说明：
 - 扩展安装与就绪检测基于适配器 readyState（Found/Loading）
@@ -103,6 +142,8 @@ TronWeb3ConfigProviderProps
 | locale | Locale | 本地化配置 |
 | walletProviderProps | object | 透传到底层 WalletProvider 的属性（可自定义适配器等） |
 | ignoreConfig | boolean | 多 Provider 合并控制 |
+| walletConnect | WalletConnectAdapterConfig | WalletConnect 适配器配置（需 projectId） |
+| ledgerAdapterConfig | LedgerAdapterConfig | Ledger 适配器配置 |
 
 PelicanWeb3ConfigProvider（内部）
 
@@ -161,8 +202,64 @@ WalletConnect（如使用 @tronweb3/tronwallet-adapter-walletconnect）
 - 自动重连失败：检查 autoConnect 是否开启，以及浏览器扩展是否已登录
 - 切换多链 Provider 闪烁：在非激活 Provider 上设置 ignoreConfig: true，避免合并时闪烁
 - 未找到钱包扩展：请安装对应浏览器扩展并刷新页面；readyState 为 Found/Loading 视为就绪
-- 覆盖适配器：通过 walletProviderProps.adapters 传入自定义适配器集合（如新增 WalletConnect 支持）
+- 覆盖适配器：通过 walletProviderProps.adapters 传入自定义适配器集合（如扩展 WalletConnect/自定义顺序）
+- Ledger：需浏览器支持对应传输方式（如 WebUSB），并根据 ledgerAdapterConfig 配置
 
 
 ## 文档
 - TRON 官方：https://tron.network
+
+## 错误标准化（TRON）
+- 错误统一通过 normalizeTronError 标准化，优先依据错误类型（适配器错误类）生成 message 与 code；其次按错误类的 name 兜底；最后回落到原始错误的 message 或字符串。
+- 标准码仅用于 UI 与上层逻辑的统一处理，并不保证与底层钱包/节点原始 code 一致。
+
+### 码表（TRON）
+| code | 说明 | 对应类型/兜底 name |
+| --- | --- | --- |
+| 4900 | 连接断开 | WalletDisconnectedError |
+| 4901 | 网络不匹配 | （无类型，建议由业务在签名/交易前自检） |
+| 5000 | 钱包未找到/未安装 | WalletNotFoundError |
+| 5001 | 未选择钱包 | WalletNotSelectedError |
+| 5002 | 钱包未就绪/加载失败 | WalletWalletLoadError |
+| 5003 | 连接超时 | （无类型，依钱包实现） |
+| 5004 | 二维码弹窗关闭 | WalletWindowClosedError |
+| 5005 | 切链失败 | WalletSwitchChainError |
+| 5006 | 签名消息失败 | WalletSignMessageError |
+| 5007 | 签名交易失败 | WalletSignTransactionError |
+| 5011 | 获取网络失败 | WalletGetNetworkError |
+| 5015 | 连接/断开失败 | WalletConnectionError / WalletDisconnectionError |
+| -1 | 未知错误 | 兜底（未匹配到类型或 name） |
+
+说明：
+- 目前 TRON 适配器错误类名参考：WalletNotFoundError、WalletNotSelectedError、WalletDisconnectedError、WalletConnectionError、WalletDisconnectionError、WalletSignMessageError、WalletSignTransactionError、WalletWalletLoadError、WalletWindowClosedError、WalletSwitchChainError、WalletGetNetworkError。详见 @tronweb3/tronwallet-abstract-adapter。
+- 对于非适配器错误类（仅字符串 name 的情况），将按 name 兜底匹配，未命中则返回 -1。
+
+### 使用示例
+
+```ts
+import { normalizeTronError } from 'pelican-web3-lib-tron';
+
+try {
+  // 触发连接
+  await connect();
+} catch (e) {
+  const err = normalizeTronError(e, { action: 'connect', walletName: wallet?.adapter?.name });
+  // 根据标准码与文案处理 UI
+  switch (err.code) {
+    case 5000:
+      // 引导安装钱包
+      break;
+    case 4900:
+      // 提示断开，可触发重连
+      break;
+    default:
+      // 兜底提示
+      break;
+  }
+  // 展示统一中文文案
+  // err.message
+}
+```
+
+### 与 EVM 的差异
+- EVM 使用 EIP-1193/JSON-RPC 规范化的 code；TRON 以适配器错误类型为主进行标准化，并提供与 UI 一致的码表。

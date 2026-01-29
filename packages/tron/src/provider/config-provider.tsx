@@ -9,7 +9,9 @@ import type { Account, Wallet } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider } from 'pelican-web3-lib-common';
 
 import { hasWalletReady } from '../utils';
+import { normalizeTronError } from '../errors';
 
+/// 提供 TRON 网络的 Web3 配置上下文的属性接口
 interface PelicanWeb3ConfigProviderProps {
   availableWallets?: Wallet[];
   connectionError?: WalletError;
@@ -21,12 +23,15 @@ interface PelicanWeb3ConfigProviderProps {
   ignoreConfig?: boolean;
 }
 
+/// 连接异步操作的类型定义
 interface ConnectAsync {
   promise: Promise<Account>;
   resolve: (account?: Account) => void;
   reject: (reason: any) => void;
+  walletName?: AdapterName | null;
 }
 
+/// 提供 TRON 网络的 Web3 配置上下文
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({ availableWallets, connectionError, ignoreConfig, children }) => {
@@ -43,6 +48,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [address]);
 
+
+  /// 合并所有可用钱包和适配器
   const allWallets = useMemo<Wallet[]>(() => {
     const providedWallets = availableWallets?.map<Wallet>((w) => {
       const adapter = wallets?.find((item) => item.adapter.name === w.name)?.adapter;
@@ -65,9 +72,14 @@ export const PelicanWeb3ConfigProvider: React.FC<
     return providedWallets || [];
   }, [availableWallets, wallets]);
 
+  /// 处理连接错误
   useEffect(() => {
     if (connectionError) {
-      connectAsyncRef.current?.reject(connectionError);
+      const normalized = normalizeTronError(connectionError, {
+        action: 'connect',
+        walletName: connectAsyncRef.current?.walletName ?? wallet?.adapter?.name,
+      });
+      connectAsyncRef.current?.reject(normalized);
       connectAsyncRef.current = undefined;
     }
   }, [connectionError]);
@@ -84,6 +96,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
     });
   }, [address, connected, wallet?.adapter?.name]);
 
+
+  /// 处理连接成功
   useEffect(() => {
     if (!connectAsyncRef.current) {
       return;
@@ -103,8 +117,14 @@ export const PelicanWeb3ConfigProvider: React.FC<
         select(null as any);
         return;
       }
-
-      connect();
+      connect().catch((err) => {
+        const normalized = normalizeTronError(err, {
+          action: 'connect',
+          walletName: wallet?.adapter?.name,
+        });
+        connectAsyncRef.current?.reject(normalized);
+        connectAsyncRef.current = undefined;
+      });
     } else {
       if (connected) {
         disconnect();
@@ -120,24 +140,30 @@ export const PelicanWeb3ConfigProvider: React.FC<
       connect={async (_wallet) => {
         let resolve: any;
         let reject: any;
-
         const promise = new Promise<Account>((res, rej) => {
           resolve = res;
           reject = rej;
         });
-
-        connectAsyncRef.current = { promise, resolve, reject };
-
         const walletName = (_wallet?.name as AdapterName) ?? null;
-        select(walletName);
-
+        connectAsyncRef.current = { promise, resolve, reject, walletName };
+        try {
+          select(walletName);
+        } catch (err) {
+          const normalized = normalizeTronError(err, { action: 'connect', walletName });
+          reject(normalized);
+          connectAsyncRef.current = undefined;
+        }
         return promise;
       }}
       disconnect={async () => {
         try {
           await disconnect();
         } catch (error) {
-          console.error(error);
+          const normalized = normalizeTronError(error, {
+            action: 'disconnect',
+            walletName: wallet?.adapter?.name,
+          });
+          throw normalized;
         }
       }}
       ignoreConfig={ignoreConfig}

@@ -75,6 +75,7 @@ const Connector: React.FC<ConnectorProps> = (props) => {
         setOpen(false);
       })
       .catch((err: ProviderError) => {
+        console.warn("测试一下"+err);
         if (typeof onConnectError === 'function') {
           onConnectError(err);
         } else {

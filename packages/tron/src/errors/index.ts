@@ -1,0 +1,141 @@
+import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
+import {
+  WalletNotFoundError,
+  WalletNotSelectedError,
+  WalletDisconnectedError,
+  WalletConnectionError,
+  WalletDisconnectionError,
+  WalletWindowClosedError,
+  WalletSwitchChainError,
+  WalletSignMessageError,
+  WalletSignTransactionError,
+  WalletWalletLoadError,
+  WalletGetNetworkError,
+} from '@tronweb3/tronwallet-abstract-adapter';
+import { ProviderError } from 'pelican-web3-lib-common';
+
+export type TronAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'other';
+export type TronErrorCode = number;
+
+export class TronProviderError extends ProviderError {
+  network?: string;
+  constructor(params: {
+    message: string;
+    code?: TronErrorCode;
+    action?: TronAction;
+    cause?: unknown;
+    walletName?: string;
+    network?: string;
+    name?: string;
+  }) {
+    super({
+      message: params.message,
+      code: params.code,
+      action: params.action,
+      cause: params.cause,
+      name: params.name ?? 'TronProviderError',
+      walletName: params.walletName,
+    });
+    this.network = params.network;
+  }
+}
+
+type NormalizeContext = { action?: TronAction; walletName?: string; network?: string };
+
+function ctxText(ctx?: NormalizeContext) {
+  const parts: string[] = [];
+  if (ctx?.action) parts.push(`操作：${ctx.action}`);
+  if (ctx?.walletName) parts.push(`钱包：${ctx.walletName}`);
+  if (ctx?.network) parts.push(`网络：${ctx.network}`);
+  return parts.length ? `提示：${parts.join('，')}` : '';
+}
+
+const NAME_MESSAGE_MAP = new Map<string, (ctx?: NormalizeContext) => string>([
+  ['WalletNotFoundError', (ctx) => ['未检测到钱包。请安装对应扩展或打开 App 后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletNotSelectedError', (ctx) => ['未选择钱包。请先在界面中选择一个钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletDisconnectedError', (ctx) => ['钱包已断开连接。请重新连接后再试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletConnectionError', (ctx) => ['连接钱包失败。请检查钱包状态后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletDisconnectionError', (ctx) => ['断开钱包失败。请稍后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletWindowClosedError', (ctx) => ['用户关闭了二维码弹窗。请重新发起连接。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletSwitchChainError', (ctx) => ['切换网络失败或不被支持。请在钱包中切换到目标网络。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletSignMessageError', (ctx) => ['签名消息失败。请确认钱包状态与权限。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletSignTransactionError', (ctx) => ['签名交易失败。请确认交易内容与钱包状态。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletWalletLoadError', (ctx) => ['钱包加载失败。请重启或重新安装钱包后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  ['WalletGetNetworkError', (ctx) => ['获取网络信息失败。请检查钱包网络设置。', ctxText(ctx)].filter(Boolean).join('\n')],
+]);
+
+const NAME_CODE_MAP = new Map<string, number>([
+  ['WalletNotFoundError', 5000],
+  ['WalletNotSelectedError', 5001],
+  ['WalletDisconnectedError', 4900],
+  ['WalletConnectionError', 5015],
+  ['WalletDisconnectionError', 5015],
+  ['WalletWindowClosedError', 5004],
+  ['WalletSwitchChainError', 5005],
+  ['WalletSignMessageError', 5006],
+  ['WalletSignTransactionError', 5007],
+  ['WalletWalletLoadError', 5002],
+  ['WalletGetNetworkError', 5011],
+]);
+
+function messageByType(error: any, ctx?: NormalizeContext): string | undefined {
+  if (error instanceof WalletNotFoundError) return ['未检测到钱包。请安装对应扩展或打开 App 后重试。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletNotSelectedError) return ['未选择钱包。请先在界面中选择一个钱包。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletDisconnectedError) return ['钱包已断开连接。请重新连接后再试。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletConnectionError) return ['连接钱包失败。请检查钱包状态后重试。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletDisconnectionError) return ['断开钱包失败。请稍后重试。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletWindowClosedError) return ['用户关闭了二维码弹窗。请重新发起连接。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletSwitchChainError) return ['切换网络失败或不被支持。请在钱包中切换到目标网络。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletSignMessageError) return ['签名消息失败。请确认钱包状态与权限。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletSignTransactionError) return ['签名交易失败。请确认交易内容与钱包状态。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletWalletLoadError) return ['钱包加载失败。请重启或重新安装钱包后重试。', ctxText(ctx)].filter(Boolean).join('\n');
+  if (error instanceof WalletGetNetworkError) return ['获取网络信息失败。请检查钱包网络设置。', ctxText(ctx)].filter(Boolean).join('\n');
+  return undefined;
+}
+
+function codeByType(error: any): number | undefined {
+  if (error instanceof WalletNotFoundError) return 5000;
+  if (error instanceof WalletNotSelectedError) return 5001;
+  if (error instanceof WalletDisconnectedError) return 4900;
+  if (error instanceof WalletConnectionError) return 5015;
+  if (error instanceof WalletDisconnectionError) return 5015;
+  if (error instanceof WalletWindowClosedError) return 5004;
+  if (error instanceof WalletSwitchChainError) return 5005;
+  if (error instanceof WalletSignMessageError) return 5006;
+  if (error instanceof WalletSignTransactionError) return 5007;
+  if (error instanceof WalletWalletLoadError) return 5002;
+  if (error instanceof WalletGetNetworkError) return 5011;
+  return undefined;
+}
+
+/// 标准化 TRON 钱包错误
+export function normalizeTronError(
+  error: any,
+  context?: { action?: TronAction; walletName?: string; network?: string },
+): TronProviderError {
+  if (error instanceof TronProviderError) {
+    return error;
+  }
+
+  const action = context?.action ?? 'other';
+  const walletName = context?.walletName;
+  const network = context?.network;
+  const ctx = { action, walletName, network };
+  const message: string =
+    messageByType(error, ctx) ??
+    (typeof error?.name === 'string' ? NAME_MESSAGE_MAP.get(error.name)?.(ctx) : undefined) ??
+    (error as WalletError)?.message ??
+    (typeof error === 'string' ? error : 'Unexpected error');
+  const code: TronErrorCode =
+    codeByType(error) ??
+    (typeof error?.name === 'string' ? NAME_CODE_MAP.get(error.name) : undefined) ??
+    -1;
+  return new TronProviderError({
+    message,
+    code,
+    action,
+    cause: error,
+    walletName,
+    network,
+  });
+}
