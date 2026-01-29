@@ -5,7 +5,7 @@ import {
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
-import type { Account, Wallet } from 'pelican-web3-lib-common';
+import type { Account, Wallet, Token } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider, type BalanceStatusConfig } from 'pelican-web3-lib-common';
 import type { Chain } from 'pelican-web3-lib-common';
 import { TronMainnet, TronNileNet, TronShastaNet } from 'pelican-web3-lib-assets';
@@ -13,12 +13,19 @@ import { TronChainIds } from 'pelican-web3-lib-common';
 
 import { hasWalletReady, getNetworkInfoByTronWeb, resolveTronWeb, switchTronChain } from '../utils';
 import { normalizeTronError } from '../errors';
+import { trc20Abi } from '../abi/trc20';
 
 /// 提供 TRON 网络的 Web3 配置上下文的属性接口
 interface PelicanWeb3ConfigProviderProps {
   availableWallets?: Wallet[];
   connectionError?: WalletError;
   balance?: boolean;
+  /**
+   * 指定 TRC-20 代币以查询余额（传入后优先显示该代币余额）
+   * - 根据当前链自动匹配合约地址
+   * - 未匹配到合约时回退为原生余额
+   */
+  token?: Token;
   /**
    * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
    * 当存在多个链的 Provider 并需要在它们之间切换时，这很有用，
@@ -39,7 +46,7 @@ interface ConnectAsync {
 /// 提供 TRON 网络的 Web3 配置上下文
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
-> = ({ availableWallets, connectionError, ignoreConfig, balance, children, initialChain }) => {
+> = ({ availableWallets, connectionError, ignoreConfig, balance, token, children, initialChain }) => {
   const { address, wallet, wallets, connected, connect, disconnect, select } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
 
@@ -47,6 +54,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
   const [currentChain, setCurrentChain] = useState<Chain | undefined>(initialChain ?? TronMainnet);
   const availableChains = useMemo<Chain[]>(() => [TronMainnet, TronShastaNet, TronNileNet], []);
   const [balanceData, setBalanceData] = useState<bigint>();
+  const [tokenDecimals, setTokenDecimals] = useState<number | undefined>();
 
   useEffect(() => {
     if (address) {
@@ -63,12 +71,66 @@ export const PelicanWeb3ConfigProvider: React.FC<
       try {
         if (!(balance && address)) {
           setBalanceData(undefined);
+          setTokenDecimals(undefined);
           return;
         }
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
         if (!tronWeb) return;
+        // 优先查询 TRC-20 代币余额（若配置了 token 且当前链匹配到合约）
+        const contractOnChain = token?.availableChains?.find(
+          (item) => (item?.chain as any)?.id === (currentChain as any)?.id,
+        )?.contract;
+        if (contractOnChain) {
+          const contract = await tronWeb.contract(trc20Abi, contractOnChain);
+          const rawBalance = await contract.balanceOf(tronWeb.address.toHex(address)).call();
+          const rawDecimals = await contract.decimals().call();
+          console.log("跑到这里了", rawBalance, rawDecimals);
+          const toBigInt = (v: any): bigint => {
+            if (v === undefined || v === null) return 0n;
+            if (typeof v === 'bigint') return v;
+            if (typeof v === 'number') return BigInt(v);
+            if (typeof v === 'string') {
+              const s = v.startsWith('0x') ? v : `0x${v}`;
+              try {
+                return BigInt(s);
+              } catch {
+                try {
+                  return BigInt(v);
+                } catch {
+                  return 0n;
+                }
+              }
+            }
+            if (Array.isArray(v) && v.length > 0) {
+              return toBigInt(v[0]);
+            }
+            if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
+              return toBigInt(v.constantResult[0]);
+            }
+            return 0n;
+          };
+          const toNumber = (v: any): number => {
+            if (typeof v === 'number') return v;
+            if (typeof v === 'string') return Number(v);
+            if (Array.isArray(v) && v.length > 0) return Number(v[0]);
+            if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
+              const hex = v.constantResult[0];
+              try {
+                return Number(BigInt(hex.startsWith('0x') ? hex : `0x${hex}`));
+              } catch {
+                return Number(hex);
+              }
+            }
+            return token?.decimal ?? 6;
+          };
+          setBalanceData(toBigInt(rawBalance));
+          setTokenDecimals(toNumber(rawDecimals));
+          return;
+        }
+        // 默认查询原生 TRX 余额（单位：sun）
         const sun: number = await tronWeb.trx.getBalance(address);
         setBalanceData(BigInt(sun));
+        setTokenDecimals(undefined);
       } catch (e) {
         const normalized = normalizeTronError(e, {
           action: 'other',
@@ -76,10 +138,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
         });
         console.error(normalized);
         setBalanceData(undefined);
+        setTokenDecimals(undefined);
       }
     };
     fetchBalance();
-  }, [balance, address, wallet?.adapter, currentChain]);
+  }, [balance, address, wallet?.adapter, currentChain, token?.symbol, token?.availableChains]);
 
 
   useEffect(() => {
@@ -87,7 +150,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
     const detectNetwork = async () => {
       try {
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
-        if (!tronWeb) return;
+        if (!tronWeb || !connected) return;
         const { chainId } = await getNetworkInfoByTronWeb(tronWeb);
         const map: Record<string, Chain> = {
           [TronChainIds.Mainnet]: TronMainnet,
@@ -135,7 +198,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
     if (wallet?.adapter) {
       detectNetwork();
     }
-  }, [wallet?.adapter, initialChain]);
+  }, [connected, initialChain]);
 
   /// 合并所有可用钱包和适配器
   const allWallets = useMemo<Wallet[]>(() => {
@@ -221,10 +284,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
   }, [wallet?.adapter?.name, connected]);
 
   const currency = currentChain?.nativeCurrency;
+  const isTokenBalance = tokenDecimals !== undefined && !!token;
 
   /// 余额获取状态
   const balanceLoading = useMemo(
-    () => (balance && !!address && !balanceData) as BalanceStatusConfig,
+    () => (balance && !!address && balanceData === undefined) as BalanceStatusConfig,
     [balance, address, balanceData],
   );
 
@@ -238,10 +302,10 @@ export const PelicanWeb3ConfigProvider: React.FC<
       balance={
         balance
           ? {
-              symbol: currency?.symbol,
+              symbol: isTokenBalance ? token?.symbol : currency?.symbol,
               value: balanceData,
-              decimals: currency?.decimals,
-              icon: currency?.icon,
+              decimals: isTokenBalance ? tokenDecimals ?? token?.decimal : currency?.decimals,
+              icon: isTokenBalance ? token?.icon : currency?.icon,
             }
           : undefined
       }

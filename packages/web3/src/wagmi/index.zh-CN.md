@@ -138,6 +138,16 @@ SIWE 是指 Sign‑In with Ethereum。你的网站可通过签名验证用户登
 
 代码参考： [name.tsx](file:///Users/abc/WebstormProjects/dumi_web3_lib/packages/web3/src/wagmi/demos/name.tsx)
 
+## 显示代币余额
+
+向 Provider 传入 `token`，即可在当前链上查询该 ERC‑20 的余额。
+
+<code src="./demos/token-balance.tsx"></code>
+
+说明：
+- 提供代币资产（如 USDT），其中包含按链的合约地址。
+- 当设置了 `token` 时，余额显示为该代币的余额而非原生币。
+
 ## 使用 web3modal 连接 WalletConnect
 
 当启用 WalletConnect 官方弹窗时，会显示二维码对话框。
@@ -145,4 +155,3 @@ SIWE 是指 Sign‑In with Ethereum。你的网站可通过签名验证用户登
 <code src="./demos/web3modal.tsx"></code>
 
 设置 `walletConnect={{ useWalletConnectOfficialModal: true }}` 可启用官方弹窗，同时提供你的 `projectId`。
-

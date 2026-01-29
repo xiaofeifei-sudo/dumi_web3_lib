@@ -138,6 +138,16 @@ Notes:
 
 Code reference: [name.tsx](file:///Users/abc/WebstormProjects/dumi_web3_lib/packages/web3/src/wagmi/demos/name.tsx)
 
+## Display Token Balance
+
+Pass a token to the provider to fetch ERC‑20 balance on the current chain.
+
+<code src="./demos/token-balance.tsx"></code>
+
+Notes:
+- Provide a token asset (e.g., USDT) with contract addresses per chain.
+- When a token is set, the balance reflects the ERC‑20 rather than native currency.
+
 ## Use web3modal for WalletConnect
 
 When using WalletConnect with official modal enabled, a QR dialog is shown.

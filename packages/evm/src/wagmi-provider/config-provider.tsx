@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type BalanceStatusConfig,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type BalanceStatusConfig, type Token,} from 'pelican-web3-lib-common';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
   type Connector as WagmiConnector,
@@ -40,6 +40,12 @@ export interface PelicanWeb3ConfigProviderProps {
   children?: React.ReactNode;
   ens?: boolean;
   balance?: boolean;
+  /**
+   * 指定 ERC-20 代币以查询余额（传入后优先显示该代币余额）
+   * - 根据当前链自动匹配合约地址
+   * - 未匹配到合约或非 EVM 合约时回退为原生余额
+   */
+  token?: Token;
   eip6963?: EIP6963Config;
   wagimConfig: WagmiConfig;
   useWalletConnectOfficialModal?: boolean;
@@ -64,6 +70,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     walletFactories,
     ens = true,
     balance,
+    token,
     eip6963,
     wagimConfig,
     useWalletConnectOfficialModal,
@@ -74,7 +81,17 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChain} = useSwitchChain();
-  const {data: balanceData} = useBalance({address});
+  const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
+  const tokenContractOnChain = React.useMemo(() => {
+    if (!token || !chainIdForBalance) return undefined;
+    const found = token.availableChains?.find((item) => item?.chain?.id === chainIdForBalance);
+    const contract = found?.contract;
+    if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
+      return contract as `0x${string}`;
+    }
+    return undefined;
+  }, [token, chainIdForBalance]);
+  const {data: balanceData} = useBalance({address, token: tokenContractOnChain});
   const {data: ensName} = useEnsName({address});
   const {data: ensAvatar} = useEnsAvatar({name: ensName ?? undefined});
   const {signMessageAsync} = useSignMessage();
@@ -288,7 +305,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             symbol: balanceData?.symbol,
             value: balanceData?.value,
             decimals: balanceData?.decimals,
-            icon: currency?.icon,
+            icon: token?.icon ?? currency?.icon,
           }
           : undefined
       }

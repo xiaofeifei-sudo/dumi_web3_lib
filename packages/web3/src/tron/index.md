@@ -40,16 +40,26 @@ Ensure a TRON wallet extension is installed and unlocked (e.g., TronLink). Most 
 
 <code src='./demos/balance.tsx'></code>
 
+### Display Token Balance
+
+<code src='./demos/token-balance.tsx'></code>
+
 ## Support chain switching
 
 <code src='./demos/chains.tsx'></code>
 
 Tips:
 - TRON tokens (e.g., USDT on TRON) often use 6 decimals. Adjust amounts accordingly.
+## Initialize Chain
+
+<code src='./demos/initial-chain.tsx'></code>
+
 - Use the connector’s provided methods for signing messages and transactions without manual state management.
 - Wallet adapters should be available in the browser (extensions injected).
 
 ## API
+
+### TronWeb3ConfigProvider
 
 ### TronWeb3ConfigProvider
 

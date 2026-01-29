@@ -83,6 +83,7 @@ import type {
   WalletFactory,
 } from '../interface';
 import { PelicanWeb3ConfigProvider } from './config-provider';
+import type { Token } from 'pelican-web3-lib-common';
 
 /**
  * WalletConnectOptions
@@ -127,6 +128,10 @@ export interface WagmiWeb3ConfigProviderProps {
   ens?: boolean;
   queryClient?: QueryClient;
   balance?: boolean;
+  /**
+   * 指定 ERC-20 代币以查询余额（传入后优先显示该代币余额）
+   */
+  token?: Token;
   eip6963?: EIP6963Config;
   initialState?: State;
   reconnectOnMount?: boolean;
@@ -271,6 +276,7 @@ export function WagmiWeb3ConfigProvider({
           walletFactories={wallets}
           ens={ens}
           balance={balance}
+          token={restProps?.token}
           eip6963={eip6963}
           wagimConfig={wagmiConfig}
           // 仅当 WalletConnect 为对象且用户开启 useWalletConnectOfficialModal 时启用官方二维码弹窗

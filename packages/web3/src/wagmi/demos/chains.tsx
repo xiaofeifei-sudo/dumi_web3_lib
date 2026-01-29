@@ -29,7 +29,7 @@ const App: React.FC = () => {
       }}
       balance
       wallets={[MetaMask(), WalletConnect()]}
-      chains={[Mainnet, Sepolia, Holesky, Polygon, Arbitrum, Optimism, Avalanche, Base, Scroll, ScrollSepolia, BSC, BSCTestNet, X1Testnet, Hardhat, Localhost]}
+      chains={[Sepolia, Mainnet, Holesky, Polygon, Arbitrum, Optimism, Avalanche, Base, Scroll, ScrollSepolia, BSC, BSCTestNet, X1Testnet, Hardhat, Localhost]}
     >
       <Connector>
         <ConnectButton />

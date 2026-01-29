@@ -5,7 +5,7 @@ import { ConnectButton } from '../../components/connect-button';
 
 const BalanceDemo: React.FC = () => {
   return (
-    <TronWeb3ConfigProvider balance wallets={[TronlinkWallet]}>
+    <TronWeb3ConfigProvider autoConnect={false} balance wallets={[TronlinkWallet]}>
       <Connector>
         <ConnectButton />
       </Connector>
