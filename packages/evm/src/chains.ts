@@ -12,6 +12,7 @@ import {
   Avalanche as AvalancheAsset,
   Base as BaseAsset,
   BSC as BSCAsset,
+  BSCTestNet as BSCTestNetAsset,
   Goerli as GoerliAsset,
   Hardhat as HardhatAsset,
   Holesky as HoleskyAsset,
@@ -39,6 +40,7 @@ import {
   scroll,
   scrollSepolia,
   sepolia,
+  bscTestnet
 } from 'wagmi/chains';
 
 import type { ChainAssetWithWagmiChain } from './interface';
@@ -82,6 +84,12 @@ export const Polygon: ChainAssetWithWagmiChain = {
 export const BSC: ChainAssetWithWagmiChain = {
   ...BSCAsset,
   wagmiChain: bsc,
+};
+
+// BSC 测试网
+export const BSCTestNet: ChainAssetWithWagmiChain = {
+  ...BSCTestNetAsset,
+  wagmiChain: bscTestnet,
 };
 
 // Arbitrum 主网

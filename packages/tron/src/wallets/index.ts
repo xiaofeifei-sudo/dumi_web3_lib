@@ -9,3 +9,4 @@ export * from './tokenpocketWallet';
 export * from './trustWallet';
 export * from './imTokenWallet';
 export * from './metaMaskTronWallet';
+export * from './ledgerWallet';

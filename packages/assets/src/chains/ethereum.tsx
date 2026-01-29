@@ -97,6 +97,7 @@ export const BSC: Chain = {
 };
 
 
+/// BSC 测试网
 export const BSCTestNet: Chain = {
   id: ChainIds.BSCTestNet,
   name: 'BNB Smart Chain Testnet',

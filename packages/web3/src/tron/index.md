@@ -36,6 +36,10 @@ Ensure a TRON wallet extension is installed and unlocked (e.g., TronLink). Most 
 
 <code src='./demos/transaction.tsx'></code>
 
+## Display Balance
+
+<code src='./demos/balance.tsx'></code>
+
 ## Support chain switching
 
 <code src='./demos/chains.tsx'></code>

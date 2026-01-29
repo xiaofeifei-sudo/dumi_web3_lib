@@ -16,7 +16,7 @@
  *  - quickConnect：开启快速连接（检测已安装钱包）
  *  - actionsMenu：动作菜单（布尔开关 / 完全覆盖 items / 追加 extraItems）
  */
-import type { Account, ConnectorTriggerProps, SignConfig } from 'pelican-web3-lib-common';
+import type { Account, ConnectorTriggerProps, SignConfig, BalanceStatusConfig } from 'pelican-web3-lib-common';
 import type { AvatarProps, ButtonProps, GetProp, MenuProps, TooltipProps } from 'antd';
 
 import type { ProfileModalProps } from './profile-modal';
@@ -49,6 +49,7 @@ export type ConnectButtonProps = ButtonProps &
     profileModal?: boolean | ProfileModalProps['modalProps'];
     addressPrefix?: string | false;
     quickConnect?: boolean;
+    balanceLoading?: BalanceStatusConfig;
     actionsMenu?:
       | boolean
       | {

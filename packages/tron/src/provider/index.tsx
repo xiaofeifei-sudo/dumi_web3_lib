@@ -26,12 +26,14 @@ import type { Wallet } from 'pelican-web3-lib-common';
 
 import { PelicanWeb3ConfigProvider } from './config-provider';
 import { normalizeTronError } from '../errors';
+import type { Chain } from 'pelican-web3-lib-common';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
   wallets?: Wallet[]; // 可供 UI 展示或过滤的钱包清单（非适配器实例）
   onError?: (error: Error) => void; // 统一错误回调，错误将被标准化后回传
   autoConnect?: boolean; // 是否在页面就绪时自动尝试连接上次使用的钱包
+  balance?: boolean;
   walletProviderProps?: Omit<React.PropsWithChildren<TronWeb3ConfigProviderProps>, 'children'>; // 透传给 WalletProvider 的属性（不含 children）
   walletConnect?: WalletConnectAdapterConfig;
   ledgerAdapterConfig?: LedgerAdapterConfig;
@@ -41,6 +43,7 @@ export interface TronWeb3ConfigProviderProps {
    * 可避免页面闪烁。仅当前处于激活状态的 Provider 不应该设置该标志。
    */
   ignoreConfig?: boolean;
+  initialChain?: Chain;
 }
 
 /// 提供 TRON 网络的 Web3 配置上下文
@@ -48,7 +51,9 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
   wallets,
   onError,
   autoConnect,
+  balance,
   ignoreConfig,
+  initialChain,
   children,
   walletProviderProps,
   walletConnect,
@@ -117,7 +122,9 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       <PelicanWeb3ConfigProvider
         connectionError={connectionError} // 连接错误供业务层使用
         availableWallets={wallets} // 可用钱包清单
+        balance={balance}
         ignoreConfig={ignoreConfig} // 是否忽略自身配置以避免闪烁
+        initialChain={initialChain}
       >
         {children}
       </PelicanWeb3ConfigProvider>

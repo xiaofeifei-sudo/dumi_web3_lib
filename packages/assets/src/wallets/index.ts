@@ -16,3 +16,4 @@ export * from './mobile-wallet';
 export * from './slush';
 export * from './suiet';
 export * from './solflare';
+export * from './ledger';

@@ -33,6 +33,7 @@ export const fillWithPrefix = (
   return address.startsWith(prefix) ? address : `${prefix}${address}`;
 };
 
+/// 格式化地址
 export const formatAddress = (address = '', groupSize = 4): string => {
   const formattedGroups = [];
 
@@ -51,6 +52,7 @@ export const formatAddress = (address = '', groupSize = 4): string => {
   return has0x ? `0x ${formattedText}` : formattedText;
 };
 
+/// 格式化余额
 export const formatBalance = (value: bigint | number, decimals: number, fixed?: number): string => {
   const bigValue = typeof value === 'bigint' ? value : BigInt(value);
   const divisor = BigInt(10 ** decimals);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { WagmiWeb3ConfigProvider, Mainnet, Optimism, Polygon, Arbitrum, Base, BSC, Hardhat, Localhost, MetaMask, WalletConnect, X1Testnet } from 'pelican-web3-lib-evm';
+import { WagmiWeb3ConfigProvider, Mainnet, Optimism, Polygon, Arbitrum, Base, BSC, Hardhat, Localhost, MetaMask, WalletConnect, X1Testnet, Sepolia, Holesky, BSCTestNet, Avalanche, Scroll, ScrollSepolia } from 'pelican-web3-lib-evm';
 import { http } from 'viem';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
@@ -14,12 +14,22 @@ const App: React.FC = () => {
       transports={{
         [Mainnet.id]: http(),
         [Polygon.id]: http(),
+        [Arbitrum.id]: http(),
+        [Optimism.id]: http(),
+        [Avalanche.id]: http(),
+        [Scroll.id]: http(),
+        [ScrollSepolia.id]: http(),
+        [Sepolia.id]: http(),
+        [Holesky.id]: http(),
         [X1Testnet.id]: http(),
         [Hardhat.id]: http(),
         [Localhost.id]: http(),
+        [BSC.id]: http(),
+        [BSCTestNet.id]: http(),
       }}
+      balance
       wallets={[MetaMask(), WalletConnect()]}
-      chains={[Mainnet, Polygon, Base, X1Testnet, Hardhat, Localhost]}
+      chains={[Mainnet, Sepolia, Holesky, Polygon, Arbitrum, Optimism, Avalanche, Base, Scroll, ScrollSepolia, BSC, BSCTestNet, X1Testnet, Hardhat, Localhost]}
     >
       <Connector>
         <ConnectButton />

@@ -37,6 +37,10 @@ Tron 支持的钱包可以在 [tronwallet-adapter](https://github.com/web3-geek/
 
 <code src='./demos/transaction.tsx'></code>
 
+## 显示余额
+
+<code src='./demos/balance.tsx'></code>
+
 ## 支持切换链
 
 <code src='./demos/chains.tsx'></code>

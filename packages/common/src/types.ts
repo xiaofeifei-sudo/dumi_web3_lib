@@ -194,6 +194,8 @@ export interface UniversalWeb3ProviderInterface {
   chain?: Chain;
   // 当前账户余额
   balance?: Balance;
+  // 余额获取状态
+  balanceLoading?: BalanceStatusConfig;
 
   // 可用钱包与可用链（用于选择面板）
   availableWallets?: Wallet[];
@@ -384,4 +386,14 @@ export type ConnectingStatusConfig =
   | boolean
   | {
       status: ConnectingStatus;
+    };
+/// 余额获取状态
+export type BalanceStatus = 'fetching';
+
+
+/// 余额获取状态配置
+export type BalanceStatusConfig =
+  | boolean
+  | {
+      status: BalanceStatus;
     };

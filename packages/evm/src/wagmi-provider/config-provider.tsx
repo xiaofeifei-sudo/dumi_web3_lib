@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type BalanceStatusConfig,} from 'pelican-web3-lib-common';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
   type Connector as WagmiConnector,
@@ -291,6 +291,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             icon: currency?.icon,
           }
           : undefined
+      }
+      balanceLoading={
+        (balance && !!address && !balanceData) as BalanceStatusConfig
       }
       availableWallets={wallets}
       addressPrefix="0x"

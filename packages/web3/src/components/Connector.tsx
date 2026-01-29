@@ -43,6 +43,7 @@ const Connector: React.FC<ConnectorProps> = (props) => {
     chain,
     switchChain,
     balance,
+    balanceLoading,
     addressPrefix,
     sign,
   } = useProvider(props);
@@ -129,9 +130,15 @@ const Connector: React.FC<ConnectorProps> = (props) => {
         availableWallets,
         chain,
         onSwitchChain: async (c: Chain) => {
-          await switchChain?.(c);
-          onChainSwitched?.(c);
+          try {
+            await switchChain?.(c);
+            onChainSwitched?.(c);
+          } catch (err: any) {
+            messageApi.error(err?.message);
+            console.error(err);
+          }
         },
+        balanceLoading,
         loading: typeof connecting === 'boolean' ? connecting : true,
         ...children.props,
       })}

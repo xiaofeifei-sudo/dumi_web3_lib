@@ -18,7 +18,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import { CopyOutlined, LoginOutlined, UserOutlined } from '@ant-design/icons';
 import { ConnectStatus, type Chain, type Wallet } from 'pelican-web3-lib-common';
 import type { ButtonProps } from 'antd';
-import { Avatar, ConfigProvider, Divider, Dropdown, message } from 'antd';
+import { Avatar, ConfigProvider, Divider, Dropdown, message, Spin } from 'antd';
 import classNames from 'classnames';
 
 import { CryptoPrice } from '../crypto-price';
@@ -55,6 +55,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     loading,
     onClick,
     balance,
+    balanceLoading,
     className,
     quickConnect,
     addressPrefix: addressPrefixProp,
@@ -73,6 +74,10 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
 
   // balance 配置兼容：允许以对象或布尔传入；当 coverAddress=true 时用价格覆盖地址展示
   const { coverAddress = true } = typeof balance !== 'object' ? { coverAddress: true } : balance;
+  const isBalanceLoading =
+    typeof balanceLoading === 'boolean'
+      ? balanceLoading
+      : !!(balanceLoading && (balanceLoading as any).status === 'fetching');
   // 是否需要执行登录签名：仅在已连接状态且 sign.signIn 存在时启用
   const needSign = !!(sign?.signIn && account?.status === ConnectStatus.Connected && account);
   // 按钮主文案：优先 children，其次显示账户信息与价格
@@ -89,7 +94,14 @@ export const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
                 addressPrefixContext,
               ))}
         {balance && !coverAddress && <Divider type="vertical" />}
-        {balance && <CryptoPrice icon {...balance} />}
+        {balance &&
+          (isBalanceLoading ? (
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Spin size="small" />
+            </span>
+          ) : (
+            <CryptoPrice icon {...balance} />
+          ))}
       </>
     );
   }

@@ -17,6 +17,7 @@ import type React from 'react';
 import { TinyColor } from '@ctrl/tinycolor';
 import type { GlobalToken } from 'antd';
 
+/// 合并 React 节点型 props，支持对字符串进行包装
 export const mergeReactNodeProps = (
   node: React.ReactNode,
   defaultNode: React.ReactNode,
@@ -27,6 +28,7 @@ export const mergeReactNodeProps = (
   return node ?? defaultNode;
 };
 
+/// 分组默认排序：Popular 优先、More 置后，其余按字母序
 export const defaultGroupOrder = (a: string, b: string) => {
   if (a === 'Popular' && b !== 'Popular') {
     return -1;
@@ -37,6 +39,8 @@ export const defaultGroupOrder = (a: string, b: string) => {
   return a.localeCompare(b);
 };
 
+
+/// 根据 token 的填充与背景计算明暗程度
 export const isDarkTheme = (token: GlobalToken) => {
   const hsv = new TinyColor(token.colorFill).onBackground(token.colorBgElevated).toHsv();
   return hsv.v < 0.5;
