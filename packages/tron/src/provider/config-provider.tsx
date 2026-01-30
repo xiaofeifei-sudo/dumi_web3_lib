@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   WalletReadyState,
+  WalletDisconnectedError,
   type AdapterName,
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
@@ -86,6 +87,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         setBalanceData(result.value as bigint);
         setTokenDecimals(result.decimals);
       } catch (e) {
+        console.log('getTronBalance error', e);
         const normalized = normalizeTronError(e, {
           action: 'other',
           walletName: wallet?.adapter?.name,
@@ -96,15 +98,19 @@ export const PelicanWeb3ConfigProvider: React.FC<
       }
     };
     fetchBalance();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance, address, wallet?.adapter, currentChain, token?.symbol, token?.availableChains]);
 
 
   useEffect(() => {
-    /// 检测当前钱包连接的 TRON 网络
+      /// 检测当前钱包连接的 TRON 网络
     const detectNetwork = async () => {
       try {
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
         if (!tronWeb || !connected) return;
+          const currentWallet = availableWallets?.find(
+            (item) => item.name === wallet?.adapter?.name,
+          );
         const { chainId } = await getNetworkInfoByTronWeb(tronWeb);
         const map: Record<string, Chain> = {
           [TronChainIds.Mainnet]: TronMainnet,
@@ -118,7 +124,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         if (initialChain) {
           if (!target || (target as any)?.id !== (initialChain as any)?.id) {
             try {
-              await switchTronChain(wallet?.adapter, initialChain);
+              await switchTronChain(wallet?.adapter, initialChain, currentWallet);
               setCurrentChain(initialChain);
               return;
             } catch (error) {
@@ -240,6 +246,17 @@ export const PelicanWeb3ConfigProvider: React.FC<
   const currency = currentChain?.nativeCurrency;
   const isTokenBalance = tokenDecimals !== undefined && !!token;
 
+  const ensureTronWebAndAddress = () => {
+    if (!connected || !wallet?.adapter || !address) {
+      throw new WalletDisconnectedError();
+    }
+    const tronWeb: any = resolveTronWeb(wallet.adapter);
+    if (!tronWeb) {
+      throw new WalletDisconnectedError();
+    }
+    return { tronWeb, address, adapter: wallet.adapter };
+  };
+
   /// 余额获取状态
   const balanceLoading = useMemo(
     () => (balance && !!address && balanceData === undefined) as BalanceStatusConfig,
@@ -254,17 +271,19 @@ export const PelicanWeb3ConfigProvider: React.FC<
       availableChains={availableChains}
       chain={currentChain}
       getBalance={async (params?: { token?: Token }) => {
-        const tronWeb: any = resolveTronWeb(wallet?.adapter);
-        if (!tronWeb || !address) return undefined;
-        return getTronBalance(tronWeb, address, currentChain, params?.token ?? token);
+        const context = ensureTronWebAndAddress();
+        return getTronBalance(context.tronWeb, context.address, currentChain, params?.token ?? token);
       }}
       sendTransaction={async (params: TransferParams) => {
         try {
-          const tronWeb: any = resolveTronWeb(wallet?.adapter);
-          if (!tronWeb || !address) {
-            throw new Error('Wallet not connected');
-          }
-          return await sendTronTransaction(tronWeb, address, currentChain, signTransaction, params);
+          const context = ensureTronWebAndAddress();
+          return await sendTronTransaction(
+            context.tronWeb,
+            context.address,
+            currentChain,
+            signTransaction,
+            params,
+          );
         } catch (error) {
           const normalized = normalizeTronError(error, {
             action: 'other',
@@ -314,8 +333,12 @@ export const PelicanWeb3ConfigProvider: React.FC<
         }
       }}
       switchChain={async (newChain: Chain) => {
+        const context = ensureTronWebAndAddress();
+        const currentWallet = availableWallets?.find(
+          (item) => item.name === wallet?.adapter?.name,
+        );
         try {
-          await switchTronChain(wallet?.adapter, newChain);
+          await switchTronChain(context.adapter, newChain, currentWallet);
           setCurrentChain(newChain);
           return;
         } catch (error: any) {

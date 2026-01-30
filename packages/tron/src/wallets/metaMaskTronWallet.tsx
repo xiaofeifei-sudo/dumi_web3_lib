@@ -5,4 +5,5 @@ export const MetaMaskTronWallet: WalletMetadata = {
   ...metadata_MetaMask,
   key: 'metamaskTronWallet',
   group: 'Popular',
+  supportSwitchChain: false
 };

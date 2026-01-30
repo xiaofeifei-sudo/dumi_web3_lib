@@ -5,4 +5,5 @@ export const LedgerWallet: WalletMetadata = {
   ...metadata_Ledger,
   key: 'ledgerTronWallet',
   group: 'Popular',
+  supportSwitchChain: false
 };

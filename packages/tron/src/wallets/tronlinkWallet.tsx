@@ -21,4 +21,5 @@ export const TronlinkWallet: WalletMetadata = {
   ],
   key: 'tronWallet',
   group: 'Popular',
+  supportSwitchChain: true
 };

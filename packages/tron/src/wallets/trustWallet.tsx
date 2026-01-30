@@ -5,4 +5,5 @@ export const TrustWallet: WalletMetadata = {
   ...metadata_Trust,
   key: 'trustTronWallet',
   group: 'Popular',
+  supportSwitchChain: false
 };

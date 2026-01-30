@@ -321,6 +321,10 @@ export type WalletMetadata = {
      */
     urlTemplate: string;
   };
+  /**
+   * @desc 钱包是否支持切换链
+   */
+  supportSwitchChain?: boolean;
 };
 
 /// 余额信息

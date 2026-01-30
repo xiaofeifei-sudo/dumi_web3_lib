@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Input, InputNumber, message, Space } from 'antd';
-import { TronWeb3ConfigProvider, TronlinkWallet, USDT } from 'pelican-web3-lib-tron';
+import {  LedgerWallet, MetaMaskTronWallet, OkxTronWallet, TokenPocketWallet, TronWeb3ConfigProvider, TronlinkWallet, TrustWallet, USDT } from 'pelican-web3-lib-tron';
 import { TronNileNet } from 'pelican-web3-lib-assets';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
@@ -122,7 +122,14 @@ const SendNativeTrx: React.FC = () => {
 const Transaction: React.FC = () => {
   return (
     <TronWeb3ConfigProvider
-      wallets={[TronlinkWallet]}
+      wallets={[
+              TronlinkWallet,
+              OkxTronWallet,
+              LedgerWallet,
+              TokenPocketWallet,
+              TrustWallet,
+              MetaMaskTronWallet,
+            ]}
       balance
       token={USDT}
       initialChain={TronNileNet}

@@ -7,4 +7,5 @@ export const OkxTronWallet: WalletMetadata = {
   ...metadata_OkxWallet,
   key: 'okxTronWallet',
   group: 'Popular',
+  supportSwitchChain: false,
 };

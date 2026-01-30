@@ -1,5 +1,6 @@
 /* v8 ignore start */
 import { WalletReadyState } from '@tronweb3/tronwallet-abstract-adapter';
+import { TronWalletNotSupportSwitchChainError } from './errors/wallet-not-support-switch-chain-error';
 
 // 判断钱包是否“就绪”：已发现或正在加载即视为就绪
 export const hasWalletReady = (readyState?: WalletReadyState) =>
@@ -26,10 +27,13 @@ export const resolveTronWeb = (adapter?: any) => {
 
 
 /// 切换 TRON 网络：通过适配器的 switchChain 方法切换网络
-export const switchTronChain = async (adapter?: any, newChain?: any) => {
+export const switchTronChain = async (adapter?: any, newChain?: any, wallet?: any) => {
+  if (!wallet?.supportSwitchChain) {
+    throw new TronWalletNotSupportSwitchChainError();
+  }
   if (typeof adapter?.switchChain === 'function') {
     await adapter.switchChain(newChain?.id);
     return;
   }
-  throw new Error('switchChain not supported');
+  throw new TronWalletNotSupportSwitchChainError();
 };

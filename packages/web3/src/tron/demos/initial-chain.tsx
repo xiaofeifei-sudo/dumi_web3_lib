@@ -2,14 +2,11 @@ import React from 'react';
 import {
   TronWeb3ConfigProvider,
   TronlinkWallet,
-  BybitWallet,
   OkxTronWallet,
   LedgerWallet,
   TokenPocketWallet,
   TrustWallet,
-  ImTokenWallet,
   MetaMaskTronWallet,
-  WalletConnectWallet,
 } from 'pelican-web3-lib-tron';
 import { TronNileNet } from 'pelican-web3-lib-assets';
 import Connector from '../../components/Connector';
@@ -34,14 +31,11 @@ const InitialChainDemo: React.FC = () => {
       initialChain={TronNileNet}
       wallets={[
         TronlinkWallet,
-        BybitWallet,
         OkxTronWallet,
         LedgerWallet,
         TokenPocketWallet,
         TrustWallet,
-        ImTokenWallet,
         MetaMaskTronWallet,
-        WalletConnectWallet,
       ]}
     >
       <Connector>

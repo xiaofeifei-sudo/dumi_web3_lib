@@ -14,7 +14,6 @@ import { TokenPocketAdapter } from '@tronweb3/tronwallet-adapter-tokenpocket';
 import { BitKeepAdapter } from '@tronweb3/tronwallet-adapter-bitkeep';
 import { LedgerAdapter } from '@tronweb3/tronwallet-adapter-ledger';
 import type { LedgerAdapterConfig } from '@tronweb3/tronwallet-adapter-ledger';
-import { ImTokenAdapter } from '@tronweb3/tronwallet-adapter-imtoken';
 import { GateWalletAdapter } from '@tronweb3/tronwallet-adapter-gatewallet';
 import { FoxWalletAdapter } from '@tronweb3/tronwallet-adapter-foxwallet';
 import { TrustAdapter } from '@tronweb3/tronwallet-adapter-trust';
@@ -74,7 +73,6 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
     const tokenPocketAdapter = new TokenPocketAdapter();
     const bitKeepAdapter = new BitKeepAdapter();
     const ledgerAdapter = new LedgerAdapter(ledgerAdapterConfig);
-    const imTokenAdapter = new ImTokenAdapter();
     const gateWalletAdapter = new GateWalletAdapter();
     const foxWalletAdapter = new FoxWalletAdapter();
     const trustAdapter = new TrustAdapter();
@@ -100,7 +98,6 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       tokenPocketAdapter,
       bitKeepAdapter,
       ledgerAdapter,
-      imTokenAdapter,
       gateWalletAdapter,
       foxWalletAdapter,
       trustAdapter,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Space } from 'antd';
 import { useAccount, useConnection } from 'pelican-web3-lib';
-import { TronWeb3ConfigProvider, TronlinkWallet, OkxTronWallet, BybitWallet } from 'pelican-web3-lib-tron';
+import { TronWeb3ConfigProvider, TronlinkWallet, OkxTronWallet } from 'pelican-web3-lib-tron';
 
 const Demo: React.FC = () => {
   const { account } = useAccount();
@@ -26,7 +26,7 @@ const Demo: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <TronWeb3ConfigProvider wallets={[TronlinkWallet, OkxTronWallet, BybitWallet]}>
+    <TronWeb3ConfigProvider wallets={[TronlinkWallet, OkxTronWallet]}>
       <Demo />
     </TronWeb3ConfigProvider>
   );
