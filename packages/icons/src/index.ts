@@ -679,3 +679,5 @@ export * from './components/zec-circle-colorful';
 export * from './components/zil-colorful';
 export * from './components/zlw-circle-colorful';
 export * from './components/zrx-circle-colorful';
+export * from './components/metamask-ark';
+export * from './components/wallet-connect-ark';
