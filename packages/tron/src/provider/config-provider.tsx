@@ -67,17 +67,21 @@ export const PelicanWeb3ConfigProvider: React.FC<
   }, [address]);
 
 
-  /// 余额获取状态
   useEffect(() => {
+    let timer: any;
     const fetchBalance = async () => {
       try {
-        if (!(balance && address)) {
+        if (!(balance && address && wallet?.adapter && connected)) {
           setBalanceData(undefined);
           setTokenDecimals(undefined);
           return;
         }
-        const tronWeb: any = resolveTronWeb(wallet?.adapter);
-        if (!tronWeb) return;
+        const tronWeb: any = resolveTronWeb(wallet.adapter);
+        if (!tronWeb) {
+          setBalanceData(undefined);
+          setTokenDecimals(undefined);
+          return;
+        }
         const result = await getTronBalance(tronWeb, address, currentChain, token);
         if (!result) {
           setBalanceData(undefined);
@@ -86,9 +90,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
         }
         setBalanceData(result.value as bigint);
         setTokenDecimals(result.decimals);
-      } catch (e) {
-        console.log('getTronBalance error', e);
-        const normalized = normalizeTronError(e, {
+      } catch (error) {
+        const normalized = normalizeTronError(error, {
           action: 'other',
           walletName: wallet?.adapter?.name,
         });
@@ -97,9 +100,21 @@ export const PelicanWeb3ConfigProvider: React.FC<
         setTokenDecimals(undefined);
       }
     };
-    fetchBalance();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [balance, address, wallet?.adapter, currentChain, token?.symbol, token?.availableChains]);
+
+    if (balance && address && wallet?.adapter && connected) {
+      fetchBalance();
+      timer = setInterval(fetchBalance, 5000);
+    } else {
+      setBalanceData(undefined);
+      setTokenDecimals(undefined);
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [balance, address, wallet?.adapter, connected, currentChain, token?.symbol, token?.availableChains]);
 
 
   useEffect(() => {
@@ -243,9 +258,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [wallet?.adapter?.name, connected]);
 
+  
   const currency = currentChain?.nativeCurrency;
   const isTokenBalance = tokenDecimals !== undefined && !!token;
 
+  /// 确保 TronWeb 实例和地址已连接
   const ensureTronWebAndAddress = () => {
     if (!connected || !wallet?.adapter || !address) {
       throw new WalletDisconnectedError();

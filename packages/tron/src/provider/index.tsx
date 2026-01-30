@@ -92,18 +92,18 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
 
     // 适配器顺序会影响优先连接与展示；可按需调整
     const list = [
-      okxWalletAdapter,
       tronLinkAdapter,
-      bybitWalletAdapter,
-      tokenPocketAdapter,
-      bitKeepAdapter,
+      okxWalletAdapter,
+      // bybitWalletAdapter,
       ledgerAdapter,
-      gateWalletAdapter,
-      foxWalletAdapter,
+      tokenPocketAdapter,
+      // bitKeepAdapter,
+      // gateWalletAdapter,
+      // foxWalletAdapter,
       trustAdapter,
-      tomoWalletAdapter,
-      binanceWalletAdapter,
-      guardaAdapter,
+      // tomoWalletAdapter,
+      // binanceWalletAdapter,
+      // guardaAdapter,
       metaMaskTronAdapter,
     ];
     return walletConnectAdapter ? [walletConnectAdapter, ...list] : list;

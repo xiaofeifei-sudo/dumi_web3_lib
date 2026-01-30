@@ -27,7 +27,7 @@ const Basic = () => {
       walletConnect={{
         network: 'Nile',
         options: {
-          projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID',
+          projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
         },
       }}
       onError={(error)=>console.error("TronWeb3ConfigProvider error:", error)}

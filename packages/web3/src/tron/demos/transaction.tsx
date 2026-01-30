@@ -132,7 +132,6 @@ const Transaction: React.FC = () => {
             ]}
       balance
       token={USDT}
-      initialChain={TronNileNet}
     >
       <Space direction="vertical">
         <Connector>
