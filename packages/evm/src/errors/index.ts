@@ -1,5 +1,5 @@
 import type { Chain } from 'viem';
-import { BaseError, RpcError } from 'viem';
+import { RpcError } from 'viem';
 import { ProviderError } from 'pelican-web3-lib-common';
 
 export type EvmAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'transfer' | 'other';
@@ -76,6 +76,8 @@ const NAME_CODE_MAP = new Map<string, EvmErrorCode>([
   ['ChainNotConfiguredError', 5003],
   ['ConnectorAlreadyConnectedError', 5004],
   ['SwitchChainNotSupportedError', 5005],
+  ['ContractFunctionExecutionError', 5006],
+  ['TransactionExecutionError', 5006],
   ['ConnectorUnavailableReconnectingError', 5012],
   ['ConnectorNotConnectedError', 5016],
 ]);
@@ -93,6 +95,8 @@ const CODE_MESSAGE_MAP = new Map<number, (ctx?: NormalizeContext) => string>([
   [5003, (ctx) => ['请求的链未在当前应用中配置。', '请检查链配置或联系应用管理员添加该链。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5004, (ctx) => ['钱包连接器已连接。', '如需更换账户或钱包，请先断开当前连接。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5005, (ctx) => ['当前钱包不支持程序化切换链或切链失败。', '请在钱包中手动切换到目标链后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5006, (ctx) => ['合约执行失败，可能由于余额不足、权限限制或合约当前状态不允许。', '请检查方法参数、账户余额以及合约逻辑后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
+  [5007, (ctx) => ['账户余额不足，无法完成当前转账。', '请减少转账金额或向账户充值后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5016, (ctx) => ['钱包连接器未连接。', '请先在钱包中连接账户，然后重试当前操作。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5700, (ctx) => ['钱包不支持一个未标记为可选的能力。', '请移除该能力或使用支持该能力的钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
   [5710, (ctx) => ['钱包不支持请求的链 ID。', '请更换到受支持的链或使用支持该链的钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
@@ -147,9 +151,6 @@ export function normalizeEvmError(
     if (generator) {
       message = generator(ctx);
     }
-  } else if (error instanceof BaseError) {
-    console.error("BaseError", error);
-    message = [error.message, ctxText(ctx)].filter(Boolean).join('\n');
   } else if ((code === -1 || !CODE_MESSAGE_MAP.has(code)) && name) {
     const mappedCode = NAME_CODE_MAP.get(name);
     if (typeof mappedCode === 'number') {

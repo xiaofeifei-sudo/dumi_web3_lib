@@ -12,7 +12,7 @@ pnpm add pelican-web3-lib-evm wagmi viem @tanstack/react-query
 
 ## 导出结构
 - Provider：WagmiWeb3ConfigProvider（含 WalletConnect、EIP-6963、SIWE 等配置）
-- 钱包工厂：MetaMask、OKXWallet、TokenPocket、RainbowWallet、ImToken、CoinbaseWallet、MobileWallet、WalletConnect、Safeheron、UniversalWallet
+- 钱包工厂：MetaMask、OKXWallet、TokenPocket、RainbowWallet、ImToken、CoinbaseWallet、MobileWallet、WalletConnect、Safeheron、PhantomWallet、UniversalWallet
 - 类型接口：WalletFactory、WalletUseInWagmiAdapter、EIP6963Config、ChainAssetWithWagmiChain、SIWEConfig、CreateWalletOptions
 - 链映射：Mainnet、Polygon、Arbitrum、Optimism、Avalanche、Base、Scroll、ScrollSepolia、Hardhat、Localhost、X1Testnet 等
 - 资产导出：tokens（主流代币元数据）、wallets（钱包元数据）
@@ -138,8 +138,10 @@ export default function App() {
 | ImToken | 是 | 是 | 是 | 受控 | 否 |
 | CoinbaseWallet | 是 | 是 | 是 | 受控 | 否 |
 | Safeheron | 是 | 否 | 否 | 否 | 否 |
+| PhantomWallet | 是 | 否 | 否 | 否 | 否 |
 | WalletConnect | 否 | 是 | 是 | 受控 | 否 |
 | MobileWallet | 否 | 是 | 是 | 受控 | 是 |
+| UniversalWallet | 是 | 是 | 是 | 受控 | 否 |
 
 说明：
 - “受控”表示可通过 useWalletConnectOfficialModal 或 Provider 的 walletConnect.useWalletConnectOfficialModal 控制

@@ -24,7 +24,8 @@ export const USDT: Token = {
     },
     {
       chain: Sepolia,
-      contract: '0x419Fe9f14Ff3aA22e46ff1d03a73EdF3b70A62ED',
+      // contract: '0x419Fe9f14Ff3aA22e46ff1d03a73EdF3b70A62ED',
+      contract: '0x75b036E5B9Ff5caBb3DdD84a9edBc2b12AA8EBa9'
     },
     {
       chain: Polygon,

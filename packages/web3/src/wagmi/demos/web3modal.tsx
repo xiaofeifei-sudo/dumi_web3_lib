@@ -6,7 +6,9 @@ import { ConnectButton } from "../../components/connect-button";
 const App: React.FC = () => {
   return (
     <WagmiWeb3ConfigProvider
-      wallets={[MetaMask(), WalletConnect()]}
+      wallets={[MetaMask(), WalletConnect({
+        useWalletConnectOfficialModal: true
+      })]}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
         useWalletConnectOfficialModal: true,

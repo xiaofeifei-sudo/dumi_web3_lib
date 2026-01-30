@@ -1,6 +1,6 @@
 import React from 'react';
 import { Space } from 'antd';
-import { WagmiWeb3ConfigProvider, Mainnet, MetaMask, Sepolia, USDT } from 'pelican-web3-lib-evm';
+import { WagmiWeb3ConfigProvider, Mainnet, MetaMask, Sepolia, USDT, WalletConnect, MobileWallet, ImToken, RainbowWallet, SafeheronWallet } from 'pelican-web3-lib-evm';
 import { http } from 'wagmi';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
@@ -12,8 +12,9 @@ const App: React.FC = () => {
       eip6963={{
         autoAddInjectedWallets: true,
       }}
+      balance
       chains={[Sepolia, Mainnet]}
-      wallets={[MetaMask()]}
+      wallets={[MetaMask(), WalletConnect(), MobileWallet(), ImToken(), RainbowWallet(), SafeheronWallet()]}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
       }}

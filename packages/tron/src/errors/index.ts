@@ -14,9 +14,12 @@ import {
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { ProviderError } from 'pelican-web3-lib-common';
 
-export type TronAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'other';
+/// 交易操作类型
+export type TronAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 'transfer' | 'other';
 export type TronErrorCode = number;
 
+
+/// 交易相关错误
 export class TronProviderError extends ProviderError {
   network?: string;
   constructor(params: {
@@ -50,6 +53,7 @@ function ctxText(ctx?: NormalizeContext) {
   return parts.length ? `提示：${parts.join('，')}` : '';
 }
 
+/// 交易相关错误名称到提示消息的映射
 const NAME_MESSAGE_MAP = new Map<string, (ctx?: NormalizeContext) => string>([
   ['WalletNotFoundError', (ctx) => ['未检测到钱包。请安装对应扩展或打开 App 后重试。', ctxText(ctx)].filter(Boolean).join('\n')],
   ['WalletNotSelectedError', (ctx) => ['未选择钱包。请先在界面中选择一个钱包。', ctxText(ctx)].filter(Boolean).join('\n')],
@@ -64,6 +68,8 @@ const NAME_MESSAGE_MAP = new Map<string, (ctx?: NormalizeContext) => string>([
   ['WalletGetNetworkError', (ctx) => ['获取网络信息失败。请检查钱包网络设置。', ctxText(ctx)].filter(Boolean).join('\n')],
 ]);
 
+
+/// 交易相关错误名称到错误码的映射
 const NAME_CODE_MAP = new Map<string, number>([
   ['WalletNotFoundError', 5000],
   ['WalletNotSelectedError', 5001],
@@ -78,6 +84,8 @@ const NAME_CODE_MAP = new Map<string, number>([
   ['WalletGetNetworkError', 5011],
 ]);
 
+
+/// 根据错误类型获取提示消息
 function messageByType(error: any, ctx?: NormalizeContext): string | undefined {
   if (error instanceof WalletNotFoundError) return ['未检测到钱包。请安装对应扩展或打开 App 后重试。', ctxText(ctx)].filter(Boolean).join('\n');
   if (error instanceof WalletNotSelectedError) return ['未选择钱包。请先在界面中选择一个钱包。', ctxText(ctx)].filter(Boolean).join('\n');
@@ -93,6 +101,8 @@ function messageByType(error: any, ctx?: NormalizeContext): string | undefined {
   return undefined;
 }
 
+
+/// 根据错误类型获取错误码
 function codeByType(error: any): number | undefined {
   if (error instanceof WalletNotFoundError) return 5000;
   if (error instanceof WalletNotSelectedError) return 5001;
@@ -116,7 +126,6 @@ export function normalizeTronError(
   if (error instanceof TronProviderError) {
     return error;
   }
-
   const action = context?.action ?? 'other';
   const walletName = context?.walletName;
   const network = context?.network;

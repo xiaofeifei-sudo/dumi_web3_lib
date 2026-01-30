@@ -1,5 +1,9 @@
 import type { Chain, TransferParams } from 'pelican-web3-lib-common';
+import { getBalance } from './getBalance';
+import { TronInsufficientBalanceError } from '../../errors/insufficient-balance-error';
+import { TronInvalidAddressError } from '../../errors/invalid-address-error';
 
+/// 发送交易
 export async function sendTransaction(
   tronWeb: any,
   from: string,
@@ -8,12 +12,34 @@ export async function sendTransaction(
   params: TransferParams,
 ): Promise<`0x${string}`> {
   const to = params.to;
-  const value = params.value ?? 0;
+  if (!tronWeb?.isAddress?.(to)) {
+    throw new TronInvalidAddressError();
+  }
+  const rawValue = params.value ?? 0;
   const tokenOnChain = params.token?.availableChains?.find(
     (item) => (item?.chain as any)?.id === (currentChain as any)?.id,
   );
+  let amount: bigint;
+  if (typeof rawValue === 'bigint') {
+    amount = rawValue;
+  } else if (tokenOnChain?.contract) {
+     const decimals = params.token?.decimal ?? 6;
+    amount = BigInt(Math.floor(rawValue * 10 ** decimals));
+  } else {
+    const sun = tronWeb.toSun(rawValue);
+    amount = BigInt(typeof sun === 'string' ? sun : String(sun));
+  }
+  const balance = await getBalance(
+    tronWeb,
+    from,
+    currentChain,
+    tokenOnChain?.contract ? params.token : undefined,
+  );
+  const available = balance?.value ?? 0n;
+  if (amount > available) {
+    throw new TronInsufficientBalanceError();
+  }
   if (tokenOnChain?.contract) {
-    const amount = typeof value === 'bigint' ? value : BigInt(value);
     const functionSelector = 'transfer(address,uint256)';
     const parameter = [
       { type: 'address', value: to },
@@ -33,8 +59,7 @@ export async function sendTransaction(
     const txId: string = result?.txid || result?.transaction?.txID || '';
     return `0x${txId.replace(/^0x/, '')}` as `0x${string}`;
   }
-  const nativeValue = typeof value === 'bigint' ? value : BigInt(value);
-  const trade = await tronWeb.transactionBuilder.sendTrx(to, Number(nativeValue), from);
+  const trade = await tronWeb.transactionBuilder.sendTrx(to, Number(amount), from);
   if (!signTransaction) {
     throw new Error('signTransaction is not available');
   }
@@ -44,4 +69,3 @@ export async function sendTransaction(
   const txId: string = result?.txid || result?.transaction?.txID || '';
   return `0x${txId.replace(/^0x/, '')}` as `0x${string}`;
 }
-

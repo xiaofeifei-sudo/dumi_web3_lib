@@ -29,11 +29,9 @@ const SendTransactionWidget: React.FC<SendTransactionWidgetProps> = (props) => {
     }
     try {
       setSending(true);
-      const decimals = token?.decimal ?? 18;
-      const value = BigInt(Math.floor(amount * 10 ** decimals));
       const hash = await sendTransaction?.({
         to,
-        value,
+        value: amount,
         token,
       });
       message.success(`Transaction sent: ${hash}`);
@@ -68,4 +66,3 @@ const SendTransactionWidget: React.FC<SendTransactionWidgetProps> = (props) => {
 };
 
 export default SendTransactionWidget;
-

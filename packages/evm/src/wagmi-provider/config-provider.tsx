@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type BalanceStatusConfig, type Token,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token,} from 'pelican-web3-lib-common';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
   type Connector as WagmiConnector,
@@ -92,7 +92,20 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     }
     return undefined;
   }, [token, chainIdForBalance]);
-  const {data: balanceData} = useBalance({address, token: tokenContractOnChain});
+  const {
+    data: balanceData,
+    refetch: refetchBalance,
+    isLoading: isBalanceLoading,
+    isFetching: isBalanceFetching,
+  } = useBalance({
+    address,
+    token: tokenContractOnChain,
+    chainId: chainIdForBalance,
+    query: {
+      enabled: !!(balance && address && chainIdForBalance),
+      refetchInterval: balance && address ? 5000 : undefined,
+    },
+  });
   const {data: ensName} = useEnsName({address});
   const {data: ensAvatar} = useEnsAvatar({name: ensName ?? undefined});
   const {signMessageAsync} = useSignMessage();
@@ -308,10 +321,14 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       }
       sendTransaction={async (params) => {
         try {
-          return await sendTx(config, {
+          if (refetchBalance) {
+            refetchBalance();
+          }
+          const result = await sendTx(config, {
             ...params,
             chainId: chain?.id ?? wagimConfig.chains?.[0]?.id,
           });
+          return result;
         } catch (error: any) {
           throw normalizeEvmError(error, { action: 'transfer' });
         }
@@ -332,7 +349,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           : undefined
       }
       balanceLoading={
-        (balance && !!address && !balanceData) as BalanceStatusConfig
+        balance && !!address && (isBalanceLoading)
+          ? {status: 'fetching'}
+          : false
       }
       availableWallets={wallets}
       addressPrefix="0x"

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Input, InputNumber, message, Space } from 'antd';
-import { parseUnits } from 'viem';
 import { TronWeb3ConfigProvider, TronlinkWallet, USDT } from 'pelican-web3-lib-tron';
 import { TronNileNet } from 'pelican-web3-lib-assets';
 import Connector from '../../components/Connector';
@@ -28,10 +27,9 @@ const SendTronTransaction: React.FC = () => {
         setLoading(false);
         return;
       }
-      const value = parseUnits(amount.toString(), USDT.decimal);
       const hash = await sendTransaction?.({
         to,
-        value,
+        value: amount,
         token: USDT,
       });
       message.success(`发送成功，交易哈希：${hash}`);
@@ -86,10 +84,9 @@ const SendNativeTrx: React.FC = () => {
         setLoading(false);
         return;
       }
-      const value = parseUnits(amount.toString(), 6);
       const hash = await sendTransaction?.({
         to,
-        value,
+        value: amount,
       });
       message.success(`发送成功，交易哈希：${hash}`);
     } catch (error: any) {
