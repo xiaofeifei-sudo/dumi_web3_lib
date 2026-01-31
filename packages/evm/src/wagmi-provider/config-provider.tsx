@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, formatBalance,} from 'pelican-web3-lib-common';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
   type Connector as WagmiConnector,
@@ -258,6 +258,11 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   }, [chainAssets, wagimConfig.chains, chainId, chainName]);
 
   const currency = currentChain?.nativeCurrency;
+  const balanceDecimals = balanceData?.decimals ?? token?.decimal ?? currency?.decimals;
+  const balanceFormatted =
+    balanceData?.value !== undefined && balanceDecimals !== undefined
+      ? formatBalance(balanceData.value as bigint, balanceDecimals)
+      : undefined;
 
   /**
    * 获取 NFT 元数据
@@ -343,8 +348,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           ? {
             symbol: balanceData?.symbol,
             value: balanceData?.value,
-            decimals: balanceData?.decimals,
+            decimals: balanceDecimals,
             icon: token?.icon ?? currency?.icon,
+            formatted: balanceFormatted,
           }
           : undefined
       }

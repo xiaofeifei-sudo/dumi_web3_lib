@@ -1,4 +1,5 @@
 import type { Balance, Chain, Token } from 'pelican-web3-lib-common';
+import { formatBalance } from 'pelican-web3-lib-common';
 import { trc20Abi } from '../../abi/trc20';
 
 /**
@@ -57,18 +58,32 @@ export async function getBalance(
       }
       return token?.decimal ?? 6;
     };
+    const value = toBigInt(rawBalance);
+    const decimals = toNumber(rawDecimals);
+    const formatted =
+      value !== undefined && decimals !== undefined
+        ? formatBalance(value, decimals)
+        : undefined;
     return {
       symbol: token?.symbol,
-      value: toBigInt(rawBalance),
-      decimals: toNumber(rawDecimals),
+      value,
+      decimals,
       icon: token?.icon,
+      formatted,
     };
   }
   const sun: number = await tronWeb.trx.getBalance(address);
+  const value = BigInt(sun);
+  const decimals = currency?.decimals ?? 6;
+  const formatted =
+    value !== undefined && decimals !== undefined
+      ? formatBalance(value, decimals)
+      : undefined;
   return {
     symbol: currency?.symbol,
-    value: BigInt(sun),
-    decimals: currency?.decimals,
+    value,
+    decimals,
     icon: currency?.icon,
+    formatted,
   };
 }

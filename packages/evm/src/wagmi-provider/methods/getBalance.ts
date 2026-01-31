@@ -1,6 +1,6 @@
 import type { Config } from 'wagmi';
 import { getBalance as getNativeBalance, readContract } from 'wagmi/actions';
-import { fillAddressWith0x } from 'pelican-web3-lib-common';
+import { fillAddressWith0x, formatBalance } from 'pelican-web3-lib-common';
 import type { Balance, Token } from 'pelican-web3-lib-common';
 import type React from 'react';
 import { erc20Abi } from 'viem';
@@ -34,11 +34,15 @@ export async function getBalance(
         functionName: 'balanceOf',
         args: [addr],
       });
+      const decimalsNum = Number(decimals as number);
+      const formatted =
+        value !== undefined ? formatBalance(value as bigint, decimalsNum) : undefined;
       return {
         symbol: token.symbol,
         value: value as bigint,
-        decimals: Number(decimals as number),
+        decimals: decimalsNum,
         icon: token.icon,
+        formatted,
       };
     }
   }
@@ -46,10 +50,14 @@ export async function getBalance(
     address: addr,
     chainId,
   });
+  const decimalsNum = res.decimals;
+  const formatted =
+    res.value !== undefined ? formatBalance(res.value as bigint, decimalsNum) : undefined;
   return {
     symbol: res.symbol,
     value: res.value,
-    decimals: res.decimals,
+    decimals: decimalsNum,
     icon: token?.icon ?? currencyIcon,
+    formatted,
   };
 }

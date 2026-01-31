@@ -331,6 +331,8 @@ export type WalletMetadata = {
 export type Balance = BalanceMetadata & {
   // 余额（bigint 表示）
   value?: bigint;
+  // 已格式化余额字符串
+  formatted?: string;
   // 是否覆盖地址显示（如仅显示余额）
   coverAddress?: boolean;
 };

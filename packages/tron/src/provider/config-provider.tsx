@@ -7,7 +7,7 @@ import {
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
 import type { Account, Wallet, Token, TransferParams } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider, type BalanceStatusConfig } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider, type BalanceStatusConfig, formatBalance } from 'pelican-web3-lib-common';
 import type { Chain } from 'pelican-web3-lib-common';
 import { TronMainnet, TronNileNet, TronShastaNet } from 'pelican-web3-lib-assets';
 import { TronChainIds } from 'pelican-web3-lib-common';
@@ -261,6 +261,13 @@ export const PelicanWeb3ConfigProvider: React.FC<
   
   const currency = currentChain?.nativeCurrency;
   const isTokenBalance = tokenDecimals !== undefined && !!token;
+  const balanceDecimals = isTokenBalance
+    ? tokenDecimals ?? token?.decimal
+    : currency?.decimals;
+  const balanceFormatted =
+    balanceData !== undefined && balanceDecimals !== undefined
+      ? formatBalance(balanceData, balanceDecimals)
+      : undefined;
 
   /// 确保 TronWeb 实例和地址已连接
   const ensureTronWebAndAddress = () => {
@@ -314,8 +321,9 @@ export const PelicanWeb3ConfigProvider: React.FC<
           ? {
               symbol: isTokenBalance ? token?.symbol : currency?.symbol,
               value: balanceData,
-              decimals: isTokenBalance ? tokenDecimals ?? token?.decimal : currency?.decimals,
+              decimals: balanceDecimals,
               icon: isTokenBalance ? token?.icon : currency?.icon,
+              formatted: balanceFormatted,
             }
           : undefined
       }

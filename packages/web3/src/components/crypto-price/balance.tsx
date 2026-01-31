@@ -32,21 +32,35 @@ export const CryptoPriceBalance: React.FC<CryptoPriceBalanceProps> = ({
   fixed,
   icon,
   format,
+  formatted,
 }) => {
   const { getPrefixCls } = useContext(ConfigProvider.ConfigContext);
   const prefixCls = getPrefixCls('web3-crypto-price-balance');
 
+  const preFormatValue = useMemo(() => {
+    if (formatted !== undefined) {
+      return formatted;
+    }
+    if (value === undefined || decimals === undefined) {
+      return '';
+    }
+    return formatBalance(value, decimals, fixed);
+  }, [formatted, value, decimals, fixed]);
+
   const displayText = useMemo(() => {
+    if (!preFormatValue) {
+      return symbol ? `0 ${symbol}` : '0';
+    }
     if (format) {
-      return format(formatBalance(value, decimals, fixed), {
+      return format(preFormatValue, {
         symbol,
         decimals,
         fixed,
         originValue: value,
       });
     }
-    return `${formatBalance(value, decimals, fixed)} ${symbol}`;
-  }, [value, symbol, decimals, fixed, format]);
+    return symbol ? `${preFormatValue} ${symbol}` : preFormatValue;
+  }, [preFormatValue, symbol, decimals, fixed, format, value]);
 
   return (
     <span style={style} className={classNames(className, hashId, prefixCls)}>

@@ -7,7 +7,7 @@ import {
 } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import type { Account, Chain, Wallet } from 'pelican-web3-lib-common';
-import { Web3ConfigProvider } from 'pelican-web3-lib-common';
+import { Web3ConfigProvider, formatBalance } from 'pelican-web3-lib-common';
 
 import type { SolanaChainConfig } from '../chains';
 import { hasWalletReady } from '../utils';
@@ -236,6 +236,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
   }, [props.currentChain, chainList]);
 
   const currency = currentChain?.nativeCurrency;
+  const balanceDecimals = currency?.decimals;
+  const balanceFormatted =
+    balanceData !== undefined && balanceDecimals !== undefined
+      ? formatBalance(balanceData, balanceDecimals)
+      : undefined;
 
   return (
     <Web3ConfigProvider
@@ -245,9 +250,10 @@ export const PelicanWeb3ConfigProvider: React.FC<
         props.balance
           ? {
               symbol: currency?.symbol,
-              decimals: currency?.decimals,
+              decimals: balanceDecimals,
               value: balanceData,
               icon: currency?.icon,
+              formatted: balanceFormatted,
             }
           : undefined
       }
