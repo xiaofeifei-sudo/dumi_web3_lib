@@ -6,7 +6,7 @@ import {
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
-import type { Account, Wallet, Token, TransferParams } from 'pelican-web3-lib-common';
+import type { Account, Wallet, Token, TransferParams, CustomToken } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider, type BalanceStatusConfig, formatBalance } from 'pelican-web3-lib-common';
 import type { Chain } from 'pelican-web3-lib-common';
 import { TronMainnet, TronNileNet, TronShastaNet } from 'pelican-web3-lib-assets';
@@ -294,9 +294,15 @@ export const PelicanWeb3ConfigProvider: React.FC<
       availableWallets={allWallets}
       availableChains={availableChains}
       chain={currentChain}
-      getBalance={async (params?: { token?: Token }) => {
+      getBalance={async (params?: { token?: Token; customToken?: CustomToken }) => {
         const context = ensureTronWebAndAddress();
-        return getTronBalance(context.tronWeb, context.address, currentChain, params?.token ?? token);
+        return getTronBalance(
+          context.tronWeb,
+          context.address,
+          currentChain,
+          params?.token ?? token,
+          params?.customToken,
+        );
       }}
       sendTransaction={async (params: TransferParams) => {
         try {

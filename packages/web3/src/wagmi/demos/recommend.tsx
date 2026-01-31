@@ -1,6 +1,6 @@
 import React from 'react';
 import {Space} from 'antd';
-import {Mainnet, MetaMask, OkxWallet, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
+import {CoinbaseWallet, Mainnet, MetaMask, OkxWallet, Sepolia, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
 import {QueryClient} from '@tanstack/react-query';
 import {http} from 'wagmi';
 import Connector from '../../components/Connector';
@@ -16,11 +16,19 @@ const App: React.FC = () => {
       }}
       ens
       balance
-      chains={[Mainnet]}
-      wallets={[MetaMask(), TokenPocket(), OkxWallet(), WalletConnect({useWalletConnectOfficialModal: false}),]}
-      walletConnect={{
-        projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
-      }}
+      chains={[Mainnet, Sepolia]}
+      wallets={[
+        MetaMask(),
+        TokenPocket(),
+        OkxWallet(),
+        CoinbaseWallet(),
+      ]}
+      walletConnect={
+        {
+                      projectId: "516c0404ce78defabd49030fb0c95b22",
+                      useWalletConnectOfficialModal: true,
+                    }
+      }
       transports={{
         [Mainnet.id]: http(),
       }}

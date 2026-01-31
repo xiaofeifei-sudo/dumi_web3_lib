@@ -23,7 +23,10 @@ export async function sendTransaction(
   if (typeof rawValue === 'bigint') {
     amount = rawValue;
   } else if (tokenOnChain?.contract) {
-     const decimals = params.token?.decimal ?? 6;
+    const decimals = params.token?.decimal ?? 6;
+    amount = BigInt(Math.floor(rawValue * 10 ** decimals));
+  } else if (params.customToken?.contract) {
+    const decimals = params.customToken.decimal;
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else {
     const sun = tronWeb.toSun(rawValue);
@@ -34,19 +37,20 @@ export async function sendTransaction(
     from,
     currentChain,
     tokenOnChain?.contract ? params.token : undefined,
+    !tokenOnChain?.contract ? params.customToken : undefined,
   );
   const available = balance?.value ?? 0n;
   if (amount > available) {
     throw new TronInsufficientBalanceError();
   }
-  if (tokenOnChain?.contract) {
+  if (tokenOnChain?.contract || params.customToken?.contract) {
     const functionSelector = 'transfer(address,uint256)';
     const parameter = [
       { type: 'address', value: to },
       { type: 'uint256', value: amount },
     ];
     const tx = await tronWeb.transactionBuilder.triggerSmartContract(
-      tokenOnChain.contract,
+      tokenOnChain?.contract ?? params.customToken?.contract,
       functionSelector,
       {},
       parameter,

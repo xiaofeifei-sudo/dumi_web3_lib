@@ -197,7 +197,7 @@ export interface UniversalWeb3ProviderInterface {
   // 余额获取状态
   balanceLoading?: BalanceStatusConfig;
   // 实时获取余额（可选传入代币）
-  getBalance?: (params?: { token?: Token }) => Promise<Balance | undefined>;
+  getBalance?: (params?: { token?: Token; customToken?: CustomToken }) => Promise<Balance | undefined>;
 
   // 可用钱包与可用链（用于选择面板）
   availableWallets?: Wallet[];
@@ -375,10 +375,17 @@ export type Token = {
   }[];
 };
 
+export type CustomToken = {
+  decimal: number;
+  contract: string;
+};
+
+/// 转账参数
 export type TransferParams = {
   to: string;
   value?: number | bigint;
   token?: Token;
+  customToken?: CustomToken;
 };
 
 /// 签名配置

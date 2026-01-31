@@ -1,7 +1,7 @@
 import type { Config } from 'wagmi';
 import { getBalance as getNativeBalance, readContract } from 'wagmi/actions';
 import { fillAddressWith0x, formatBalance } from 'pelican-web3-lib-common';
-import type { Balance, Token } from 'pelican-web3-lib-common';
+import type { Balance, Token, CustomToken } from 'pelican-web3-lib-common';
 import type React from 'react';
 import { erc20Abi } from 'viem';
 
@@ -14,6 +14,7 @@ export async function getBalance(
   chainId?: number,
   token?: Token,
   currencyIcon?: React.ReactNode,
+  customToken?: CustomToken,
 ): Promise<Balance | undefined> {
   if (!address) return undefined;
   const addr = fillAddressWith0x(address);
@@ -45,6 +46,25 @@ export async function getBalance(
         formatted,
       };
     }
+  }
+  if (customToken && chainId) {
+    const contract = fillAddressWith0x(customToken.contract);
+    const value = await readContract(config as any, {
+      address: contract,
+      chainId,
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      args: [addr],
+    });
+    const decimalsNum = customToken.decimal;
+    const formatted =
+      value !== undefined ? formatBalance(value as bigint, decimalsNum) : undefined;
+    return {
+      value: value as bigint,
+      decimals: decimalsNum,
+      icon: currencyIcon,
+      formatted,
+    };
   }
   const res = await getNativeBalance(config as any, {
     address: addr,

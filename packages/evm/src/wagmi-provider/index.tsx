@@ -70,8 +70,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Transport, Chain as WagmiChain } from 'viem';
 import { createConfig, http, WagmiProvider } from 'wagmi';
 import type { Config, State } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
-import { walletConnect as wagmiWalletConnect } from 'wagmi/connectors';
+import { holesky, mainnet, scrollSepolia, sepolia, } from 'wagmi/chains';
+import { coinbaseWallet, walletConnect as wagmiWalletConnect } from 'wagmi/connectors';
 import type { WalletConnectParameters } from 'wagmi/connectors';
 
 // Built in popular chains
@@ -208,11 +208,27 @@ export function WagmiWeb3ConfigProvider({
         connectors.push(connector);
       }
     });
+
+
+    connectors.push(
+      coinbaseWallet({
+    appName: "PelicanWeb3 Demo",
+    appLogoUrl: "",
+    version: "3",
+  headlessMode: true,
+  })
+    )
+
+    
+
     // 创建 wagmi 配置：链映射 + RPC transports + connectors
     const autoGenerateConfig = createConfig({
       chains: chainAssets.map((chain) => chain.wagmiChain) as [WagmiChain, ...WagmiChain[]],
       transports: transports ?? {
         [mainnet.id]: http(),
+        [sepolia.id]: http(),
+        [holesky.id]: http(),
+        [scrollSepolia.id]: http(),
       },
       connectors,
     });

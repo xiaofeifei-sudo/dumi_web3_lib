@@ -30,7 +30,10 @@ export async function sendTransaction(
     throw new EvmInvalidAddressError();
   }
   const chainId = params.chainId;
-  const contract = findTokenContractOnChain(params.token, chainId);
+  const contract =
+    params.customToken?.contract && chainId
+      ? fillAddressWith0x(params.customToken.contract)
+      : findTokenContractOnChain(params.token, chainId);
   const rawValue = params.value ?? 0;
   let amount: bigint;
   if (typeof rawValue === 'bigint') {
@@ -49,21 +52,32 @@ export async function sendTransaction(
       } else {
         decimals = params.token.decimal;
       }
+    } else if (params.customToken) {
+      decimals = params.customToken.decimal;
     }
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   }
   const account = getAccount(config as any);
   const from = account?.address;
   if (from && chainId) {
-    const balance = await getBalance(
-      config,
-      from,
-      chainId,
-      contract ? params.token : undefined,
-    );
-    const available = balance?.value ?? BigInt(0);
-    if (amount > available) {
-      throw new EvmInsufficientBalanceError();
+    if (contract && params.token) {
+      const balance = await getBalance(config, from, chainId, params.token);
+      const available = balance?.value ?? BigInt(0);
+      if (amount > available) {
+        throw new EvmInsufficientBalanceError();
+      }
+    } else if (contract && params.customToken && !params.token) {
+      const balance = await getBalance(config, from, chainId, undefined, undefined, params.customToken);
+      const available = balance?.value ?? BigInt(0);
+      if (amount > available) {
+        throw new EvmInsufficientBalanceError();
+      }
+    } else if (!contract) {
+      const balance = await getBalance(config, from, chainId);
+      const available = balance?.value ?? BigInt(0);
+      if (amount > available) {
+        throw new EvmInsufficientBalanceError();
+      }
     }
   }
   if (contract) {
