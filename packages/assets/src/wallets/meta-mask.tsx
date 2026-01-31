@@ -2,6 +2,7 @@
 import { ChainType, type WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful, MetaMaskArk } from 'pelican-web3-lib-icons';
 
+/// MetaMask 钱包的展示元数据与二维码格式化规则
 export const metadata_MetaMask: WalletMetadata = {
   icon: <MetaMaskArk />,
   name: 'MetaMask',
