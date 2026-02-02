@@ -69,6 +69,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
   const [balanceData, setBalanceData] = useState<bigint>();
   const [account, setAccount] = useState<Account>();
   const [currentWalletName, setCurrentWalletName] = useState(() => wallet?.adapter?.name ?? null);
+  const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
 
   // 获取账户地址
   useEffect(() => {
@@ -231,6 +232,15 @@ export const PelicanWeb3ConfigProvider: React.FC<
     return [...providedWallets, ...autoRegisteredWallets];
   }, [props.availableWallets, wallets, props.autoAddRegisteredWallets]);
 
+  useEffect(() => {
+    if (!wallet?.adapter?.name) {
+      setCurrentWallet(undefined);
+      return;
+    }
+    const matched = availableWallets.find((w) => w.name === wallet.adapter.name);
+    setCurrentWallet(matched);
+  }, [wallet?.adapter?.name, availableWallets]);
+
   const currentChain = useMemo(() => {
     return chainList.find((c) => c.id === props.currentChain?.id);
   }, [props.currentChain, chainList]);
@@ -245,6 +255,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
   return (
     <Web3ConfigProvider
       account={account}
+      wallet={currentWallet}
       chain={currentChain}
       balance={
         props.balance

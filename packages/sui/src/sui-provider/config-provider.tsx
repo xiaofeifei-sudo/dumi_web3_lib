@@ -78,7 +78,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
     },
   );
 
-  /** 把 dapp-kit 的账户信息适配成通用 Account 数据结构 */
+  const [currentWallet, setCurrentWallet] = React.useState<Wallet | undefined>();
+
   const accountData: Account | undefined = account
     ? {
       address: account.address,
@@ -153,6 +154,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       availableWallets={allWallets}
       account={accountData}
       chain={currentChain}
+      wallet={currentWallet}
       balance={
         showBalance
           ? {
@@ -174,6 +176,10 @@ export const PelicanWeb3ConfigProvider: React.FC<
         const defaultAccount = accounts[0];
         const addresses = accounts.map((item) => item.address) as unknown as Account['addresses'];
 
+        if (wallet) {
+          setCurrentWallet(wallet);
+        }
+
         return {
           address: defaultAccount.address,
           addresses: addresses,
@@ -181,6 +187,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       }}
       disconnect={async () => {
         await disconnectAsync();
+        setCurrentWallet(undefined);
       }}
       switchChain={async (chain) => {
         const network = availableChains?.find((item) => item.id === chain.id)?.network;

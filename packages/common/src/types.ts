@@ -192,6 +192,7 @@ export interface UniversalWeb3ProviderInterface {
   account?: Account;
   // 当前已连接链
   chain?: Chain;
+  wallet?: Wallet;
   // 当前账户余额
   balance?: Balance;
   // 余额获取状态
@@ -223,6 +224,9 @@ export interface UniversalWeb3ProviderInterface {
   sign?: SignConfig;
 }
 
+/**
+ * @desc 钱包
+ */
 export interface Wallet extends WalletMetadata {
   _standardWallet?: any;
   _isMobileWallet?: boolean;
@@ -262,7 +266,7 @@ export type WalletExtensionItem = {
 };
 
 /**
- * @desc 钱包
+ * @desc 钱包元数据
  */
 export type WalletMetadata = {
   /**

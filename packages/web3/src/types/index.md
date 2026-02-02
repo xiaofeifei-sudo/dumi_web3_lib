@@ -105,6 +105,7 @@ This is an enum type that contains the IDs of some commonly used chains. Its val
 | Property | Description | Type | Default | Version |
 | --- | --- | --- | --- | --- |
 | account | Current account | [Account](#account) | - | - |
+| wallet | Current wallet | [Wallet](#wallet) | - | - |
 | chain | Current chain | [Chain](#chain) | - | - |
 | availableChains | List of available chains | [Chain](#chain)\[] | - | - |
 | availableWallets | List of available wallets | [Wallet](#wallet)\[] | - | - |

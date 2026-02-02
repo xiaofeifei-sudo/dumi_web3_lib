@@ -57,6 +57,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
   const availableChains = useMemo<Chain[]>(() => [TronMainnet, TronShastaNet, TronNileNet], []);
   const [balanceData, setBalanceData] = useState<bigint>();
   const [tokenDecimals, setTokenDecimals] = useState<number | undefined>();
+  const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
 
   useEffect(() => {
     if (address) {
@@ -123,7 +124,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       try {
         const tronWeb: any = resolveTronWeb(wallet?.adapter);
         if (!tronWeb || !connected) return;
-          const currentWallet = availableWallets?.find(
+          const selectedWallet = availableWallets?.find(
             (item) => item.name === wallet?.adapter?.name,
           );
         const { chainId } = await getNetworkInfoByTronWeb(tronWeb);
@@ -139,7 +140,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         if (initialChain) {
           if (!target || (target as any)?.id !== (initialChain as any)?.id) {
             try {
-              await switchTronChain(wallet?.adapter, initialChain, currentWallet);
+              await switchTronChain(wallet?.adapter, initialChain, selectedWallet);
               setCurrentChain(initialChain);
               return;
             } catch (error) {
@@ -179,7 +180,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
   const allWallets = useMemo<Wallet[]>(() => {
     const providedWallets = availableWallets?.map<Wallet>((w) => {
       const adapter = wallets?.find((item) => item.adapter.name === w.name)?.adapter;
-
       return {
         ...w,
         adapter,
@@ -197,6 +197,15 @@ export const PelicanWeb3ConfigProvider: React.FC<
     });
     return providedWallets || [];
   }, [availableWallets, wallets]);
+
+  useEffect(() => {
+    if (!wallet?.adapter?.name || !connected) {
+      setCurrentWallet(undefined);
+      return;
+    }
+    const matched = allWallets.find((item) => item.name === wallet.adapter.name);
+    setCurrentWallet(matched);
+  }, [wallet?.adapter?.name, connected, allWallets]);
 
   /// 处理连接错误
   useEffect(() => {
@@ -290,6 +299,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
   return (
     <Web3ConfigProvider
       account={account}
+      wallet={currentWallet}
       addressPrefix=""
       availableWallets={allWallets}
       availableChains={availableChains}
@@ -355,6 +365,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       disconnect={async () => {
         try {
           await disconnect();
+          setCurrentWallet(undefined);
         } catch (error) {
           const normalized = normalizeTronError(error, {
             action: 'disconnect',
@@ -365,11 +376,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
       }}
       switchChain={async (newChain: Chain) => {
         const context = ensureTronWebAndAddress();
-        const currentWallet = availableWallets?.find(
+        const selectedWallet = availableWallets?.find(
           (item) => item.name === wallet?.adapter?.name,
         );
         try {
-          await switchTronChain(context.adapter, newChain, currentWallet);
+          await switchTronChain(context.adapter, newChain, selectedWallet);
           setCurrentChain(newChain);
           return;
         } catch (error: any) {

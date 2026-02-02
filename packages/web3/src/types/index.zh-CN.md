@@ -106,6 +106,7 @@ coverDark: https://mdn.alipayobjects.com/huamei_mutawc/afts/img/A*n4F2RK3AVTsAAA
 | 属性 | 描述 | 类型 | 默认值 | 版本 |
 | --- | --- | --- | --- | --- |
 | account | 当前账户 | [Account](#account) | - | - |
+| wallet | 当前连接的钱包 | [Wallet](#wallet) | - | - |
 | chain | 当前链 | [Chain](#chain) | - | - |
 | availableChains | 可以连接的链列表 | [Chain](#chain)[] | - | - |
 | availableWallets | 可用的钱包列表 | [Wallet](#wallet)[] | - | - |

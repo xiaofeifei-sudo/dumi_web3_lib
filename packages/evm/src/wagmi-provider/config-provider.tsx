@@ -78,7 +78,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     siwe,
     ignoreConfig,
   } = props;
-  const {address, isDisconnected, chain, addresses} = useAccount();
+  const {address, isDisconnected, chain, addresses, connector} = useAccount();
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChain} = useSwitchChain();
@@ -110,6 +110,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const {signMessageAsync} = useSignMessage();
 
   const [status, setStatus] = React.useState<ConnectStatus>(ConnectStatus.Disconnected);
+  const [currentWallet, setCurrentWallet] = React.useState<Wallet | undefined>(undefined);
 
   React.useEffect(() => {
     setStatus(isDisconnected ? ConnectStatus.Disconnected : ConnectStatus.Connected);
@@ -158,19 +159,19 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
    */
   const wallets: Wallet[] = React.useMemo(() => {
     const autoAddEIP6963Wallets: Wallet[] = [];
-    wagimConfig.connectors.forEach((connector) => {
-      if (isEIP6963Connector(connector)) {
+    wagimConfig.connectors.forEach((itemConnector) => {
+      if (isEIP6963Connector(itemConnector)) {
         // 检查是否需要自动添加 EIP-6963 注入式钱包
         if (
           typeof eip6963 === 'object' &&
           eip6963?.autoAddInjectedWallets &&
           !walletFactories.find((item) =>
-            item.connectors.some((aName) => isConnectorNameMatch(aName, connector.name)),
+            item.connectors.some((aName) => isConnectorNameMatch(aName, itemConnector.name)),
           )
         ) {
           // 未在配置中定义，但在连接器中发现该钱包，则自动添加
           autoAddEIP6963Wallets.push(
-            EIP6963Wallet().create([connector], {
+            EIP6963Wallet().create([itemConnector], {
               useWalletConnectOfficialModal,
             }),
           );
@@ -180,13 +181,13 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       }
 
       const walletFactory = walletFactories.find((factory) =>
-        factory.connectors.some((aName) => isConnectorNameMatch(aName, connector.name)),
+        factory.connectors.some((aName) => isConnectorNameMatch(aName, itemConnector.name)),
       );
 
       if (!walletFactory?.create) {
         // 检查用户钱包配置并提示错误
         console.error(
-          `Can not find wallet factory for ${connector.name}, you should config it in WagmiWeb3ConfigProvider 'wallets'.`,
+          `Can not find wallet factory for ${itemConnector.name}, you should config it in WagmiWeb3ConfigProvider 'wallets'.`,
         );
       }
     });
@@ -215,6 +216,20 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
     return [...supportWallets, ...autoAddEIP6963Wallets];
   }, [wagimConfig.connectors, walletFactories, eip6963]);
+
+  React.useEffect(() => {
+    if (!connector || isDisconnected) {
+      setCurrentWallet(undefined);
+      return;
+    }
+    setCurrentWallet((prev) => {
+      if (prev) {
+        return prev;
+      }
+      const matched = wallets.find((item) => isConnectorNameMatch(item.name, connector.name));
+      return matched ?? prev;
+    });
+  }, [connector, isDisconnected, wallets]);
 
   /**
    * 将 wagmi 链配置映射为展示用链信息（id、name、icon）
@@ -312,6 +327,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       availableChains={chainList}
       chain={currentChain}
       account={account}
+      wallet={currentWallet}
       getBalance={async (params?: { token?: Token; customToken?: CustomToken }) =>
         address
           ? getBalanceRealtime(
@@ -364,17 +380,22 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       connect={async (wallet, options) => {
         // 连接钱包：优先使用适配器提供的 wagmi 连接器，回退到名称匹配
         try {
-          let connector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(options);
-          if (!connector && wallet) {
-            connector = findConnectorByName(wallet.name);
+          let targetConnector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(
+            options,
+          );
+          if (!targetConnector && wallet) {
+            targetConnector = findConnectorByName(wallet.name);
           }
-          if (!connector) {
+          if (!targetConnector) {
             throw new Error(`Can not find connector for ${wallet?.name}`);
           }
           const {accounts} = await connectAsync({
-            connector,
+            connector: targetConnector,
             chainId: currentChain?.id,
           });
+          if (wallet) {
+            setCurrentWallet(wallet);
+          }
           return {
             address: accounts?.[0],
             addresses: accounts,
@@ -387,8 +408,9 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
         // await disconnectAsync();
         // TODO@jeasonstudio: wagmi useDisconnect hook 在处理多实例（config）共存时，
         // 存在一些状态处理的 bug，暂时用更低阶 API 代替。
-        const {connector} = getAccount(config);
-        await disconnect(config, {connector});
+        const {connector: activeConnector} = getAccount(config);
+        await disconnect(config, {connector: activeConnector});
+        setCurrentWallet(undefined);
       }}
       switchChain={async (newChain: Chain) => {
         if (!chain) {

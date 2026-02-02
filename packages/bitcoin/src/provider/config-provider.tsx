@@ -1,6 +1,6 @@
 // 说明：BitcoinConfigProvider 作为通用 Web3ConfigProvider 的适配层
 // - 负责余额拉取与 NFT 元数据（铭文图片）解析
-import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
+import { useEffect, useMemo, useState, type FC, type PropsWithChildren } from 'react';
 import { Web3ConfigProvider, type Balance, type Wallet } from 'pelican-web3-lib-common';
 
 import { useBitcoinWallet } from '../adapter';
@@ -19,8 +19,13 @@ export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderPr
   selectWallet,
   balance: showBalance,
 }) => {
-  const { getBalance, account } = useBitcoinWallet();
+  const { getBalance, account, name: adapterName } = useBitcoinWallet();
   const [balance, setBalance] = useState<Balance>();
+
+  const currentWallet = useMemo<Wallet | undefined>(() => {
+    if (!adapterName) return undefined;
+    return wallets.find((w) => w.name === adapterName);
+  }, [adapterName, wallets]);
 
   useEffect(() => {
     if (!showBalance) return;
@@ -34,6 +39,7 @@ export const BitcoinConfigProvider: FC<PropsWithChildren<BitcoinConfigProviderPr
       availableWallets={wallets}
       balance={balance}
       account={account}
+      wallet={currentWallet}
       connect={async (wallet) => {
         // 由外层传入的选择钱包逻辑
         selectWallet(wallet);

@@ -1,5 +1,14 @@
 # pelican-web3-lib
 
+## 1.26.5
+
+### Patch Changes
+
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.5
+  - pelican-web3-lib-common@1.0.5
+  - pelican-web3-lib-icons@1.0.5
+
 ## 1.26.4
 
 ### Patch Changes

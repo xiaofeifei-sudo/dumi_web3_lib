@@ -87,6 +87,20 @@ const NAME_CODE_MAP = new Map<string, number>([
 
 /// 根据错误类型获取提示消息
 function messageByType(error: any, ctx?: NormalizeContext): string | undefined {
+  if (error?.name === 'WalletConnectionError' && (error as any)?.error) {
+    const innerError = (error as any).error;
+    const innerCode = innerError?.code;
+    const innerMessage = innerError?.message;
+    if (innerCode === -32000) {
+      return ['操作过于频繁，请稍后再试。', ctxText(ctx)].filter(Boolean).join('\n');
+    }
+    if (innerCode === 4001) {
+      return ['您已拒绝本次连接请求。', ctxText(ctx)].filter(Boolean).join('\n');
+    }
+    if (typeof innerMessage === 'string') {
+      return [innerMessage, ctxText(ctx)].filter(Boolean).join('\n');
+    }
+  }
   if (error instanceof WalletNotFoundError) return ['未检测到钱包。请安装对应扩展或打开 App 后重试。', ctxText(ctx)].filter(Boolean).join('\n');
   if (error instanceof WalletNotSelectedError) return ['未选择钱包。请先在界面中选择一个钱包。', ctxText(ctx)].filter(Boolean).join('\n');
   if (error instanceof WalletDisconnectedError) return ['钱包已断开连接。请重新连接后再试。', ctxText(ctx)].filter(Boolean).join('\n');
@@ -104,6 +118,16 @@ function messageByType(error: any, ctx?: NormalizeContext): string | undefined {
 
 /// 根据错误类型获取错误码
 function codeByType(error: any): number | undefined {
+  if (error?.name === 'WalletConnectionError' && (error as any)?.error) {
+    const innerError = (error as any).error;
+    const innerCode = innerError?.code;
+    if (innerCode === -32000) {
+      return 5016;
+    }
+    if (innerCode === 4001) {
+      return 5017;
+    }
+  }
   if (error instanceof WalletNotFoundError) return 5000;
   if (error instanceof WalletNotSelectedError) return 5001;
   if (error instanceof WalletDisconnectedError) return 4900;

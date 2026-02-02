@@ -98,7 +98,6 @@ export const CoreUtil = {
       }
 
       // this.setWalletConnectDeepLink(safeAppUrl, name);
-
       const url = new URL(safeAppUrl);
       url.searchParams.set("startapp", formattedUri);
       return url.toString();

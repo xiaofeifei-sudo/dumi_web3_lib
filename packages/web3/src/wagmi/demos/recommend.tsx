@@ -1,6 +1,6 @@
 import React from 'react';
 import {Space} from 'antd';
-import {CoinbaseWallet, Mainnet, MetaMask, OkxWallet, Sepolia, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
+import {CoinbaseWallet, Mainnet, MetaMask, OkxWallet, PhantomWallet, Sepolia, TokenPocket, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
 import {QueryClient} from '@tanstack/react-query';
 import {http} from 'wagmi';
 import Connector from '../../components/Connector';
@@ -22,6 +22,7 @@ const App: React.FC = () => {
         TokenPocket(),
         OkxWallet(),
         CoinbaseWallet(),
+        PhantomWallet()
       ]}
       walletConnect={
         {
