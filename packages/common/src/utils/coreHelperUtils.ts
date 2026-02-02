@@ -1,6 +1,6 @@
-import { Chain } from "../types"
+import type { Chain } from "../types"
 import { buildCustomDeeplinkUrlForChain, isCustomDeeplinkWalletForChain } from "./mobileWallet"
-import type { DeepLinkResult, LinkingRecord, WalletForDeepLink } from "./typeUtils"
+import type { DeepLinkResult, LinkingRecord, WcWallet } from "./typeUtils"
 
 export type OpenTarget = '_blank' | '_self' | 'popupWindow' | '_top'
 
@@ -181,7 +181,7 @@ export const CoreHelperUtil = {
 
   /// 构建 WalletConnect 深链
  buildWalletConnectDeepLink(
-  wallet: WalletForDeepLink,
+  wallet: WcWallet,
   wcUri: string
 ): DeepLinkResult | undefined {
   if (!wallet.mobile_link || !wcUri) {
@@ -203,7 +203,7 @@ export const CoreHelperUtil = {
 
 /// 打开钱包连接深链
 openWalletWithDeepLink(
-  wallet: WalletForDeepLink,
+  wallet: WcWallet,
   chain: Chain,
   wcUri: string,
   { preferUniversalLinks = false }: { preferUniversalLinks?: boolean } = {}

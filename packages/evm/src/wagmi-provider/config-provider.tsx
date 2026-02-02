@@ -1,5 +1,6 @@
 import React from 'react';
 import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, type CustomToken, formatBalance,} from 'pelican-web3-lib-common';
+import { WalletConnectWallets } from 'pelican-web3-lib-assets';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
   type Connector as WagmiConnector,
@@ -328,6 +329,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       chain={currentChain}
       account={account}
       wallet={currentWallet}
+      wcWallets={WalletConnectWallets}
       getBalance={async (params?: { token?: Token; customToken?: CustomToken }) =>
         address
           ? getBalanceRealtime(

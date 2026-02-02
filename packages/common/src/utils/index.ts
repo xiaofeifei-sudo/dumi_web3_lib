@@ -6,3 +6,4 @@ export * from './warning';
 export * from "./coreHelperUtils";
 export * from '../errors/error';
 export * from './mobileWallet';
+export * from './typeUtils';

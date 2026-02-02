@@ -3,6 +3,7 @@
  * - 覆盖账户、链、余额、钱包、国际化、签名等核心领域模型
  * - 供各链实现与 UI 组件复用
  */
+import type { WcWallet } from './utils/typeUtils';
 // biome-ignore lint/suspicious/noConstEnum: <explanation>
 export const enum ConnectStatus {
   // 已连接
@@ -202,6 +203,11 @@ export interface UniversalWeb3ProviderInterface {
 
   // 可用钱包与可用链（用于选择面板）
   availableWallets?: Wallet[];
+  
+  /// WalletConnect 钱包列表
+  wcWallets?: WcWallet[];
+  
+  /// 可用链（用于选择面板）
   availableChains?: Chain[];
 
   // 是否从父级继承上下文
@@ -236,6 +242,7 @@ export interface Wallet extends WalletMetadata {
   hasExtensionInstalled?: () => Promise<boolean>;
   // 获取二维码（如 WalletConnect）
   getQrCode?: () => Promise<{ uri: string }>;
+  /// 是否自定义二维码面板
   customQrCodePanel?: boolean;
 }
 
