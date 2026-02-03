@@ -1,5 +1,11 @@
 # pelican-web3-lib-icons
 
+## 1.0.6
+
+### Patch Changes
+
+- Update core web3 library packages to version 1.0.6.
+
 ## 1.0.5
 
 ### Patch Changes

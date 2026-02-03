@@ -47,7 +47,7 @@ const DeeplinkContent: React.FC = () => {
       });
       const {uri} = await walletConnectAdapter.getQrCode();
       CoreHelperUtil.openWalletWithDeepLink(wallet, Mainnet, uri, {
-        preferUniversalLinks: true,
+        preferUniversalLinks: false,
       });
     } finally {
       setLoading(false);

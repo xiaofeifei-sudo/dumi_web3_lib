@@ -12,7 +12,6 @@ export const metadata_WalletConnect: WalletMetadata = {
 };
 
 
-
 /// WalletConnect 钱包列表
 export const WalletConnectWallets: WcWallet[] = [
         {

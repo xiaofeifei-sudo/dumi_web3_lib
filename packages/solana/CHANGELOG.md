@@ -1,5 +1,14 @@
 # pelican-web3-lib-solana
 
+## 1.0.6
+
+### Patch Changes
+
+- Update core web3 library packages to version 1.0.6.
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.6
+  - pelican-web3-lib-common@1.0.6
+
 ## 1.0.5
 
 ### Patch Changes
