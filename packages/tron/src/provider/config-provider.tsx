@@ -51,7 +51,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
 > = ({ availableWallets, connectionError, ignoreConfig, balance, token, children, initialChain }) => {
   const { address, wallet, wallets, connected, connect, disconnect, select, signTransaction } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
-
   const [account, setAccount] = useState<Account>();
   const [currentChain, setCurrentChain] = useState<Chain | undefined>(initialChain ?? TronMainnet);
   const availableChains = useMemo<Chain[]>(() => [TronMainnet, TronShastaNet, TronNileNet], []);
@@ -198,6 +197,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
     return providedWallets || [];
   }, [availableWallets, wallets]);
 
+  /// 更新当前钱包
   useEffect(() => {
     if (!wallet?.adapter?.name || !connected) {
       setCurrentWallet(undefined);
@@ -237,7 +237,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
     if (!connectAsyncRef.current) {
       return;
     }
-
     if (connected) {
       connectAsyncRef.current.resolve({ address: address! });
       connectAsyncRef.current = undefined;
@@ -248,10 +247,10 @@ export const PelicanWeb3ConfigProvider: React.FC<
   useEffect(() => {
     if (wallet?.adapter?.name) {
       // 如果钱包尚未就绪，需要清除已选钱包
-      if (!hasWalletReady(wallet.adapter.readyState)) {
-        select(null as any);
-        return;
-      }
+      // if (!hasWalletReady(wallet.adapter.readyState)) {
+      //   select(null as any);
+      //   return;
+      // }
       connect().catch((err) => {
         const normalized = normalizeTronError(err, {
           action: 'connect',

@@ -175,3 +175,14 @@ When using WalletConnect with official modal enabled, a QR dialog is shown.
 <code src="./demos/web3modal.tsx"></code>
 
 Set `walletConnect={{ useWalletConnectOfficialModal: true }}` to use the official modal. Provide your `projectId`.
+
+## Mobile deeplink for WalletConnect wallets
+
+On mobile, you can use WalletConnect URIs together with deeplinks to open specific wallets directly.
+
+<code src="./demos/mobile-deeplink.tsx"></code>
+
+This demo shows how to:
+- Read `wcWallets` from `useProvider()` to list WalletConnect‑compatible wallets with mobile links.
+- Use the WalletConnect wallet factory’s `getQrCode()` to retrieve the live WalletConnect URI.
+- Call `CoreHelperUtil.openWalletWithDeepLink` to construct and trigger the deeplink on mobile.

@@ -94,13 +94,13 @@ const Connector: React.FC<ConnectorProps> = (props) => {
     return null;
   }
 
+
   return (
     <>
       {contextHolder}
       {React.cloneElement(children as React.ReactElement<any>, {
         account,
         onConnectClick: async (wallet?: Wallet) => {
-          console.log("连接钱包");
           if (!wallet) {
             setOpen(true);
             return;

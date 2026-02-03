@@ -41,6 +41,12 @@ export interface TronWeb3ConfigProviderProps {
   walletConnect?: WalletConnectAdapterConfig;
   ledgerAdapterConfig?: LedgerAdapterConfig;
   /**
+   * 统一的适配器配置对象
+   * - 会在创建各钱包适配器时作为构造入参的一部分传入
+   * - 不同适配器共享同一份配置对象即可
+   */
+  adapterConfig?: Record<string, any>;
+  /**
    * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
    * 当存在多个链的 Provider 并需要在它们之间切换时，这很有用，
    * 可避免页面闪烁。仅当前处于激活状态的 Provider 不应该设置该标志。
@@ -62,23 +68,46 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
   walletProviderProps,
   walletConnect,
   ledgerAdapterConfig,
+  adapterConfig,
 }) => {
   const [connectionError, setConnectionError] = useState<WalletError>(); // 保存最近一次连接相关错误，用于在下层展示
 
   const adapters = useMemo(() => {
     // 实例化并缓存 TRON 钱包适配器，避免重复创建
-    const tronLinkAdapter = new TronLinkAdapter();
-    const okxWalletAdapter = new OkxWalletAdapter();
-    const bybitWalletAdapter = new BybitWalletAdapter();
-    const tokenPocketAdapter = new TokenPocketAdapter();
-    const bitKeepAdapter = new BitKeepAdapter();
-    const ledgerAdapter = new LedgerAdapter(ledgerAdapterConfig);
-    const gateWalletAdapter = new GateWalletAdapter();
-    const foxWalletAdapter = new FoxWalletAdapter();
-    const trustAdapter = new TrustAdapter();
-    const tomoWalletAdapter = new TomoWalletAdapter();
-    const binanceWalletAdapter = new BinanceWalletAdapter();
-    const guardaAdapter = new GuardaAdapter();
+    const tronLinkAdapter = new TronLinkAdapter({
+      openTronLinkAppOnMobile: true,
+      openUrlWhenWalletNotFound: true,
+      checkTimeout: 2000,
+      ...(adapterConfig ?? {}),
+    });
+    const okxWalletAdapter = new OkxWalletAdapter({
+      openUrlWhenWalletNotFound: true,
+      checkTimeout: 2000,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
+    // const bybitWalletAdapter = new BybitWalletAdapter();
+    const tokenPocketAdapter = new TokenPocketAdapter({
+      openUrlWhenWalletNotFound: true,
+      checkTimeout: 2000,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
+    // const bitKeepAdapter = new BitKeepAdapter();
+    const ledgerAdapter = new LedgerAdapter(
+      adapterConfig ? { ...(ledgerAdapterConfig ?? {}), ...adapterConfig } : ledgerAdapterConfig,
+    );
+    // const gateWalletAdapter = new GateWalletAdapter();
+    // const foxWalletAdapter = new FoxWalletAdapter();
+    const trustAdapter = new TrustAdapter({
+      openUrlWhenWalletNotFound: true,
+      checkTimeout: 2000,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
+    // const tomoWalletAdapter = new TomoWalletAdapter();
+    // const binanceWalletAdapter = new BinanceWalletAdapter();
+    // const guardaAdapter = new GuardaAdapter();
     const metaMaskTronAdapter = new MetaMaskAdapter();
     const walletConnectAdapter = walletConnect
       ? new WalletConnectAdapter({
@@ -86,6 +115,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
           options: {
             relayUrl: 'wss://relay.walletconnect.com',
             ...(walletConnect.options ?? {}),
+            ...(adapterConfig ?? {}),
           },
         })
       : null;
@@ -107,7 +137,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       metaMaskTronAdapter,
     ];
     return walletConnectAdapter ? [walletConnectAdapter, ...list] : list;
-  }, [walletConnect, ledgerAdapterConfig]);
+  }, [walletConnect, ledgerAdapterConfig, adapterConfig]);
 
   return (
     <WalletProvider

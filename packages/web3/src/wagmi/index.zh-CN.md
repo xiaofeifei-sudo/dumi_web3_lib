@@ -175,3 +175,14 @@ SIWE 是指 Sign‑In with Ethereum。你的网站可通过签名验证用户登
 <code src="./demos/web3modal.tsx"></code>
 
 设置 `walletConnect={{ useWalletConnectOfficialModal: true }}` 可启用官方弹窗，同时提供你的 `projectId`。
+
+## 移动端 Deeplink 跳转 WalletConnect 钱包
+
+在移动端场景下，可以结合 WalletConnect URI 与钱包的 DeepLink 直接唤起指定钱包 App。
+
+<code src="./demos/mobile-deeplink.tsx"></code>
+
+该示例演示了：
+- 通过 `useProvider()` 读取上下文中的 `wcWallets`，列出支持 WalletConnect 且带有 `mobile_link` 的钱包。
+- 使用 WalletConnect 钱包工厂提供的 `getQrCode()` 动态获取当前会话的 WalletConnect URI。
+- 调用 `CoreHelperUtil.openWalletWithDeepLink` 生成并打开 deeplink，在移动端跳转到对应钱包。

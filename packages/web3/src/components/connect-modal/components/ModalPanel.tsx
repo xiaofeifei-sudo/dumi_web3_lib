@@ -149,21 +149,7 @@ const ModalPanel: React.FC<ModalPanelProps> = (props) => {
                 />
               </div>
               <div className={`${prefixCls}-footer-container`}>
-                {isSimple && (
-                  <div className={`${prefixCls}-simple-guide`}>
-                    {"使用提示"}
-                    <Button
-                      type="link"
-                      className={`${prefixCls}-simple-guide-right`}
-                      onClick={() => {
-                        updatePanelRoute('guide');
-                      }}
-                      size="small"
-                    >
-                      {"学习更多"}
-                    </Button>
-                  </div>
-                )}
+              
                 {footer && <div className={`${prefixCls}-footer`}>{footer}</div>}
               </div>
             </div>

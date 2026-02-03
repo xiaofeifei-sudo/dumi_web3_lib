@@ -81,7 +81,8 @@ const WalletList: ForwardRefRenderFunction<ConnectModalActionType, WalletListPro
   // 选择钱包并根据能力决定连接方式与面板路由
   const selectWallet = async (wallet: Wallet) => {
     const hasWalletReady = await wallet.hasWalletReady?.();
-    if (hasWalletReady) {
+    console.log('hasWalletReady', hasWalletReady);
+    // if (hasWalletReady) {
       // wallet is ready, call ConnectModal's onWalletSelected
       const hasExtensionInstalled = await wallet?.hasExtensionInstalled?.();
 
@@ -101,9 +102,9 @@ const WalletList: ForwardRefRenderFunction<ConnectModalActionType, WalletListPro
       }
 
       // open in universal link
-      else if (mobile()) {
-        openInUniversalLink(wallet);
-      }
+      // else if (mobile()) {
+      //   openInUniversalLink(wallet);
+      // }
 
       // Extension not installed and can use qr code to connect
       else if (wallet.getQrCode) {
@@ -117,16 +118,16 @@ const WalletList: ForwardRefRenderFunction<ConnectModalActionType, WalletListPro
         updateSelectedWallet(wallet, {});
       }
       return;
-    }
-    if (mobile() && wallet.deeplink) {
-      // open in universal link
-      openInUniversalLink(wallet);
-    } else {
-      // wallet not ready
-      // go to wallet page
-      updateSelectedWallet(wallet);
-      updatePanelRoute('wallet', true);
-    }
+    // }
+    // if (mobile() && wallet.deeplink) {
+    //   // open in universal link
+    //   openInUniversalLink(wallet);
+    // } else {
+    //   // wallet not ready
+    //   // go to wallet page
+    //   updateSelectedWallet(wallet);
+    //   updatePanelRoute('wallet', true);
+    // }
   };
 
   useImperativeHandle(ref, () => {
