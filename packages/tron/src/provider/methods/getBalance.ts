@@ -77,7 +77,11 @@ export async function getBalance(
     const contract = await tronWeb.contract(trc20Abi, customToken.contract);
     const rawBalance = await contract.balanceOf(tronWeb.address.toHex(address)).call();
     const value = toBigInt(rawBalance);
-    const decimals = customToken.decimal;
+    let decimals = customToken.decimal;
+    if (decimals === undefined) {
+      const rawDecimals = await contract.decimals().call();
+      decimals = toNumber(rawDecimals);
+    }
     const formatted =
       value !== undefined && decimals !== undefined
         ? formatBalance(value, decimals)

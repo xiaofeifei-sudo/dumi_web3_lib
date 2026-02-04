@@ -26,7 +26,7 @@ export async function sendTransaction(
     const decimals = params.token?.decimal ?? 6;
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else if (params.customToken?.contract) {
-    const decimals = params.customToken.decimal;
+    const decimals = params.customToken.decimal ?? 6;
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else {
     const sun = tronWeb.toSun(rawValue);

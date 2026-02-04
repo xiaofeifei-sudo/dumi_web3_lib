@@ -387,7 +387,7 @@ export type Token = {
 };
 
 export type CustomToken = {
-  decimal: number;
+  decimal?: number;
   contract: string;
 };
 

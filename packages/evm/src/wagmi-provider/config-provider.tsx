@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, type CustomToken, formatBalance,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, type CustomToken, formatBalance, fillAddressWith0x,} from 'pelican-web3-lib-common';
 import { WalletConnectWallets } from 'pelican-web3-lib-assets';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
@@ -49,6 +49,7 @@ export interface PelicanWeb3ConfigProviderProps {
    * - 未匹配到合约或非 EVM 合约时回退为原生余额
    */
   token?: Token;
+  customToken?: CustomToken;
   eip6963?: EIP6963Config;
   wagimConfig: WagmiConfig;
   useWalletConnectOfficialModal?: boolean;
@@ -74,6 +75,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     ens = true,
     balance,
     token,
+    customToken,
     eip6963,
     wagimConfig,
     useWalletConnectOfficialModal,
@@ -84,16 +86,26 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChain} = useSwitchChain();
+
+  /// 若当前链不存在，回退为 Wagmi 配置的第一个链 ID
   const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
+
+  /// 若自定义代币指定合约地址，优先使用；否则根据链 ID 查询代币合约地址
   const tokenContractOnChain = React.useMemo(() => {
+    if (customToken?.contract && customToken.contract.toLowerCase().startsWith('0x')) {
+      return fillAddressWith0x(customToken.contract);
+    }
     if (!token || !chainIdForBalance) return undefined;
     const found = token.availableChains?.find((item) => item?.chain?.id === chainIdForBalance);
     const contract = found?.contract;
     if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
-      return contract as `0x${string}`;
+      return fillAddressWith0x(contract) as `0x${string}`;
     }
     return undefined;
-  }, [token, chainIdForBalance]);
+  }, [customToken, token, chainIdForBalance]);
+
+
+  /// 查询账户余额（支持 ERC-20 代币）
   const {
     data: balanceData,
     refetch: refetchBalance,
@@ -107,17 +119,30 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       refetchInterval: balance && address ? 5000 : undefined,
     },
   });
+
+  /// 查询 ENS 名称与头像（若启用 ENS 功能）
   const {data: ensName} = useEnsName({address});
+
+  /// 查询 ENS 头像（若启用 ENS 功能）
   const {data: ensAvatar} = useEnsAvatar({name: ensName ?? undefined});
+
+  /// 签名消息（Sign-In With Ethereum）
   const {signMessageAsync} = useSignMessage();
 
+  /// 连接状态（Connected/Disconnected）
   const [status, setStatus] = React.useState<ConnectStatus>(ConnectStatus.Disconnected);
+
+  /// 当前连接钱包（根据连接器名称匹配）
   const [currentWallet, setCurrentWallet] = React.useState<Wallet | undefined>(undefined);
 
+  
+  /// 更新连接状态与当前钱包
   React.useEffect(() => {
     setStatus(isDisconnected ? ConnectStatus.Disconnected : ConnectStatus.Connected);
   }, [address, isDisconnected, chain?.id, connector?.name]);
 
+
+  /// 构建账户信息（包含地址、ENS 名称、头像、状态等）
   const account: Account | undefined =
     address && !isDisconnected
       ? {
@@ -274,8 +299,13 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     });
   }, [chainAssets, wagimConfig.chains, chainId, chainName]);
 
+  /// 当前链的原生货币（若存在）
   const currency = currentChain?.nativeCurrency;
+
+  
+  /// 余额小数位数（根据余额数据、代币配置或货币配置）
   const balanceDecimals = balanceData?.decimals ?? token?.decimal ?? currency?.decimals;
+  /// 格式化后的余额（若余额数据和小数位数均存在）
   const balanceFormatted =
     balanceData?.value !== undefined && balanceDecimals !== undefined
       ? formatBalance(balanceData.value as bigint, balanceDecimals)

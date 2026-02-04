@@ -1,5 +1,5 @@
 import type { Config } from 'wagmi';
-import { sendTransaction as sendNativeTransaction, writeContract, readContract } from 'wagmi/actions';
+import { sendTransaction as sendNativeTransaction, writeContract } from 'wagmi/actions';
 import { getAccount } from 'wagmi/actions';
 import type { Token, TransferParams } from 'pelican-web3-lib-common';
 import { fillAddressWith0x } from 'pelican-web3-lib-common';
@@ -8,6 +8,7 @@ import { getBalance } from './getBalance';
 import { EvmInsufficientBalanceError } from '../../errors/insufficient-balance-error';
 import { EvmInvalidAddressError } from '../../errors/invalid-address-error';
 import { ETH } from 'pelican-web3-lib-assets';
+import { getTokenDecimals } from './getTokenDecimals';
 
 /// 在指定链上查找代币合约地址
 function findTokenContractOnChain(token?: Token, chainId?: number): `0x${string}` | undefined {
@@ -42,22 +43,20 @@ export async function sendTransaction(
     let decimals = ETH.decimal;
     if (params.token) {
       if (contract && chainId) {
-        const onChainDecimals = await readContract(config as any, {
-          address: contract,
-          chainId,
-          abi: erc20Abi,
-          functionName: 'decimals',
-        });
-        decimals = Number(onChainDecimals as number);
+        decimals = await getTokenDecimals(config, contract, chainId);
       } else {
         decimals = params.token.decimal;
       }
     } else if (params.customToken) {
-      decimals = params.customToken.decimal;
+      if (typeof params.customToken.decimal === 'number') {
+        decimals = params.customToken.decimal;
+      } else if (contract && chainId) {
+        decimals = await getTokenDecimals(config, contract, chainId);
+      }
     }
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   }
-  const account = getAccount(config as any);
+  const account = getAccount(config);
   const from = account?.address;
   if (from && chainId) {
     if (contract && params.token) {
@@ -81,7 +80,7 @@ export async function sendTransaction(
     }
   }
   if (contract) {
-    return writeContract(config as any, {
+    return writeContract(config, {
       address: contract,
       chainId,
       abi: erc20Abi,
@@ -89,7 +88,7 @@ export async function sendTransaction(
       args: [to, amount],
     });
   }
-  return sendNativeTransaction(config as any, {
+  return sendNativeTransaction(config, {
     to,
     value: amount,
     chainId,

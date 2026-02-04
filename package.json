@@ -10,7 +10,7 @@
   "files": [],
   "scripts": {
     "start": "dumi dev -p 6021 --max-old-space-size=4096",
-    "dev": "PORT=3000 dumi dev --max-old-space-size=4096",
+    "dev": "PORT=3000 dumi dev --max-old-space-size=8096",
     "dev:ssr": "cross-env SSR=1 dumi dev -p 6021",
     "dev:lib": "pnpm run --parallel --if-present --recursive --filter \"pelican-web3-lib*\" dev",
     "build": "pnpm run --if-present --recursive --filter \"pelican-web3-lib*\" build",

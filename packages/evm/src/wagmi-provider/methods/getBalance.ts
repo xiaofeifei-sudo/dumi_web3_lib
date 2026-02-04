@@ -4,6 +4,7 @@ import { fillAddressWith0x, formatBalance } from 'pelican-web3-lib-common';
 import type { Balance, Token, CustomToken } from 'pelican-web3-lib-common';
 import type React from 'react';
 import { erc20Abi } from 'viem';
+import { getTokenDecimals } from './getTokenDecimals';
 
 /**
  * 实时获取 EVM 余额（原生或 ERC-20）
@@ -22,20 +23,15 @@ export async function getBalance(
     const found = token.availableChains?.find((item) => item?.chain?.id === chainId);
     const contract = found?.contract;
     if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
-      const decimals = await readContract(config as any, {
-        address: fillAddressWith0x(contract),
-        chainId,
-        abi: erc20Abi,
-        functionName: 'decimals',
-      });
-      const value = await readContract(config as any, {
+      const decimals = await getTokenDecimals(config, contract, chainId);
+      const value = await readContract(config, {
         address: fillAddressWith0x(contract),
         chainId,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [addr],
       });
-      const decimalsNum = Number(decimals as number);
+      const decimalsNum = decimals;
       const formatted =
         value !== undefined ? formatBalance(value as bigint, decimalsNum) : undefined;
       return {
@@ -49,14 +45,17 @@ export async function getBalance(
   }
   if (customToken && chainId) {
     const contract = fillAddressWith0x(customToken.contract);
-    const value = await readContract(config as any, {
+    let decimalsNum = customToken.decimal;
+    if (decimalsNum === undefined) {
+      decimalsNum = await getTokenDecimals(config, customToken.contract, chainId);
+    }
+    const value = await readContract(config, {
       address: contract,
       chainId,
       abi: erc20Abi,
       functionName: 'balanceOf',
       args: [addr],
     });
-    const decimalsNum = customToken.decimal;
     const formatted =
       value !== undefined ? formatBalance(value as bigint, decimalsNum) : undefined;
     return {
@@ -66,7 +65,7 @@ export async function getBalance(
       formatted,
     };
   }
-  const res = await getNativeBalance(config as any, {
+  const res = await getNativeBalance(config, {
     address: addr,
     chainId,
   });
