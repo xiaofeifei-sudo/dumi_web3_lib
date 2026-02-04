@@ -17,8 +17,8 @@ const Basic = () => {
     <TronWeb3ConfigProvider
       autoConnect={false}
       wallets={[
-        TronlinkWallet,
         OkxTronWallet,
+        TronlinkWallet,
         LedgerWallet,
         TokenPocketWallet,
         TrustWallet,
