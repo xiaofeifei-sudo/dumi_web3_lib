@@ -9,9 +9,9 @@
   "packageManager": "pnpm@9.14.4",
   "files": [],
   "scripts": {
-    "start": "dumi dev --max-old-space-size=4096",
-    "dev": "dumi dev --max-old-space-size=4096",
-    "dev:ssr": "cross-env SSR=1 dumi dev",
+    "start": "dumi dev -p 6021 --max-old-space-size=4096",
+    "dev": "PORT=3000 dumi dev --max-old-space-size=4096",
+    "dev:ssr": "cross-env SSR=1 dumi dev -p 6021",
     "dev:lib": "pnpm run --parallel --if-present --recursive --filter \"pelican-web3-lib*\" dev",
     "build": "pnpm run --if-present --recursive --filter \"pelican-web3-lib*\" build",
     "build:packages": "pnpm -r --filter '{./packages/*}' --filter '!./packages/web3' run build",
@@ -129,8 +129,8 @@
     "react": "18.3.1",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.3.1",
-    "viem": "^2.33.2",
-    "wagmi": "^2.14.16"
+    "viem": "^2.44.2",
+    "wagmi": "^2.19.5"
   },
   "pnpm": {
     "overrides": {

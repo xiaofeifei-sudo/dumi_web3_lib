@@ -1,6 +1,17 @@
 // 说明：WalletConnect 通用协议的元数据展示（支持移动端扫码连接）
 import type { WalletMetadata, WcWallet } from 'pelican-web3-lib-common';
-import { WalletConnectArk } from 'pelican-web3-lib-icons';
+import { getWalletImageUrl } from 'pelican-web3-lib-common';
+import {
+  BnbCircleColorful,
+  BitgetWalletColorful,
+  GeminiColorful,
+  OkxWalletColorful,
+  TokenPocketColorful,
+  TrustWalletColorful,
+  UniswapColorful,
+  WalletConnectArk,
+  MetaMaskArk,
+} from 'pelican-web3-lib-icons';
 
 export const metadata_WalletConnect: WalletMetadata = {
   icon: <WalletConnectArk />,
@@ -10,6 +21,8 @@ export const metadata_WalletConnect: WalletMetadata = {
     link: 'https://walletconnect.com/',
   },
 };
+
+const WALLET_CONNECT_PROJECT_ID = '516c0404ce78defabd49030fb0c95b22';
 
 
 /// WalletConnect 钱包列表
@@ -65,7 +78,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <BnbCircleColorful />,
         },
         {
             "id": "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
@@ -107,7 +121,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <MetaMaskArk />,
         },
         {
             "id": "0b415a746fb9ee99cce155c2ceca0c6f6061b1dbca2d722b3ba16381d0562150",
@@ -239,7 +254,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <TrustWalletColorful />,
         },
         {
             "id": "5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489",
@@ -352,7 +368,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <OkxWalletColorful />,
         },
         {
             "id": "20459438007b75f4f4acb98bf29aa3b800550309646d375da5fd4aac6c2a2c66",
@@ -853,7 +870,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <TokenPocketColorful />,
         },
         {
             "id": "38f5d18bd8522c244bdd70cb4a68e0e718865155811c043f052fb9f1c51de662",
@@ -896,7 +914,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <BitgetWalletColorful />,
         },
         {
             "id": "c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a",
@@ -936,7 +955,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <UniswapColorful />,
         },
         {
             "id": "19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927",
@@ -1497,7 +1517,8 @@ export const WalletConnectWallets: WcWallet[] = [
             "badge_type": "certified",
             "supports_wc": true,
             "is_top_wallet": false,
-            "supports_wcpay": false
+            "supports_wcpay": false,
+            "icon": <GeminiColorful />,
         },
         {
             "id": "0e4915107da5b3408b38e248f7a710f4529d54cd30e9d12ff0eb886d45c18e92",
@@ -1681,4 +1702,12 @@ export const WalletConnectWallets: WcWallet[] = [
             "is_top_wallet": false,
             "supports_wcpay": false
         }
-    ]
+    ];
+
+WalletConnectWallets.forEach((wallet) => {
+  if (!wallet.icon && wallet.image_id) {
+    wallet.icon = getWalletImageUrl(wallet.image_id, {
+      projectId: WALLET_CONNECT_PROJECT_ID,
+    });
+  }
+});

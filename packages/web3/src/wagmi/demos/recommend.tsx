@@ -22,16 +22,18 @@ const App: React.FC = () => {
         TokenPocket(),
         OkxWallet(),
         CoinbaseWallet(),
-        PhantomWallet()
+        PhantomWallet(),
+        WalletConnect()
       ]}
       walletConnect={
         {
-                      projectId: "516c0404ce78defabd49030fb0c95b22",
+                      projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
                       useWalletConnectOfficialModal: true,
                     }
       }
       transports={{
         [Mainnet.id]: http(),
+        [Sepolia.id]: http(),
       }}
       queryClient={queryClient}
     >

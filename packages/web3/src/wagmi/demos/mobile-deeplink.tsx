@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Select, Space, Typography} from 'antd';
+import {Button, Select, Space, Typography, message} from 'antd';
 import {CoreHelperUtil} from 'pelican-web3-lib-common';
 import {
   Mainnet,
+  Sepolia,
   WagmiWeb3ConfigProvider,
   WalletConnect,
   type WalletUseInWagmiAdapter,
@@ -16,7 +17,7 @@ const {Option} = Select;
 const {Text} = Typography;
 
 const DeeplinkContent: React.FC = () => {
-  const {wcWallets, availableWallets, connect} = useProvider();
+  const {wcWallets, availableWallets, connect, account} = useProvider();
   const [selectedWalletId, setSelectedWalletId] = React.useState<string | undefined>(undefined);
   const [loading, setLoading] = React.useState(false);
 
@@ -30,25 +31,29 @@ const DeeplinkContent: React.FC = () => {
     [availableWallets],
   );
 
+
   const handleOpenDeeplink = async () => {
     if (!mobileWallets.length || loading) {
       return;
     }
-    const wallet =
-      mobileWallets.find((item) => item.id === selectedWalletId) || mobileWallets[0];
+    const wallet =mobileWallets.find((item) => item.id === selectedWalletId) || mobileWallets[0];
     const walletConnectAdapter = walletConnectWallet as WalletUseInWagmiAdapter | undefined;
     if (!walletConnectAdapter?.getQrCode || !walletConnectWallet || !connect) {
       return;
     }
     setLoading(true);
     try {
-       connect(walletConnectWallet, {
-        connectType: 'qrCode',
-      });
-      const {uri} = await walletConnectAdapter.getQrCode();
-      CoreHelperUtil.openWalletWithDeepLink(wallet, Mainnet, uri, {
+      const qrCodePromise = walletConnectAdapter.getQrCode();
+      connect(walletConnectWallet, {
+          connectType: 'qrCode',
+        });
+      const {uri} = await qrCodePromise;
+      CoreHelperUtil.openWalletWithDeepLink(wallet, Sepolia, uri, {
         preferUniversalLinks: false,
       });
+      message.success('钱包连接请求已发起');
+    } catch (error) {
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -64,11 +69,26 @@ const DeeplinkContent: React.FC = () => {
           onChange={setSelectedWalletId}
           placeholder="自动检测 WalletConnect 钱包"
         >
-          {mobileWallets.map((wallet) => (
-            <Option key={wallet.id} value={wallet.id}>
-              {wallet.name}
-            </Option>
-          ))}
+          {mobileWallets.map((wallet) => {
+            const icon = wallet.icon;
+            return (
+              <Option key={wallet.id} value={wallet.id}>
+                <Space size="small">
+                  {icon &&
+                    (typeof icon === 'string' ? (
+                      <img
+                        src={icon}
+                        alt={`${wallet.name} Icon`}
+                        style={{width: 20, height: 20, borderRadius: '50%'}}
+                      />
+                    ) : (
+                      icon
+                    ))}
+                  <span>{wallet.name}</span>
+                </Space>
+              </Option>
+            );
+          })}
         </Select>
       </Space>
       <Button
@@ -87,14 +107,20 @@ const DeeplinkContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <WagmiWeb3ConfigProvider
-      chains={[Mainnet]}
-      wallets={[WalletConnect()]}
+      chains={[
+        Sepolia, 
+      ]}
+      wallets={[WalletConnect({
+        useWalletConnectOfficialModal: false,
+      })]}
+      reconnectOnMount={true}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
         useWalletConnectOfficialModal: false,
       }}
       transports={{
-        [Mainnet.id]: http(),
+                [Sepolia.id]: http(),
+
       }}
       balance
       ens

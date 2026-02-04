@@ -70,7 +70,6 @@ export function buildCustomDeeplinkUrlForChain(
     const protocol = href.startsWith('https') ? 'https' : 'http'
     const host = href.split('/')[2]
     const encodedRef = encodeURIComponent(`${protocol}://${host}`)
-
     return `${PHANTOM.url}/ul/browse/${encodedHref}?ref=${encodedRef}`
   }
 
@@ -98,4 +97,26 @@ export function buildCustomDeeplinkUrlForChain(
     return universalLink.toString()
   }
   return undefined
+}
+
+
+const W3M_API_URL = 'https://api.web3modal.org'
+
+export type WalletImageOptions = {
+  projectId: string
+  sdkType?: string
+  sdkVersion?: string
+}
+
+export function getWalletImageUrl(
+  imageId: string | undefined | null,
+  options: WalletImageOptions
+): string {
+  if (!imageId) return ''
+  const { projectId, sdkType = 'appkit', sdkVersion = 'html-wagmi-4.2.2' } = options
+  const url = new URL(`${W3M_API_URL}/getWalletImage/${imageId}`)
+  url.searchParams.set('projectId', projectId)
+  url.searchParams.set('st', sdkType)
+  url.searchParams.set('sv', sdkVersion)
+  return url.toString()
 }

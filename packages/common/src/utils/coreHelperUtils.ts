@@ -209,7 +209,7 @@ openWalletWithDeepLink(
   { preferUniversalLinks = false }: { preferUniversalLinks?: boolean } = {}
 ): string | undefined {
   const currentUrl = window.location.href;
-  const target = '_self' // 或者根据是否 iframe 决定
+    const target = this.isIframe() ? '_top' : '_self'
    if (isCustomDeeplinkWalletForChain(wallet.id, chain)) {
     const customUrl = buildCustomDeeplinkUrlForChain(wallet.id, chain, currentUrl)
     if (customUrl) {
@@ -238,8 +238,20 @@ openWalletWithDeepLink(
   },
 
   // 打开新页面
-  openHref(href: string, target: "_blank" | "_self") {
+  openHref(href: string, target: OpenTarget) {
     const adjustedTarget = this.isTelegram() ? "_blank" : target;
+    if (adjustedTarget === "_self") {
+      window.location.href = href
+      return
+    }
+    if (adjustedTarget === "_top") {
+      try {
+        window.top?.location?.assign(href)
+      } catch {
+        window.location.href = href
+      }
+      return
+    }
     window.open(href, adjustedTarget, "noreferrer noopener");
   }
   

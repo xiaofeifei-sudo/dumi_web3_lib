@@ -12,6 +12,7 @@ import {
   useEnsName,
   useSignMessage,
   useSwitchChain,
+  
 } from 'wagmi';
 import {disconnect, getAccount} from 'wagmi/actions';
 import { getBalance as getBalanceRealtime } from './methods/getBalance';
@@ -115,7 +116,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
   React.useEffect(() => {
     setStatus(isDisconnected ? ConnectStatus.Disconnected : ConnectStatus.Connected);
-  }, [isDisconnected]);
+  }, [address, isDisconnected, chain?.id, connector?.name]);
 
   const account: Account | undefined =
     address && !isDisconnected
@@ -127,6 +128,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
         status: status,
       }
       : undefined;
+
 
   /**
    * 判断连接器名称是否匹配（忽略空格与大小写）

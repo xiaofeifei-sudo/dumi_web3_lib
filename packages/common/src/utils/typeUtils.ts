@@ -46,7 +46,7 @@ export interface WcWallet {
   chains?: CaipNetworkId[]
   homepage?: string
   image_id?: string
-  image_url?: string
+  icon?: string | React.ReactNode
   rdns_web_wallet?: string | null
   order?: number
   link_mode?: string | null

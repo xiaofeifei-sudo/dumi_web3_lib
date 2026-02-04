@@ -38,22 +38,24 @@ export class UniversalWallet implements WalletFactory {
     const walletConnector = connectors?.find((item) => item.name === 'WalletConnect');
     const injectedConnector = connectors?.find((item) => item.name === this.wallet.name);
 
-    let qrCodeUri: string | undefined = undefined;
     const getQrCode = async () => {
       const provider = await walletConnector?.getProvider();
       return new Promise<{ uri: string }>((resolve) => {
-        if (qrCodeUri) {
-          resolve({
-            uri: qrCodeUri,
-          });
-          return;
+        const handler = (uri: string) => {
+          const p: any = provider as any;
+          if (typeof p?.off === 'function') {
+            p.off('display_uri', handler);
+          } else if (typeof p?.removeListener === 'function') {
+            p.removeListener('display_uri', handler);
+          }
+          resolve({ uri });
+        };
+        const p: any = provider as any;
+        if (typeof p?.once === 'function') {
+          p.once('display_uri', handler);
+        } else {
+          p?.on?.('display_uri', handler);
         }
-        (provider as any)?.on('display_uri', (uri: string) => {
-          qrCodeUri = uri;
-          resolve({
-            uri,
-          });
-        });
       });
     };
 

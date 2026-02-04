@@ -101,7 +101,7 @@ export default defineConfig({
   define: {
     YOUR_ZAN_API_KEY: 'd0eeefc2a4da4a8ba707889259b437d6',
     YOUR_INFURA_API_KEY: '287294cbc30b44efab9455664b69b130',
-    YOUR_WALLET_CONNECT_PROJECT_ID: 'c07c0051c2055890eade3556618e38a6',
+    YOUR_WALLET_CONNECT_PROJECT_ID: '516c0404ce78defabd49030fb0c95b22',
     YOUR_TIPLINK_CLIENT_ID: '4f243e28-3cfa-4d6c-abed-6b8f72a0d18d',
   },
   publicPath: process.env.PUBLIC_PATH || '/',

@@ -71,7 +71,6 @@ import type { Transport, Chain as WagmiChain } from 'viem';
 import { createConfig, http, WagmiProvider } from 'wagmi';
 import type { Config, State } from 'wagmi';
 import { holesky, mainnet, scrollSepolia, sepolia, } from 'wagmi/chains';
-import { coinbaseWallet, walletConnect as wagmiWalletConnect } from 'wagmi/connectors';
 import type { WalletConnectParameters } from 'wagmi/connectors';
 
 // Built in popular chains
@@ -84,6 +83,7 @@ import type {
 } from '../interface';
 import { PelicanWeb3ConfigProvider } from './config-provider';
 import type { Token } from 'pelican-web3-lib-common';
+import { wcConnector } from '../connector/walletConnect';
 
 /**
  * WalletConnectOptions
@@ -194,7 +194,7 @@ export function WagmiWeb3ConfigProvider({
     if (walletConnect && walletConnect.projectId) {
       // 根据用户设置决定是否使用 WalletConnect 官方二维码弹窗
       connectors.push(
-        wagmiWalletConnect({
+        wcConnector({
           ...walletConnect,
           showQrModal: walletConnect.useWalletConnectOfficialModal ?? false,
         }),
@@ -210,14 +210,14 @@ export function WagmiWeb3ConfigProvider({
     });
 
 
-    connectors.push(
-      coinbaseWallet({
-    appName: "PelicanWeb3 Demo",
-    appLogoUrl: "",
-    version: "3",
-  headlessMode: true,
-  })
-    )
+  //   connectors.push(
+  //     coinbaseWallet({
+  //   appName: "PelicanWeb3 Demo",
+  //   appLogoUrl: "",
+  //   version: "3",
+  // headlessMode: true,
+  // })
+  //   )
 
     
 

@@ -34,8 +34,8 @@
     "pelican-web3-lib-evm": "workspace:*",
     "@tanstack/react-query": "^5.51.11",
     "debug": "^4.4.0",
-    "viem": "^2.33.2",
-    "wagmi": "^2.14.16"
+    "viem": "^2.44.2",
+    "wagmi": "^2.19.5"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
