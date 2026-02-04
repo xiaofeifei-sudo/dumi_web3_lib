@@ -2,6 +2,7 @@ import type { Chain, TransferParams } from 'pelican-web3-lib-common';
 import { getBalance } from './getBalance';
 import { TronInsufficientBalanceError } from '../../errors/insufficient-balance-error';
 import { TronInvalidAddressError } from '../../errors/invalid-address-error';
+import { getTokenDecimals } from './getTokenDecimals';
 
 /// 发送交易
 export async function sendTransaction(
@@ -23,10 +24,13 @@ export async function sendTransaction(
   if (typeof rawValue === 'bigint') {
     amount = rawValue;
   } else if (tokenOnChain?.contract) {
-    const decimals = params.token?.decimal ?? 6;
+    const decimals = await getTokenDecimals(tronWeb, tokenOnChain.contract);
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else if (params.customToken?.contract) {
-    const decimals = params.customToken.decimal ?? 6;
+    let decimals = params.customToken.decimal;
+    if (decimals === undefined) {
+      decimals = await getTokenDecimals(tronWeb, params.customToken.contract);
+    }
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else {
     const sun = tronWeb.toSun(rawValue);

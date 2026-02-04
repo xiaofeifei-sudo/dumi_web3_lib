@@ -37,3 +37,43 @@ export const switchTronChain = async (adapter?: any, newChain?: any, wallet?: an
   }
   throw new TronWalletNotSupportSwitchChainError();
 };
+
+export const tronToBigInt = (v: any): bigint => {
+  if (v === undefined || v === null) return 0n;
+  if (typeof v === 'bigint') return v;
+  if (typeof v === 'number') return BigInt(v);
+  if (typeof v === 'string') {
+    const s = v.startsWith('0x') ? v : `0x${v}`;
+    try {
+      return BigInt(s);
+    } catch {
+      try {
+        return BigInt(v);
+      } catch {
+        return 0n;
+      }
+    }
+  }
+  if (Array.isArray(v) && v.length > 0) {
+    return tronToBigInt(v[0]);
+  }
+  if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
+    return tronToBigInt(v.constantResult[0]);
+  }
+  return 0n;
+};
+
+export const tronToNumber = (v: any, fallback = 6): number => {
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') return Number(v);
+  if (Array.isArray(v) && v.length > 0) return Number(v[0]);
+  if (typeof v === 'object' && v.constantResult && Array.isArray(v.constantResult)) {
+    const hex = v.constantResult[0];
+    try {
+      return Number(BigInt(hex.startsWith('0x') ? hex : `0x${hex}`));
+    } catch {
+      return Number(hex);
+    }
+  }
+  return fallback;
+};

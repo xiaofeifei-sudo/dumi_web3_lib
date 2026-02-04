@@ -15,7 +15,7 @@ function findTokenContractOnChain(token?: Token, chainId?: number): `0x${string}
   if (!token || !chainId) return undefined;
   const found = token.availableChains?.find((item) => item?.chain?.id === chainId);
   const contract = found?.contract;
-  if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
+  if (typeof contract === 'string') {
     return fillAddressWith0x(contract);
   }
   return undefined;

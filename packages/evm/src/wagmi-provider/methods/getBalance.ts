@@ -22,7 +22,7 @@ export async function getBalance(
   if (token && chainId) {
     const found = token.availableChains?.find((item) => item?.chain?.id === chainId);
     const contract = found?.contract;
-    if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
+    if (typeof contract === 'string') {
       const decimals = await getTokenDecimals(config, contract, chainId);
       const value = await readContract(config, {
         address: fillAddressWith0x(contract),

@@ -92,13 +92,13 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
   /// 若自定义代币指定合约地址，优先使用；否则根据链 ID 查询代币合约地址
   const tokenContractOnChain = React.useMemo(() => {
-    if (customToken?.contract && customToken.contract.toLowerCase().startsWith('0x')) {
+    if (customToken?.contract) {
       return fillAddressWith0x(customToken.contract);
     }
     if (!token || !chainIdForBalance) return undefined;
     const found = token.availableChains?.find((item) => item?.chain?.id === chainIdForBalance);
     const contract = found?.contract;
-    if (typeof contract === 'string' && contract.toLowerCase().startsWith('0x')) {
+    if (typeof contract === 'string') {
       return fillAddressWith0x(contract) as `0x${string}`;
     }
     return undefined;
@@ -117,6 +117,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     query: {
       enabled: !!(balance && address && chainIdForBalance),
       refetchInterval: balance && address ? 5000 : undefined,
+      retry: Number.POSITIVE_INFINITY,
     },
   });
 
