@@ -3,6 +3,8 @@ coverage
 dist
 lib
 es
+scripts
+scripts/*.cjs
 
 .umi-production
 .umi-test

@@ -1,5 +1,17 @@
 # pelican-web3-lib-icons
 
+## 1.0.8
+
+### Patch Changes
+
+- Patch release
+
+## 1.0.7
+
+### Patch Changes
+
+- 批量发布：对所有 build:packages 的包进行补丁版本提升到 1.0.7。
+
 ## 1.0.6
 
 ### Patch Changes

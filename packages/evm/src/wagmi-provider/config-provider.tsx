@@ -144,16 +144,18 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
 
 
   /// 构建账户信息（包含地址、ENS 名称、头像、状态等）
-  const account: Account | undefined =
-    address && !isDisconnected
-      ? {
+  const account: Account | undefined = React.useMemo(() => {
+    if (address && !isDisconnected) {
+      return {
         address,
         name: ensName && ens ? ensName : undefined,
         avatar: ensAvatar ?? undefined,
         addresses,
         status: status,
-      }
-      : undefined;
+      };
+    }
+    return undefined;
+  }, [address, isDisconnected, ensName, ensAvatar, addresses, status, ens]);
 
 
   /**

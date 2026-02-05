@@ -28,6 +28,7 @@ interface PelicanWeb3ConfigProviderProps {
    * - 未匹配到合约时回退为原生余额
    */
   token?: Token;
+  customToken?: CustomToken;
   /**
    * 如果为 true，在与父级上下文合并时将忽略该 Provider 的配置。
    * 当存在多个链的 Provider 并需要在它们之间切换时，这很有用，
@@ -48,7 +49,7 @@ interface ConnectAsync {
 /// 提供 TRON 网络的 Web3 配置上下文
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
-> = ({ availableWallets, connectionError, ignoreConfig, balance, token, children, initialChain }) => {
+> = ({ availableWallets, connectionError, ignoreConfig, balance, token, customToken, children, initialChain }) => {
   const { address, wallet, wallets, connected, connect, disconnect, select, signTransaction } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
   const [account, setAccount] = useState<Account>();
@@ -69,6 +70,8 @@ export const PelicanWeb3ConfigProvider: React.FC<
 
   useEffect(() => {
     let timer: any;
+
+    /// 定期获取 TRON 余额
     const fetchBalance = async () => {
       try {
         if (!(balance && address && wallet?.adapter && connected)) {
@@ -82,7 +85,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
           setTokenDecimals(undefined);
           return;
         }
-        const result = await getTronBalance(tronWeb, address, currentChain, token);
+        const result = await getTronBalance(tronWeb, address, currentChain, token, customToken);
         if (!result) {
           setBalanceData(undefined);
           setTokenDecimals(undefined);
@@ -114,7 +117,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         clearInterval(timer);
       }
     };
-  }, [balance, address, wallet?.adapter, connected, currentChain, token?.symbol, token?.availableChains]);
+  }, [balance, address, wallet?.adapter, connected, currentChain, token?.symbol, token?.availableChains, customToken?.contract, customToken?.decimal]);
 
 
   useEffect(() => {
@@ -266,17 +269,27 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [wallet?.adapter?.name, connected]);
 
-  
+
+  /// 处理 TRON 余额
   const currency = currentChain?.nativeCurrency;
-  const isTokenBalance = tokenDecimals !== undefined && !!token;
+
+
+  /// 判断是否为代币余额
+  const isTokenBalance = tokenDecimals !== undefined && (!!token || !!customToken);
+
+  /// 计算余额小数位数
   const balanceDecimals = isTokenBalance
-    ? tokenDecimals ?? token?.decimal
+    ? (tokenDecimals ?? customToken?.decimal ?? token?.decimal)
     : currency?.decimals;
+
+
+  /// 格式化余额
   const balanceFormatted =
     balanceData !== undefined && balanceDecimals !== undefined
       ? formatBalance(balanceData, balanceDecimals)
       : undefined;
 
+      
   /// 确保 TronWeb 实例和地址已连接
   const ensureTronWebAndAddress = () => {
     if (!connected || !wallet?.adapter || !address) {
@@ -337,7 +350,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
               symbol: isTokenBalance ? token?.symbol : currency?.symbol,
               value: balanceData,
               decimals: balanceDecimals,
-              icon: isTokenBalance ? token?.icon : currency?.icon,
+              icon: isTokenBalance ? (token?.icon ?? undefined) : currency?.icon,
               formatted: balanceFormatted,
             }
           : undefined

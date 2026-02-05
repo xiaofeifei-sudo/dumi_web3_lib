@@ -19,7 +19,22 @@ export type TronAction = 'connect' | 'switch_chain' | 'sign' | 'disconnect' | 't
 export type TronErrorCode = number;
 
 
-/// 交易相关错误
+/**
+ * 交易相关错误
+ * code-message 映射列表：
+ * 4900 - 钱包已断开连接
+ * 5000 - 未检测到钱包
+ * 5001 - 未选择钱包
+ * 5002 - 钱包加载失败
+ * 5004 - 用户关闭了二维码弹窗
+ * 5005 - 切换网络失败
+ * 5006 - 签名消息失败
+ * 5007 - 签名交易失败
+ * 5011 - 获取网络信息失败
+ * 5015 - 连接/断开钱包失败
+ * 5016 - 操作过于频繁
+ * 5017 - 用户拒绝连接请求
+ */
 export class TronProviderError extends ProviderError {
   network?: string;
   constructor(params: {

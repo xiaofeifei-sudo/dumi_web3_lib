@@ -7,7 +7,6 @@ import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
 import { BybitWalletAdapter } from '@tronweb3/tronwallet-adapter-bybit';
 import { OkxWalletAdapter } from '@tronweb3/tronwallet-adapter-okxwallet';
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
-import { TronLinkAdapter } from '@tronweb3/tronwallet-adapter-tronlink';
 import { WalletConnectAdapter } from '@tronweb3/tronwallet-adapter-walletconnect';
 import type { WalletConnectAdapterConfig } from '@tronweb3/tronwallet-adapter-walletconnect';
 import { TokenPocketAdapter } from '@tronweb3/tronwallet-adapter-tokenpocket';
@@ -26,6 +25,7 @@ import type { Wallet, Token } from 'pelican-web3-lib-common';
 import { PelicanWeb3ConfigProvider } from './config-provider';
 import { normalizeTronError } from '../errors';
 import type { Chain } from 'pelican-web3-lib-common';
+import { TronLinkAdapter } from '../adapters/tronlink';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {

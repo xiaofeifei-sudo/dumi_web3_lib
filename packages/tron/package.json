@@ -1,6 +1,6 @@
 {
   "name": "pelican-web3-lib-tron",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "main": "dist/lib/index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
@@ -25,7 +25,6 @@
     "@tronweb3/tronwallet-abstract-adapter": "^1.1.10",
     "@tronweb3/tronwallet-adapter-react-hooks": "^1.1.11",
     "@tronweb3/tronwallet-adapter-walletconnect": "^3.0.2",
-    "@tronweb3/tronwallet-adapter-tronlink": "^1.1.13",
     "@tronweb3/tronwallet-adapter-okxwallet": "^1.0.7",
     "@tronweb3/tronwallet-adapter-bybit": "^1.0.2",
     "@tronweb3/tronwallet-adapter-tokenpocket": "^1.0.8",

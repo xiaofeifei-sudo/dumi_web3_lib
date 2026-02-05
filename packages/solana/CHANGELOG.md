@@ -1,5 +1,23 @@
 # pelican-web3-lib-solana
 
+## 1.0.8
+
+### Patch Changes
+
+- Patch release
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.8
+  - pelican-web3-lib-common@1.0.8
+
+## 1.0.7
+
+### Patch Changes
+
+- 批量发布：对所有 build:packages 的包进行补丁版本提升到 1.0.7。
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.7
+  - pelican-web3-lib-common@1.0.7
+
 ## 1.0.6
 
 ### Patch Changes
