@@ -1,5 +1,13 @@
 # pelican-web3-lib-bitcoin
 
+## 1.0.12
+
+### Patch Changes
+
+- Patch release
+- Updated dependencies
+  - pelican-web3-lib-common@1.0.12
+
 ## 1.0.11
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # pelican-web3-lib-ethers
 
+## 1.0.12
+
+### Patch Changes
+
+- Patch release
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.12
+  - pelican-web3-lib-common@1.0.12
+  - pelican-web3-lib-evm@1.0.12
+
 ## 1.0.11
 
 ### Patch Changes
