@@ -12,6 +12,7 @@ const App: React.FC = () => {
       eip6963={{
         autoAddInjectedWallets: true,
       }}
+      reconnectOnMount={true}
       chains={[Sepolia, Mainnet]}
       wallets={[MetaMask(),WalletConnect() ]}
       walletConnect={{

@@ -29,8 +29,8 @@ import type {
     TronChainChangedCallback,
     TronLinkMessageEvent,
     TronWeb,
-} from './types.js';
-import { openTronLink, supportTron, supportTronLink, waitTronwebReady } from './utils.js';
+} from './types';
+import { openTronLink, supportTron, supportTronLink, waitTronwebReady } from './utils';
 export interface TronLinkWallet {
     ready: boolean;
     tronWeb: TronWeb;

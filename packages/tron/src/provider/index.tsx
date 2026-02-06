@@ -20,7 +20,7 @@ import { TomoWalletAdapter } from '@tronweb3/tronwallet-adapter-tomowallet';
 import { BinanceWalletAdapter } from '@tronweb3/tronwallet-adapter-binance';
 import { GuardaAdapter } from '@tronweb3/tronwallet-adapter-guarda';
 import { MetaMaskAdapter } from '@tronweb3/tronwallet-adapter-metamask-tron';
-import type { Wallet, Token } from 'pelican-web3-lib-common';
+import type { Wallet, Token, CustomToken } from 'pelican-web3-lib-common';
 
 import { PelicanWeb3ConfigProvider } from './config-provider';
 import { normalizeTronError } from '../errors';
@@ -37,6 +37,7 @@ export interface TronWeb3ConfigProviderProps {
    * 指定 TRC-20 代币以查询余额（传入后优先显示该代币余额）
    */
   token?: Token;
+  customToken?: CustomToken;
   walletProviderProps?: Omit<React.PropsWithChildren<TronWeb3ConfigProviderProps>, 'children'>; // 透传给 WalletProvider 的属性（不含 children）
   walletConnect?: WalletConnectAdapterConfig;
   ledgerAdapterConfig?: LedgerAdapterConfig;
@@ -62,6 +63,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
   autoConnect,
   balance,
   token,
+  customToken,
   ignoreConfig,
   initialChain,
   children,
@@ -156,6 +158,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
         availableWallets={wallets} // 可用钱包清单
         balance={balance}
         token={token}
+        customToken={customToken}
         ignoreConfig={ignoreConfig} // 是否忽略自身配置以避免闪烁
         initialChain={initialChain}
       >

@@ -12,7 +12,6 @@ import {
   useEnsName,
   useSignMessage,
   useSwitchChain,
-  
 } from 'wagmi';
 import {disconnect, getAccount} from 'wagmi/actions';
 import { getBalance as getBalanceRealtime } from './methods/getBalance';
@@ -86,7 +85,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChain} = useSwitchChain();
-
+  
   /// 若当前链不存在，回退为 Wagmi 配置的第一个链 ID
   const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
 
@@ -139,7 +138,14 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   
   /// 更新连接状态与当前钱包
   React.useEffect(() => {
-    setStatus(isDisconnected ? ConnectStatus.Disconnected : ConnectStatus.Connected);
+    const nextStatus = isDisconnected ? ConnectStatus.Disconnected : ConnectStatus.Connected;
+    console.info('[Web3Config] 连接状态更新', {
+      address,
+      chainId: chain?.id,
+      disconnected: isDisconnected,
+      status: nextStatus,
+    });
+    setStatus(nextStatus);
   }, [address, isDisconnected, chain?.id, connector?.name]);
 
 
@@ -314,44 +320,53 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       ? formatBalance(balanceData.value as bigint, balanceDecimals)
       : undefined;
 
-  /**
-   * 获取 NFT 元数据
-   */
   const getNFTMetadataFunc = React.useCallback(
-    async ({address: contractAddress, tokenId}: { address: string; tokenId?: bigint }) =>
-      getNFTMetadata(config, contractAddress, tokenId!, chain?.id),
+    async ({address: contractAddress, tokenId}: { address: string; tokenId?: bigint }) => {
+      console.info('[Web3Config] getNFTMetadata 调用', {
+        contractAddress,
+        tokenId: tokenId?.toString(),
+        chainId: chain?.id,
+      });
+      const result = await getNFTMetadata(config, contractAddress, tokenId!, chain?.id);
+      console.info('[Web3Config] getNFTMetadata 完成', {
+        hasResult: !!result,
+      });
+      return result;
+    },
     [chain?.id],
   );
 
-  /**
-   * SIWE 登录流程：
-   * 1. 获取 nonce
-   * 2. 生成消息并请求钱包签名
-   * 3. 验证签名并更新状态为 Signed
-   */
   const signIn = React.useCallback(
     async (signAddress: string) => {
       const {getNonce, createMessage, verifyMessage} = siwe!;
       let msg: string;
       let signature: `0x${string}`;
       try {
-        // 获取 nonce
+        console.info('[Web3Config] SIWE signIn 调用', {
+          address: signAddress,
+          chainId: currentChain?.id ?? Mainnet.id,
+        });
         const nonce = await getNonce(signAddress);
+        console.debug('[Web3Config] SIWE nonce 获取成功');
         msg = createMessage({
           domain: window?.location ? window.location.hostname : '',
           address: signAddress as `0x${string}`,
           uri: window?.location ? window.location.origin : '',
           nonce,
-          // Default config
           version: '1',
           chainId: currentChain?.id ?? Mainnet.id,
         });
         if (signMessageAsync) {
           signature = await signMessageAsync?.({message: msg});
           await verifyMessage(msg!, signature!);
+          console.info('[Web3Config] SIWE 验证成功，更新状态为 Signed');
           setStatus(ConnectStatus.Signed);
         }
       } catch (error: any) {
+        console.error('[Web3Config] SIWE signIn 失败', {
+          address: signAddress,
+          message: error?.message ?? String(error),
+        });
         throw normalizeEvmError(error, { action: 'sign' });
       }
     },
@@ -365,29 +380,64 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       account={account}
       wallet={currentWallet}
       wcWallets={WalletConnectWallets}
-      getBalance={async (params?: { token?: Token; customToken?: CustomToken }) =>
-        address
-          ? getBalanceRealtime(
-              config,
-              address,
-              chainIdForBalance,
-              params?.token ?? token,
-              currency?.icon,
-              params?.customToken,
-            )
-          : undefined
-      }
+      getBalance={async (params?: { token?: Token; customToken?: CustomToken }) => {
+        if (!address) {
+          console.info('[Web3Config] getBalance 调用但当前无地址');
+          return undefined;
+        }
+        console.info('[Web3Config] getBalance 调用', {
+          address,
+          chainId: chainIdForBalance,
+          tokenSymbol: params?.token?.symbol ?? token?.symbol,
+          hasCustomToken: !!(params?.customToken ?? customToken),
+        });
+        const result = await getBalanceRealtime(
+          config,
+          address,
+          chainIdForBalance,
+          params?.token ?? token,
+          currency?.icon,
+          params?.customToken,
+        );
+        if (result) {
+          console.info('[Web3Config] getBalance 完成', {
+            address,
+            chainId: chainIdForBalance,
+            symbol: result.symbol,
+            value: result.value?.toString(),
+          });
+        } else {
+          console.info('[Web3Config] getBalance 完成，未获取到结果', {
+            address,
+            chainId: chainIdForBalance,
+          });
+        }
+        return result;
+      }}
       sendTransaction={async (params) => {
         try {
+          const fromAccount = getAccount(config);
+          const targetChainId = chain?.id ?? wagimConfig.chains?.[0]?.id;
+          console.info('[Web3Config] sendTransaction 调用', {
+            from: fromAccount?.address,
+            to: params?.to,
+            chainId: targetChainId,
+          });
           if (refetchBalance) {
             refetchBalance();
           }
           const result = await sendTx(config, {
             ...params,
-            chainId: chain?.id ?? wagimConfig.chains?.[0]?.id,
+            chainId: targetChainId,
+          });
+          console.info('[Web3Config] sendTransaction 成功', {
+            txHash: result,
           });
           return result;
         } catch (error: any) {
+          console.error('[Web3Config] sendTransaction 失败', {
+            message: error?.message ?? String(error),
+          });
           throw normalizeEvmError(error, { action: 'transfer' });
         }
       }}
@@ -415,8 +465,11 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       availableWallets={wallets}
       addressPrefix="0x"
       connect={async (wallet, options) => {
-        // 连接钱包：优先使用适配器提供的 wagmi 连接器，回退到名称匹配
         try {
+          console.info('[Web3Config] connect 调用', {
+            walletName: wallet?.name,
+            chainId: currentChain?.id,
+          });
           let targetConnector = await (wallet as WalletUseInWagmiAdapter)?.getWagmiConnector?.(
             options,
           );
@@ -430,6 +483,11 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             connector: targetConnector,
             chainId: currentChain?.id,
           });
+          console.info('[Web3Config] connect 成功', {
+            walletName: wallet?.name,
+            chainId: currentChain?.id,
+            accountCount: accounts?.length,
+          });
           if (wallet) {
             setCurrentWallet(wallet);
           }
@@ -438,23 +496,60 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             addresses: accounts,
           };
         } catch (e: any) {
+          console.error('[Web3Config] connect 失败', {
+            walletName: wallet?.name,
+            message: e?.message ?? String(e),
+          });
           throw normalizeEvmError(e, { action: 'connect', walletName: wallet?.name });
         }
       }}
       disconnect={async () => {
-        // await disconnectAsync();
-        // TODO@jeasonstudio: wagmi useDisconnect hook 在处理多实例（config）共存时，
-        // 存在一些状态处理的 bug，暂时用更低阶 API 代替。
-        const {connector: activeConnector} = getAccount(config);
-        await disconnect(config, {connector: activeConnector});
-        setCurrentWallet(undefined);
+        const {connector: activeConnector, address: fromAddress} = getAccount(config);
+        console.info('[Web3Config] disconnect 调用', {
+          address: fromAddress,
+        });
+        try {
+          await disconnect(config, {connector: activeConnector});
+          console.info('[Web3Config] disconnect 成功', {
+            address: fromAddress,
+          });
+        } catch (error: any) {
+          console.error('[Web3Config] disconnect 失败', {
+            address: fromAddress,
+            message: error?.message ?? String(error),
+          });
+          throw normalizeEvmError(error, { action: 'disconnect' });
+        } finally {
+          setCurrentWallet(undefined);
+        }
       }}
       switchChain={async (newChain: Chain) => {
         if (!chain) {
-          // 尚未连接任何链，直接更新当前链
+          console.info('[Web3Config] switchChain 调用（未连接链，直接更新本地状态）', {
+            toChainId: newChain.id,
+          });
           setCurrentChain(newChain);
         } else {
-          switchChain?.({chainId: newChain.id});
+          console.info('[Web3Config] switchChain 调用', {
+            fromChainId: chain.id,
+            toChainId: newChain.id,
+          });
+          try {
+            await switchChain?.({chainId: newChain.id});
+            console.info('[Web3Config] switchChain 成功', {
+              toChainId: newChain.id,
+            });
+          } catch (error: any) {
+            console.error('[Web3Config] switchChain 失败', {
+              fromChainId: chain.id,
+              toChainId: newChain.id,
+              message: error?.message ?? String(error),
+            });
+            throw normalizeEvmError(error, {
+              action: 'switch_chain',
+              chainId: newChain.id,
+            });
+          }
         }
       }}
       getNFTMetadata={getNFTMetadataFunc}

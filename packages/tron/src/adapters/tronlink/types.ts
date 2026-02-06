@@ -2,8 +2,8 @@ import type { NetworkNodeConfig } from '@tronweb3/tronwallet-abstract-adapter';
 import type { TronWeb } from '@tronweb3/tronwallet-abstract-adapter';
 
 export interface TronLinkWalletEvents {
-    connect(...args: unknown[]): unknown;
-    disconnect(...args: unknown[]): unknown;
+    connect: (...args: unknown[]) => unknown;
+    disconnect: (...args: unknown[]) => unknown;
 }
 
 export type { TronWeb };
@@ -47,15 +47,11 @@ export type TronChainChangedCallback = TronConnectCallback;
 export type TronDisconnectCallback = (error: ProviderRpcError) => void;
 export type TronAccountsChangedCallback = (data: [string?]) => void;
 export interface Tron {
-    request(args: { method: 'eth_requestAccounts' }): Promise<[string]>;
-    request(args: TronRequestArguments): Promise<unknown>;
+    request: ((args: { method: 'eth_requestAccounts' }) => Promise<[string]>) & ((args: TronRequestArguments) => Promise<unknown>);
 
-    on(event: 'connect', cb: TronConnectCallback): void;
-    on(event: 'disconnect', cb: TronDisconnectCallback): void;
-    on(event: 'chainChanged', cb: TronChainChangedCallback): void;
-    on(event: 'accountsChanged', cb: TronAccountsChangedCallback): void;
+    on: ((event: 'connect', cb: TronConnectCallback) => void) & ((event: 'disconnect', cb: TronDisconnectCallback) => void) & ((event: 'chainChanged', cb: TronChainChangedCallback) => void) & ((event: 'accountsChanged', cb: TronAccountsChangedCallback) => void);
 
-    removeListener(event: TronEvent, cb: unknown): void;
+    removeListener: (event: TronEvent, cb: unknown) => void;
     tronWeb: TronWeb | false;
     isTronLink: boolean;
 }

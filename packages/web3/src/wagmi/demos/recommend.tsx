@@ -16,7 +16,7 @@ const App: React.FC = () => {
       }}
       ens
       balance
-      chains={[Mainnet, Sepolia]}
+      chains={[Sepolia]}
       wallets={[
         MetaMask(),
         TokenPocket(),
@@ -28,11 +28,10 @@ const App: React.FC = () => {
       walletConnect={
         {
                       projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
-                      useWalletConnectOfficialModal: true,
+                      useWalletConnectOfficialModal: false,
                     }
       }
       transports={{
-        [Mainnet.id]: http(),
         [Sepolia.id]: http(),
       }}
       queryClient={queryClient}

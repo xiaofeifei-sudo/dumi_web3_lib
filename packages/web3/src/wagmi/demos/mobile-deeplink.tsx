@@ -1,13 +1,7 @@
 import React from 'react';
 import {Button, Select, Space, Typography, message} from 'antd';
 import {CoreHelperUtil} from 'pelican-web3-lib-common';
-import {
-  Mainnet,
-  Sepolia,
-  WagmiWeb3ConfigProvider,
-  WalletConnect,
-  type WalletUseInWagmiAdapter,
-} from 'pelican-web3-lib-evm';
+import {Mainnet, Sepolia, WagmiWeb3ConfigProvider, WalletConnect, type WalletUseInWagmiAdapter} from 'pelican-web3-lib-evm';
 import {http} from 'wagmi';
 import useProvider from '../../hooks/useProvider';
 import Connector from '../../components/Connector';
@@ -17,7 +11,7 @@ const {Option} = Select;
 const {Text} = Typography;
 
 const DeeplinkContent: React.FC = () => {
-  const {wcWallets, availableWallets, connect, account} = useProvider();
+  const {wcWallets, availableWallets, connect} = useProvider();
   const [selectedWalletId, setSelectedWalletId] = React.useState<string | undefined>(undefined);
   const [loading, setLoading] = React.useState(false);
 
@@ -108,19 +102,22 @@ const App: React.FC = () => {
   return (
     <WagmiWeb3ConfigProvider
       chains={[
-        Sepolia, 
+        Mainnet,
+        Sepolia,
       ]}
-      wallets={[WalletConnect({
-        useWalletConnectOfficialModal: false,
-      })]}
+      wallets={[
+        WalletConnect({
+          useWalletConnectOfficialModal: false,
+        }),
+      ]}
       reconnectOnMount={true}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
         useWalletConnectOfficialModal: false,
       }}
       transports={{
-                [Sepolia.id]: http(),
-
+        [Mainnet.id]: http(),
+        [Sepolia.id]: http(),
       }}
       balance
       ens
@@ -130,6 +127,7 @@ const App: React.FC = () => {
           <ConnectButton quickConnect />
         </Connector>
         <DeeplinkContent />
+        {/* <SendTransactionWidget initialAmount={0.001} amountStep={0.001} /> */}
       </Space>
     </WagmiWeb3ConfigProvider>
   );

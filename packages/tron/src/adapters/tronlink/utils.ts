@@ -1,5 +1,5 @@
 import { isInBrowser, isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
-import type { Tron } from './types.js';
+import type { Tron } from './types';
 
 export function supportTron() {
     return !!(window.tron && window.tron.isTronLink);
