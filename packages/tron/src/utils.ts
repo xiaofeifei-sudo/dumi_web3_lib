@@ -77,3 +77,56 @@ export const tronToNumber = (v: any, fallback = 6): number => {
   }
   return fallback;
 };
+
+export const triggerSmartContractCompat = async (
+  tronWeb: any,
+  contractAddress: string,
+  functionSelector: string,
+  parameter: any[] = [],
+  options: any = {},
+) => {
+  if (typeof tronWeb?.transactionBuilder?.triggerSmartContract === 'function') {
+    return tronWeb.transactionBuilder.triggerSmartContract(
+      contractAddress,
+      functionSelector,
+      options,
+      parameter,
+    );
+  }
+  if (typeof tronWeb?.trx?.triggerSmartContract === 'function') {
+    return tronWeb.trx.triggerSmartContract(
+      contractAddress,
+      functionSelector,
+      options,
+      parameter,
+    );
+  }
+  const host =
+    tronWeb?.fullNode?.host || tronWeb?.solidityNode?.host || tronWeb?.eventServer?.host;
+  if (host) {
+    try {
+      const res = await fetch(`${host.replace(/\/$/, '')}/wallet/triggersmartcontract`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contract_address: contractAddress,
+          function_selector: functionSelector,
+          parameter,
+        }),
+      });
+      if (res.ok) return await res.json();
+      const res2 = await fetch(`${host.replace(/\/$/, '')}/wallet/triggerconstantcontract`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          owner_address: '',
+          contract_address: contractAddress,
+          function_selector: functionSelector,
+          parameter,
+        }),
+      });
+      if (res2.ok) return await res2.json();
+    } catch {}
+  }
+  return null;
+};

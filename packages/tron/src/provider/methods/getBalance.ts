@@ -1,7 +1,7 @@
 import type { Balance, Chain, Token, CustomToken } from 'pelican-web3-lib-common';
 import { formatBalance } from 'pelican-web3-lib-common';
 import { trc20Abi } from '../../abi/trc20';
-import { tronToBigInt } from '../../utils';
+import { tronToBigInt, triggerSmartContractCompat } from '../../utils';
 import { getTokenDecimals } from './getTokenDecimals';
 
 /**
@@ -20,10 +20,38 @@ export async function getBalance(
     (item) => (item?.chain as any)?.id === (currentChain as any)?.id,
   )?.contract;
   const toBigInt = tronToBigInt;
+  const canTrigger =
+    typeof tronWeb?.contract === 'function' ||
+    typeof tronWeb?.transactionBuilder?.triggerSmartContract === 'function' ||
+    typeof tronWeb?.trx?.triggerSmartContract === 'function' ||
+    !!tronWeb?.fullNode?.host ||
+    !!tronWeb?.solidityNode?.host ||
+    !!tronWeb?.eventServer?.host;
+  const toAddressParam = (addr: string) => {
+    try {
+      if (typeof tronWeb?.address?.toHex === 'function') {
+        return tronWeb.address.toHex(addr);
+      }
+    } catch {}
+    return addr;
+  };
   if (contractOnChain) {
-    const contract = await tronWeb.contract(trc20Abi, contractOnChain);
-    const rawBalance = await contract.balanceOf(tronWeb.address.toHex(address)).call();
-    const value = toBigInt(rawBalance);
+    let value: bigint = 0n;
+    if (typeof tronWeb?.contract === 'function') {
+      const contract = await tronWeb.contract(trc20Abi, contractOnChain);
+      const rawBalance = await contract.balanceOf(toAddressParam(address)).call();
+      value = toBigInt(rawBalance);
+    } else {
+      const res = await triggerSmartContractCompat(
+        tronWeb,
+        contractOnChain,
+        'balanceOf(address)',
+        [{ type: 'address', value: toAddressParam(address) }],
+        {},
+      );
+      const raw = (res?.constant_result ?? res?.constantResult)?.[0];
+      value = toBigInt(raw);
+    }
     const decimals = await getTokenDecimals(tronWeb, contractOnChain);
     const formatted =
       value !== undefined && decimals !== undefined
@@ -37,10 +65,27 @@ export async function getBalance(
       formatted,
     };
   }
-  if (customToken?.contract) {
-    const contract = await tronWeb.contract(trc20Abi, customToken.contract);
-    const rawBalance = await contract.balanceOf(tronWeb.address.toHex(address)).call();
-    const value = toBigInt(rawBalance);
+  if (customToken?.contract && canTrigger) {
+    let value: bigint = 0n;
+    if (typeof tronWeb?.contract === 'function') {
+      const contract = await tronWeb.contract(trc20Abi, customToken.contract);
+      const rawBalance = await contract.balanceOf(toAddressParam(address)).call();
+      value = toBigInt(rawBalance);
+    } else {
+      const res = await triggerSmartContractCompat(
+        tronWeb,
+        customToken.contract,
+        'balanceOf(address)',
+        [{ type: 'address', value: toAddressParam(address) }],
+        {},
+      );
+      if (!res) {
+        value = 0n;
+      } else {
+        const raw = (res?.constant_result ?? res?.constantResult)?.[0];
+        value = toBigInt(raw);
+      }
+    }
     let decimals = customToken.decimal;
     if (decimals === undefined) {
       decimals = await getTokenDecimals(tronWeb, customToken.contract);
@@ -55,8 +100,14 @@ export async function getBalance(
       formatted,
     };
   }
-  const sun: number = await tronWeb.trx.getBalance(address);
-  const value = BigInt(sun);
+  let sunRaw: any = 0;
+  if (typeof tronWeb?.trx?.getBalance === 'function') {
+    sunRaw = await tronWeb.trx.getBalance(address);
+  } else if (typeof tronWeb?.trx?.getAccount === 'function') {
+    const account = await tronWeb.trx.getAccount(address);
+    sunRaw = account?.balance ?? 0;
+  }
+  const value = toBigInt(sunRaw);
   const decimals = currency?.decimals ?? 6;
   const formatted =
     value !== undefined && decimals !== undefined

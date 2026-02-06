@@ -84,7 +84,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const {address, isDisconnected, chain, addresses, connector} = useAccount();
   const config = useConfig();
   const {connectAsync} = useConnect();
-  const {switchChain} = useSwitchChain();
+  const {switchChainAsync} = useSwitchChain();
   
   /// 若当前链不存在，回退为 Wagmi 配置的第一个链 ID
   const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
@@ -535,7 +535,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             toChainId: newChain.id,
           });
           try {
-            await switchChain?.({chainId: newChain.id});
+            await switchChainAsync?.({chainId: newChain.id});
             console.info('[Web3Config] switchChain 成功', {
               toChainId: newChain.id,
             });
