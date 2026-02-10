@@ -1,5 +1,14 @@
 # pelican-web3-lib-evm
 
+## 1.0.13
+
+### Patch Changes
+
+- Patch release
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.13
+  - pelican-web3-lib-common@1.0.13
+
 ## 1.0.12
 
 ### Patch Changes

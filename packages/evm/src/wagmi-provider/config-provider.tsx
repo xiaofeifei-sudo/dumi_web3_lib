@@ -1,5 +1,5 @@
 import React from 'react';
-import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, type CustomToken, formatBalance, fillAddressWith0x,} from 'pelican-web3-lib-common';
+import {type Account, type Chain, ConnectStatus, type Wallet, Web3ConfigProvider, type Token, type CustomToken, formatBalance, fillAddressWith0x, CoreHelperUtil,} from 'pelican-web3-lib-common';
 import { WalletConnectWallets } from 'pelican-web3-lib-assets';
 import type {Config as WagmiConfig} from 'wagmi';
 import {
@@ -19,7 +19,7 @@ import { getBalance as getBalanceRealtime } from './methods/getBalance';
 import {Mainnet} from '../chains';
 import { normalizeEvmError } from '../errors';
 import type {EIP6963Config, SIWEConfig, WalletFactory, WalletUseInWagmiAdapter,} from '../interface';
-import {isEIP6963Connector} from '../utils';
+import {isEIP6963Connector, isWalletConnectConnector} from '../utils';
 import {EIP6963Wallet} from '../wallets/eip6963';
 import {getNFTMetadata, sendTransaction as sendTx} from './methods';
 
@@ -85,6 +85,20 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChainAsync} = useSwitchChain();
+  const openWalletConnectDeeplink = React.useCallback(async () => {
+    if (!connector) return;
+    const c: any = connector as any;
+    const isWc = isWalletConnectConnector(connector);
+    if (!isWc) return;
+    try {
+      const p: any = await c.getProvider?.();
+      if (!p) return;
+      const redirect = p?.session?.peer?.metadata?.redirect;
+      console.log('redirect', redirect);
+      const url = redirect?.native || redirect?.universal;
+      CoreHelperUtil.openWalletDeeplink(url);
+    } catch {}
+  }, [connector]);
   
   /// 若当前链不存在，回退为 Wagmi 配置的第一个链 ID
   const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
@@ -357,6 +371,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           chainId: currentChain?.id ?? Mainnet.id,
         });
         if (signMessageAsync) {
+          await openWalletConnectDeeplink();
           signature = await signMessageAsync?.({message: msg});
           await verifyMessage(msg!, signature!);
           console.info('[Web3Config] SIWE 验证成功，更新状态为 Signed');
@@ -423,6 +438,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             to: params?.to,
             chainId: targetChainId,
           });
+          await openWalletConnectDeeplink();
           if (refetchBalance) {
             refetchBalance();
           }
@@ -535,7 +551,15 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             toChainId: newChain.id,
           });
           try {
-            await switchChainAsync?.({chainId: newChain.id});
+            let switched = false;
+            const p = switchChainAsync?.({chainId: newChain.id}).then(() => {
+              switched = true;
+            });
+            await CoreHelperUtil.wait(2000);
+            if (!switched) {
+              await openWalletConnectDeeplink();
+            }
+            await p;
             console.info('[Web3Config] switchChain 成功', {
               toChainId: newChain.id,
             });

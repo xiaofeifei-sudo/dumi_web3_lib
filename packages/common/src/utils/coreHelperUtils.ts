@@ -229,6 +229,13 @@ openWalletWithDeepLink(
   this.openHref(finalUrl, target);
   return finalUrl
 },
+  
+  openWalletDeeplink(url: string): string | undefined {
+    if (!url) return
+    const target = this.isIframe() ? '_top' : '_self'
+    this.openHref(url, target)
+    return url
+  },
 
    // 等待函数
   async wait(miliseconds: number) {

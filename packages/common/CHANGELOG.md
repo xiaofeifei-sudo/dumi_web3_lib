@@ -1,5 +1,11 @@
 # pelican-web3-lib-common
 
+## 1.0.13
+
+### Patch Changes
+
+- Patch release
+
 ## 1.0.12
 
 ### Patch Changes

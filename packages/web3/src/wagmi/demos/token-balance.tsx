@@ -1,16 +1,9 @@
 import React from 'react';
-import { Space } from 'antd';
-import {
-  WagmiWeb3ConfigProvider,
-  Mainnet,
-  Sepolia,
-  MetaMask,
-  WalletConnect,
-  USDT,
-} from 'pelican-web3-lib-evm';
-import { http } from 'wagmi';
+import {Space} from 'antd';
+import {Mainnet, MetaMask, Sepolia, USDT, WagmiWeb3ConfigProvider, WalletConnect,} from 'pelican-web3-lib-evm';
+import {http} from 'wagmi';
 import Connector from '../../components/Connector';
-import { ConnectButton } from '../../components/connect-button';
+import {ConnectButton} from '../../components/connect-button';
 
 const App: React.FC = () => {
   return (
@@ -21,7 +14,7 @@ const App: React.FC = () => {
       ens
       balance
       token={USDT}
-      chains={[ Sepolia]}
+      chains={[Sepolia]}
       wallets={[MetaMask(), WalletConnect()]}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
@@ -33,7 +26,7 @@ const App: React.FC = () => {
     >
       <Space direction="vertical">
         <Connector>
-          <ConnectButton quickConnect />
+          <ConnectButton quickConnect/>
         </Connector>
       </Space>
     </WagmiWeb3ConfigProvider>

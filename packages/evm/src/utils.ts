@@ -1,3 +1,4 @@
+import { metadata_WalletConnect } from 'pelican-web3-lib-assets';
 import type {Connector as WagmiConnector} from 'wagmi';
 import {injected} from 'wagmi/connectors';
 
@@ -9,4 +10,10 @@ const isEIP6963Connector = (connector: WagmiConnector) => {
   return !!(connector.type === injected.type && connector.icon && connector.id && connector.name);
 };
 
-export {isEIP6963Connector};
+const isWalletConnectConnector = (connector?: WagmiConnector) => {
+  return (
+    connector?.name === metadata_WalletConnect.name
+  );
+};
+
+export {isEIP6963Connector, isWalletConnectConnector};

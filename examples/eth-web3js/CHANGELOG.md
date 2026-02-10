@@ -1,5 +1,15 @@
 # @example/eth-web3js
 
+## 0.0.39
+
+### Patch Changes
+
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.13
+  - pelican-web3-lib-common@1.0.13
+  - pelican-web3-lib-eth-web3js@1.0.13
+  - pelican-web3-lib@1.26.13
+
 ## 0.0.38
 
 ### Patch Changes
