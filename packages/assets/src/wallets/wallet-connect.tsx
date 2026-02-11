@@ -37,26 +37,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/metamask/id1438144202",
             "play_store": "https://play.google.com/store/apps/details?id=io.metamask",
             "rdns": "io.metamask",
             "chrome_store": "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isMetaMask"
-                }
-            ],
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Whether you are an experienced user or brand new to blockchain, MetaMask helps you connect to the decentralized web: a new internet.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <MetaMaskArk />,
         },
         {
@@ -69,27 +53,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://app.binance.com/cedefi",
             "webapp_link": "https://www.binance.com/en/web3wallet",
-            "rdns_web_wallet": null,
             "app_store": "https://www.binance.com/en/download",
             "play_store": "https://www.binance.com/en/download",
             "rdns": "com.binance.wallet",
             "chrome_store": "https://chromewebstore.google.com/detail/binance-wallet/cadiboklkpojfamcoggejbbdjcoiljjk?utm_source=walletconnect",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isBinance"
-                }
-            ],
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Binance Wallet is a keyless, multi-chain and self-custody wallet.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <BnbCircleColorful />,
         },
         {
@@ -102,32 +69,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": "onekey-wallet://",
             "link_mode": null,
             "webapp_link": "https://app.onekey.so/wc/connect",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/onekey-open-source-wallet/id1609559473",
             "play_store": "https://play.google.com/store/apps/details?id=so.onekey.app.wallet&hl=en_US&gl=US",
             "rdns": "so.onekey.app.wallet",
             "chrome_store": "https://chrome.google.com/webstore/detail/onekey/jnmbobjmhlngoefaiojfljckilhhlhcj",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isOneKey"
-                },
-                {
-                    "namespace": "solana",
-                    "injected_id": "isOneKey"
-                }
-            ],
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "1e6917ca-16b1-4e03-aaf2-7b9a1229cd0d",
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Open source multi-chain crypto wallet runs on all platforms: iOS, Android, Windows, macOS, Linux, Chrome, Firefox... and more.",
-            "badge_type": "none",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         
         {
@@ -140,27 +85,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/app/safepal-wallet/id1548297139",
             "play_store": "https://play.google.com/store/apps/details?id=io.safepal.wallet",
             "rdns": null,
             "chrome_store": "https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isSafePal"
-                }
-            ],
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "SafePal is a cryptocurrency wallet that aims to provide a secure and user-friendly crypto management platform for the masses. ",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0",
@@ -172,31 +100,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/app/apple-store/id1288339409",
             "play_store": "https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp",
             "rdns": "com.trustwallet.app",
             "chrome_store": "https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isTrust"
-                },
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isTrustWallet"
-                }
-            ],
-        
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Trust Wallet supports over 10 Million tokens including Ethereum, Solana, Polygon Matic, BNB, and Avalanche.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <TrustWalletColorful />,
         },
         {
@@ -209,22 +116,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://console.fireblocks.io/v2/",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/fireblocks/id1439296596",
             "play_store": "https://play.google.com/store/apps/details?id=com.fireblocks.client&gl=IL",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-        
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "#1 Crypto and Digital Asset Platform for Institutions",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709",
@@ -236,31 +131,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://www.okx.com/download?appendQuery=true&deeplink=okx://web3/wallet/walletConnect",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/okx-buy-bitcoin-eth-crypto/id1327268470",
             "play_store": "https://play.google.com/store/apps/details?id=com.okinc.okex.gp",
             "rdns": "com.okex.wallet",
             "chrome_store": "https://chrome.google.com/webstore/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isPLC"
-                },
-                {
-                    "namespace": "solana",
-                    "injected_id": "isPLC"
-                }
-            ],
-           
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "One Web3 portal to rule them all",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <OkxWalletColorful />,
         },
         {
@@ -273,27 +147,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://chrome.google.com/webstore/detail/tokenpocket/mfgccjchihfkkindfppnaooecgfneiii",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/tp-wallet/id6444625622?l=en",
             "play_store": "https://play.google.com/store/apps/details?id=vip.mytokenpocket",
             "rdns": "pro.tokenpocket",
             "chrome_store": "https://chrome.google.com/webstore/detail/tokenpocket/mfgccjchihfkkindfppnaooecgfneiii",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isTokenPocket"
-                }
-            ],
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "The leading multi-chain self-custodial wallet, which supports mainstream networks including BTC, ETH, BSC, TRON, zkSync Era∎, etc.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <TokenPocketColorful />,
         },
         {
@@ -306,26 +163,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://bitkeep.com",
-            "rdns_web_wallet": null,
             "app_store": "https://web3.bitget.com/en/wallet-download?type=0",
             "play_store": "https://web3.bitget.com/en/wallet-download?type=0",
             "rdns": "com.bitget.web3",
             "chrome_store": "https://chrome.google.com/webstore/detail/bitkeep-crypto-nft-wallet/jiidiaalihmmhddjgbnbgdfflelocpak",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isBitKeep"
-                }
-            ],
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Bitget Wallet",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <BitgetWalletColorful />,
         },
         {
@@ -338,26 +179,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://uniswap.org/app",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/uniswap-wallet/id6443944476",
             "play_store": "https://play.google.com/store/apps/details?id=com.uniswap.mobile",
             "rdns": null,
             "chrome_store": "https://chromewebstore.google.com/detail/uniswap-extension/nnpmfplkfogfpmcngplhnbdnnilmcdcg",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isUniswapWallet"
-                }
-            ],
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Built by the most trusted team in DeFi, Uniswap Wallet allows you to maintain full custody and control of your assets. ",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <UniswapColorful />,
         },
         {
@@ -370,21 +195,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": "ledgerlive://",
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://itunes.apple.com/app/id1361671700",
             "play_store": "https://play.google.com/store/apps/details?id=com.ledger.live",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "1e6917ca-16b1-4e03-aaf2-7b9a1229cd0d",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Web3 Wallet from the company that produced the world's most secure crypto hardware device.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "ecc4036f814562b41a5268adc86270fba1365471402006302e70169465b7ac18",
@@ -396,28 +210,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": "zerion://",
             "link_mode": "https://wallet.zerion.io/wc",
             "webapp_link": "https://wallet.zerion.io",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/app/id1456732565",
             "play_store": "https://play.google.com/store/apps/details?id=io.zerion.android&hl=en&gl=US",
             "rdns": "io.zerion.wallet",
             "chrome_store": "https://chrome.google.com/webstore/detail/zerion-wallet-for-web3-nf/klghhnkeealcohjjanjjdaeeggmfmlpl",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "isZerion"
-                }
-            ],
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "1e6917ca-16b1-4e03-aaf2-7b9a1229cd0d",
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Smart Web3 Wallet",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "fe68cea63541aa53ce020de7398968566dfe8f3725663a564cac89490247ed49",
@@ -429,20 +225,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/app/best-wallet/id6451312105",
             "play_store": "https://play.google.com/store/apps/details?id=com.bestwallet.mobile",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "The best independent crypto wallet\n",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "f2436c67184f158d1beda5df53298ee84abfc367581e4505134b5bcf5f46697d",
@@ -454,21 +240,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://wallet.crypto.com/deeplink",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/US/app/id1512048310?mt=8",
             "play_store": "https://play.google.com/store/apps/details?id=com.defi.wallet",
             "rdns": "com.crypto.wallet",
             "chrome_store": "https://chromewebstore.google.com/detail/cryptocom-wallet-extensio/hifafgmccdpekplomjjkcfgodnhcellj",
-            "injected": null,
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "A non-custodial wallet that gives you access to a full suite of DeFi services in one place.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "37a686ab6223cd42e2886ed6e5477fce100a4fb565dcd57ed4f81f7c12e93053",
@@ -480,20 +255,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://app.bifrostwallet.com/",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/bifrost-wallet/id1577198351",
             "play_store": "https://play.google.com/store/apps/details?id=com.bifrostwallet.app",
             "rdns": "com.bifrostwallet",
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "A multi-chain wallet for Flare, XRP, Dogecoin, Bitcoin and beyond.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "4119a5b3e5ebc809b6a3680a280ae517b92fead02e4c07b7cec0d3385c87aee2",
@@ -505,21 +270,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://xportal.app.link",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/ro/app/xportal/id1519405832",
             "play_store": "https://play.google.com/store/apps/details?id=com.elrond.maiar.wallet",
             "rdns": "com.elrond.maiar.wallet",
             "chrome_store": "-",
-            "injected": null,
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Buy, sell, stake, and swap crypto cross-chain. Spend it with xPortal debit cards. Play with blockchain and win rewards.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "107bb20463699c4e614d3a2fb7b961e66f48774cb8f6d6c1aee789853280972c",
@@ -531,21 +285,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://wallet.bitcoin.com/",
             "webapp_link": "https://wallet.bitcoin.com/",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/bitcoin-wallet-by-bitcoin-com/id1252903728",
             "play_store": "https://play.google.com/store/apps/details?id=com.bitcoin.mwallet",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Buy, sell, store, trade, and use cryptocurrency with the Bitcoin.com Wallet, trusted by millions.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "c286eebc742a537cd1d6818363e9dc53b21759a1e8e5d9b263d0c03ec7703576",
@@ -557,20 +300,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://wallet.1inch.io/app/nobodywilleveruseit",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/1inch-defi-wallet/id1546049391",
             "play_store": "https://play.google.com/store/apps/details?id=io.oneinch.android",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "1inch Wallet - the DeFi wallet app that puts you in control. With 1inch Swap built-in, scam protection and pro-level efficiency features, 1inch Wallet brings you everything you need to run crypto from your pocket.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "6b0182d679b72eb2733dec38d9dee70551cc16a6ce5e7a7f4155ffb6f493c521",
@@ -582,21 +315,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": "trezorsuite://walletconnect",
             "link_mode": "https://connect.trezor.io/9/deeplink/wc",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/trezor-suite/id1631884497",
             "play_store": "https://play.google.com/store/apps/details?id=io.trezor.suite",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "1e6917ca-16b1-4e03-aaf2-7b9a1229cd0d",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Trezor Suite is the companion app for the Trezor hardware wallet",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "84b43e8ddfcd18e5fcb5d21e7277733f9cccef76f7d92c836d0e481db0c70c04",
@@ -608,20 +330,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://login.blockchain.com/app",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/blockchain-bitcoin-wallet/id493253309",
             "play_store": "https://play.google.com/store/apps/details?id=piuk.blockchain.android",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "The only crypto app you’ll ever need. Buy, store, and do more with your crypto.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "ef333840daf915aafdc4a004525502d6d49d77bd9c65e0642dbaefb3c2893bef",
@@ -633,21 +345,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://token.im/",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/imtoken2/id1384798940",
             "play_store": "https://play.google.com/store/apps/details?id=im.token.app",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "imToken is an easy and secure digital wallet trusted by millions.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "b4678fefcc469583ed4ef58a5bd90ce86208b82803f3c45f2de3e0973d268835",
@@ -659,20 +360,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://bitpay.onelink.me/Cenw/ejjaw7bs",
             "play_store": "https://bitpay.onelink.me/Cenw/ejjaw7bs",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "The only wallet app you need to buy, store, swap and spend your crypto.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "e3f3db6814131b8b0b12621d134cd327e5ad51f8ecde65565374aae4617a20fd",
@@ -684,21 +375,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://keys.gemini.com",
-            "rdns_web_wallet": null,
             "app_store": null,
             "play_store": null,
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921"
-            ],
-            "description": "Gemini Wallet, a self-custody wallet designed for crypto users and developers alike. Whether you're a retail investor looking for a secure, portable gateway to Web3, or a developer seeking an SDK kit to embed the wallet directly into your dapp, the Gemini Wallet brings flexibility, ease of use, and powerful security to onchain access.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false,
             "icon": <GeminiColorful />,
         },
         {
@@ -711,21 +391,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/arculus-wallet/id1575425801",
             "play_store": "https://play.google.com/store/apps/details?id=co.arculus.wallet.android&hl=en_US&gl=US",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            
-            "categories": [
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Cold Storage Crypto Wallet",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "f896cbca30cd6dc414712d3d6fcc2f8f7d35d5bd30e3b1fc5d60cf6c8926f98f",
@@ -737,21 +406,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": "https://ctrl.xyz/deeplink/wallet",
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/ctrl-wallet/id6630386336",
             "play_store": "https://play.google.com/store/apps/details?id=xyz.ctrl.wallet",
             "rdns": "xyz.ctrl",
             "chrome_store": "https://chrome.google.com/webstore/detail/ctrl-wallet/hmeobnfnfcmdkdcmlblgagmfpfboieaf?hl=en",
-            "injected": null,
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "One wallet for all your crypto. The safest & easiest wallet for 2,300+ chains.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "541d5dcd4ede02f3afaf75bf8e3e4c4f1fb09edb5fa6c4377ebf31c2785d9adf",
@@ -763,27 +421,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": null,
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/us/app/ronin-wallet/id1592675001",
             "play_store": "https://play.google.com/store/apps/details?id=com.skymavis.genesis",
             "rdns": "com.roninchain.wallet",
             "chrome_store": "https://chrome.google.com/webstore/detail/ronin-wallet/fnjhmkhhmkbjkkabndcnnogagogbneec",
-            "injected": [
-                {
-                    "namespace": "eip155",
-                    "injected_id": "window.ronin.provider.isRonin"
-                }
-            ],
-            
-            "categories": [
-                "b7c081de-c6d6-447e-ada6-a6f8e6e1480a",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "Ronin Wallet is the mobile wallet that allows you to use all decentralized applications running on Ronin.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         },
         {
             "id": "225affb176778569276e484e1b92637ad061b01e13a048b35a9d280c3b58970f",
@@ -795,22 +436,10 @@ export const WalletConnectWallets: WcWallet[] = [
             "desktop_link": null,
             "link_mode": null,
             "webapp_link": "https://app.safe.global/",
-            "rdns_web_wallet": null,
             "app_store": "https://apps.apple.com/app/id1515759131",
             "play_store": "https://play.google.com/store/apps/details?id=io.gnosis.safe",
             "rdns": null,
             "chrome_store": null,
-            "injected": null,
-            
-            "categories": [
-                "1778cd7f-a539-49fd-9de1-52d9c2101921",
-                "e127a2ef-09e5-417b-9304-3e2e567a0f87"
-            ],
-            "description": "The most trusted platform to manage digital assets.",
-            "badge_type": "certified",
-            "supports_wc": true,
-            "is_top_wallet": false,
-            "supports_wcpay": false
         }
     ];
 
@@ -820,4 +449,26 @@ WalletConnectWallets.forEach((wallet) => {
       projectId: WALLET_CONNECT_PROJECT_ID,
     });
   }
+});
+
+const preferredWallets = [
+  'MetaMask',
+  'Trust Wallet',
+  'OKX Wallet',
+  'Binance Wallet',
+  'TokenPocket',
+  'Bitget Wallet',
+  'imToken',
+  'SafePal',
+  'Uniswap Wallet',
+];
+const preferredRank = new Map(preferredWallets.map((name, index) => [name, index]));
+WalletConnectWallets.sort((a, b) => {
+  const ra = preferredRank.has(a.name)
+    ? (preferredRank.get(a.name) as number)
+    : preferredWallets.length + (typeof a.order === 'number' ? a.order : 1000);
+  const rb = preferredRank.has(b.name)
+    ? (preferredRank.get(b.name) as number)
+    : preferredWallets.length + (typeof b.order === 'number' ? b.order : 1000);
+  return ra - rb;
 });

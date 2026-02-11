@@ -57,15 +57,5 @@ export interface WcWallet {
   play_store?: string | null
   chrome_store?: string | null
   rdns?: string | null
-  is_top_wallet?: boolean
-  injected?:
-    | {
-        namespace?: string
-        injected_id?: string
-      }[]
-    | null
-    categories?: string[]
   display_index?: number
-  supports_wc?: boolean
-  supports_wcpay?: boolean
 }
