@@ -85,6 +85,8 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
   const config = useConfig();
   const {connectAsync} = useConnect();
   const {switchChainAsync} = useSwitchChain();
+
+  /// 打开 WalletConnect Wallet Deep Link
   const openWalletConnectDeeplink = React.useCallback(async () => {
     if (!connector) return;
     const c: any = connector as any;
@@ -100,7 +102,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     } catch {}
   }, [connector]);
   
-  /// 若当前链不存在，回退为 Wagmi 配置的第一个链 ID
+  
   const chainIdForBalance = chain?.id || wagimConfig.chains?.[0]?.id;
 
   /// 若自定义代币指定合约地址，优先使用；否则根据链 ID 查询代币合约地址
@@ -306,21 +308,18 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       .filter((item) => item !== null) as Chain[];
   }, [wagimConfig.chains, chainAssets]);
 
-  const chainId = chain?.id || wagimConfig.chains?.[0]?.id;
-  const chainName = chain?.name || wagimConfig.chains?.[0]?.name;
-  const [currentChain, setCurrentChain] = React.useState<Chain | undefined>(undefined);
 
-  React.useEffect(() => {
-    setCurrentChain((prevChain) => {
-      // 未连接任何链时，保持当前链不变
-      let newChain = chainAssets?.find((item) => item?.id === chainId);
-      if (!newChain && chainId) {
-        newChain = {id: chainId, name: chainName};
-      }
-      /* v8 ignore next */
-      return newChain || prevChain;
-    });
-  }, [chainAssets, wagimConfig.chains, chainId, chainName]);
+  /// 当前链（根据传入链或配置默认链）
+  const currentChain: Chain | undefined = React.useMemo(() => {
+      const chainId = chain?.id || wagimConfig.chains?.[0]?.id;
+  const chainName = chain?.name || wagimConfig.chains?.[0]?.name;
+    const fromAssets = chainAssets?.find((item) => item?.id === chainId);
+    if (fromAssets) return fromAssets;
+    if (chainId) return { id: chainId, name: chainName };
+    return undefined;
+  }, [chainAssets, chain, wagimConfig.chains]);
+
+  
 
   /// 当前链的原生货币（若存在）
   const currency = currentChain?.nativeCurrency;
@@ -334,6 +333,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       ? formatBalance(balanceData.value as bigint, balanceDecimals)
       : undefined;
 
+      /// 获取 NFT 元数据（合约地址、代币 ID）
   const getNFTMetadataFunc = React.useCallback(
     async ({address: contractAddress, tokenId}: { address: string; tokenId?: bigint }) => {
       console.info('[Web3Config] getNFTMetadata 调用', {
@@ -350,6 +350,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
     [chain?.id],
   );
 
+  /// 签名登录（获取 SIWE 消息、签名、验证）
   const signIn = React.useCallback(
     async (signAddress: string) => {
       const {getNonce, createMessage, verifyMessage} = siwe!;
@@ -385,7 +386,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
         throw normalizeEvmError(error, { action: 'sign' });
       }
     },
-    [siwe, currentChain, signMessageAsync],
+    [siwe, currentChain?.id, signMessageAsync, openWalletConnectDeeplink],
   );
 
   return (
@@ -432,7 +433,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
       sendTransaction={async (params) => {
         try {
           const fromAccount = getAccount(config);
-          const targetChainId = chain?.id ?? wagimConfig.chains?.[0]?.id;
+          const targetChainId = currentChain?.id;
           console.info('[Web3Config] sendTransaction 调用', {
             from: fromAccount?.address,
             to: params?.to,
@@ -544,7 +545,6 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
           console.info('[Web3Config] switchChain 调用（未连接链，直接更新本地状态）', {
             toChainId: newChain.id,
           });
-          setCurrentChain(newChain);
         } else {
           console.info('[Web3Config] switchChain 调用', {
             fromChainId: chain.id,
@@ -555,7 +555,7 @@ export const PelicanWeb3ConfigProvider: React.FC<PelicanWeb3ConfigProviderProps>
             const p = switchChainAsync?.({chainId: newChain.id}).then(() => {
               switched = true;
             });
-            await CoreHelperUtil.wait(2000);
+            await CoreHelperUtil.wait(1000);
             if (!switched) {
               await openWalletConnectDeeplink();
             }
