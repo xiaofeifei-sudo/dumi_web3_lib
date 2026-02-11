@@ -81,6 +81,10 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
      * 从 LocalStorage 持久化选中的适配器名称
      */
     const [name, setName] = useLocalStorage<AdapterName | null>(localStorageKey, null);
+    const [manuallyDisconnected, setManuallyDisconnected] = useLocalStorage<boolean>(
+        `${localStorageKey}:manualDisconnected`,
+        false
+    );
     const [{ wallet, connected, address, adapter }, setState] = useState(initialState);
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
@@ -161,17 +165,27 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
         function () {
             const selectedWallet = name && wallets.find((item) => item.adapter.name === name);
             if (selectedWallet) {
-                setState({
-                    wallet: selectedWallet,
-                    adapter: selectedWallet.adapter,
-                    connected: selectedWallet.adapter.connected,
-                    address: selectedWallet.adapter.address,
-                });
+                if (manuallyDisconnected) {
+                    setState({
+                        wallet: selectedWallet,
+                        adapter: selectedWallet.adapter,
+                        connected: false,
+                        address: null,
+                    });
+                    selectedWallet.adapter.disconnect();
+                } else {
+                    setState({
+                        wallet: selectedWallet,
+                        adapter: selectedWallet.adapter,
+                        connected: selectedWallet.adapter.connected,
+                        address: selectedWallet.adapter.address,
+                    });
+                }
             } else {
                 setState(initialState);
             }
         },
-        [name, wallets]
+        [name, wallets, manuallyDisconnected]
     );
 
     const preAdapter = useRef<Adapter | null>(null);
@@ -193,6 +207,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             if (!adapter) {
                 return setName(null);
             }
+            setManuallyDisconnected(false);
             setState((state) => ({
                 ...state,
                 connected: adapter.connected,
@@ -200,7 +215,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             }));
             onConnect?.(addr);
         },
-        [adapter, setName, onConnect]
+        [adapter, setName, onConnect, setManuallyDisconnected]
     );
 
     const handleError = useCallback(
@@ -219,9 +234,11 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     );
     const handleDisconnect = useCallback(
         function () {
+            setName(null);
+            setManuallyDisconnected(true);
             onDisconnect?.();
         },
-        [onDisconnect]
+        [onDisconnect, setName, setManuallyDisconnected]
     );
     const handleReadyStateChanged = useCallback(
         function (readyState: WalletReadyState) {
@@ -277,31 +294,20 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     }, [adapter]);
 
     const hasManuallySetName = useRef(false);
-    /**
-     * 自动连接逻辑
-     * - 在允许自动连接且用户未禁用页面加载自动连接时尝试连接
-     * - 连接过程有并发保护，避免重复触发
-     */
+    const hasAutoConnectAttempted = useRef(false);
     useEffect(
         function () {
-            const canAutoConnect = autoConnect && (!disableAutoConnectOnLoad || hasManuallySetName.current);
-            if (isConnecting.current || !canAutoConnect || !adapter) {
+            const canAutoConnect =
+                autoConnect &&
+                (!disableAutoConnectOnLoad || hasManuallySetName.current) &&
+                !!adapter &&
+                adapter.connected;
+            if (hasAutoConnectAttempted.current || isConnecting.current || !canAutoConnect) {
                 return;
             }
-            (async function connect() {
-                isConnecting.current = true;
-                setConnecting(true);
-                try {
-                    await adapter.connect();
-                } catch (error) {
-                    // 连接失败时可按需清理当前选择（此处保留原行为）
-                } finally {
-                    setConnecting(false);
-                    isConnecting.current = false;
-                }
-            })();
+            hasAutoConnectAttempted.current = true;
         },
-        [isConnecting, autoConnect, adapter, setName, disableAutoConnectOnLoad]
+        [autoConnect, adapter, disableAutoConnectOnLoad, setName]
     );
     /**
      * 选择适配器
@@ -310,9 +316,10 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     const select = useCallback(
         (nextName: AdapterName) => {
             hasManuallySetName.current = true;
+            setManuallyDisconnected(false);
             setName(nextName);
         },
-        [setName]
+        [setName, setManuallyDisconnected]
     );
 
     /**
@@ -350,6 +357,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             try {
                 await adapter.disconnect();
                 setName(null);
+                setManuallyDisconnected(true);
             } catch (error: any) {
                 setName(null);
                 throw error;
@@ -358,7 +366,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
                 isDisconnecting.current = false;
             }
         },
-        [adapter, isDisconnecting, setName]
+        [adapter, isDisconnecting, setName, setManuallyDisconnected]
     );
 
     /**

@@ -9,6 +9,7 @@ import {
     WalletConnectionError,
     WalletSignTransactionError,
     WalletGetNetworkError,
+    WalletSwitchChainError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import type {
     Transaction,
@@ -274,6 +275,37 @@ export class OkxWalletAdapter extends Adapter {
                 } else {
                     throw new WalletSignMessageError('Unknown error', error);
                 }
+            }
+        } catch (error: any) {
+            this.emit('error', error);
+            throw error;
+        }
+    }
+
+    /// 切换 TRON 网络
+    async switchChain(chainId: string) {
+        try {
+            await this._checkWallet();
+            if (this.state === AdapterState.NotFound) {
+                if (this.config.openUrlWhenWalletNotFound !== false && isInBrowser()) {
+                    window.open(this.url, '_blank');
+                }
+                throw new WalletNotFoundError();
+            }
+            const wallet = this._wallet as TronLinkWallet;
+            if (!wallet?.request) {
+                throw new WalletSwitchChainError(
+                    "Current version of OKX Wallet doesn't support switch chain operation.",
+                    new Error('wallet.request not available')
+                );
+            }
+            try {
+                await wallet.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId }],
+                } as any);
+            } catch (e: any) {
+                throw new WalletSwitchChainError(e?.message || e, e instanceof Error ? e : new Error(e));
             }
         } catch (error: any) {
             this.emit('error', error);

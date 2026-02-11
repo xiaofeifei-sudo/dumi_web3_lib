@@ -11,7 +11,7 @@ import type { Chain } from 'pelican-web3-lib-common';
 import { TronMainnet, TronNileNet, TronShastaNet } from 'pelican-web3-lib-assets';
 import { TronChainIds } from 'pelican-web3-lib-common';
 
-import {  getNetworkInfoByTronWeb, resolveTronWeb, switchTronChain } from '../utils';
+import {  resolveTronWeb, switchTronChain } from '../utils';
 import { normalizeTronError } from '../errors';
 import { getBalance as getTronBalance } from './methods/getBalance';
 import { sendTransaction as sendTronTransaction } from './methods/sendTransaction';
@@ -136,12 +136,11 @@ export const PelicanWeb3ConfigProvider: React.FC<
       /// 检测当前钱包连接的 TRON 网络
     const detectNetwork = async () => {
       try {
-        const tronWeb: any = resolveTronWeb(wallet?.adapter);
-        if (!tronWeb || !connected) return;
+        if (!wallet?.adapter || !connected) return;
           const selectedWallet = availableWallets?.find(
             (item) => item.name === wallet?.adapter?.name,
           );
-        const { chainId } = await getNetworkInfoByTronWeb(tronWeb);
+        const { chainId } = await (wallet.adapter as any).network();
         const map: Record<string, Chain> = {
           [TronChainIds.Mainnet]: TronMainnet,
           [TronChainIds.Shasta]: TronShastaNet,
@@ -159,31 +158,30 @@ export const PelicanWeb3ConfigProvider: React.FC<
         }
         if (initialChain) {
           if (!target || (target as any)?.id !== (initialChain as any)?.id) {
-            try {
               console.info('[TronConfig] 切换网络尝试', {
                 from: (target as any)?.id,
                 to: (initialChain as any)?.id,
                 wallet: wallet?.adapter?.name,
               });
-              await switchTronChain(wallet?.adapter, initialChain, selectedWallet);
-              setCurrentChain(initialChain);
+              await switchTronChain(wallet?.adapter, initialChain, selectedWallet).then(() => {
+               setCurrentChain(initialChain);
               console.info('[TronConfig] 切换网络成功', {
                 to: (initialChain as any)?.id,
                 wallet: wallet?.adapter?.name,
               });
-              return;
-            } catch (error) {
-              try {
-                await disconnect();
-              } catch {}
-              const normalized = normalizeTronError(error, {
+              }).catch(async(e) => {
+                 disconnect();
+              const normalized = normalizeTronError(e, {
                 action: 'switch_chain',
                 walletName: wallet?.adapter?.name,
                 network: (initialChain as any)?.name ?? (initialChain as any)?.id,
               });
               console.error(normalized);
               return;
-            }
+              });
+              
+              return;
+            
           } else {
             setCurrentChain(initialChain);
             return;
@@ -309,7 +307,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         disconnect();
       }
     }
-  }, [wallet?.adapter?.name, connected, connect, disconnect]);
+  }, [wallet?.adapter?.name]);
 
 
   /// 处理 TRON 余额
