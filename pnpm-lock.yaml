@@ -724,9 +724,6 @@ importers:
       '@tronweb3/tronwallet-adapter-metamask-tron':
         specifier: ^1.0.1
         version: 1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-react-hooks':
-        specifier: ^1.1.11
-        version: 1.1.11(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)
       '@tronweb3/tronwallet-adapter-tokenpocket':
         specifier: ^1.0.8
         version: 1.0.8(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -5275,13 +5272,6 @@ packages:
   '@tronweb3/tronwallet-adapter-metamask-tron@1.0.1':
     resolution: {integrity: sha512-1r/a0BOnLavVfM2QOjXCz4fLxu2aSP/AKOhuGPm8M31oROo+PNw8XtrS2xDTB9C/pAgUMMgYJTKpJ0KK0Ed+yg==}
     engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-react-hooks@1.1.11':
-    resolution: {integrity: sha512-ED2zs3TCTA3wPAcfkt7cHXENwLH5ob41MRstJh8N4iqwSaB5Z7paadGwGxl1qkjvb5V4rbMRWdRBi17cnaqnVQ==}
-    engines: {node: '>=16', pnpm: '>=7'}
-    peerDependencies:
-      react: 18.3.1
-      react-dom: 18.3.1
 
   '@tronweb3/tronwallet-adapter-tokenpocket@1.0.8':
     resolution: {integrity: sha512-TmkbAyB79MnZ/raivEtPH33gy2xXSbNxUJGUKDebBZ/TXQamesjS2NNfNqNmYsm66wvHSe3ITlvMhRuyAoNL+g==}
@@ -21104,17 +21094,6 @@ snapshots:
     dependencies:
       '@metamask/multichain-api-client': 0.11.0
       '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-react-hooks@1.1.11(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
       - bufferutil
       - debug

@@ -5,7 +5,6 @@ import {
   type AdapterName,
   type WalletError,
 } from '@tronweb3/tronwallet-abstract-adapter';
-import { useWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
 import type { Account, Wallet, Token, TransferParams, CustomToken } from 'pelican-web3-lib-common';
 import { Web3ConfigProvider, type BalanceStatusConfig, formatBalance } from 'pelican-web3-lib-common';
 import type { Chain } from 'pelican-web3-lib-common';
@@ -16,6 +15,7 @@ import {  getNetworkInfoByTronWeb, resolveTronWeb, switchTronChain } from '../ut
 import { normalizeTronError } from '../errors';
 import { getBalance as getTronBalance } from './methods/getBalance';
 import { sendTransaction as sendTronTransaction } from './methods/sendTransaction';
+import { useWallet } from '../hooks';
 
 /// 提供 TRON 网络的 Web3 配置上下文的属性接口
 interface PelicanWeb3ConfigProviderProps {
