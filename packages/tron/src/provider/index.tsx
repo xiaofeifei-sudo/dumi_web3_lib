@@ -4,21 +4,13 @@
  */
 import React, { useMemo, useState, type PropsWithChildren } from 'react';
 import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
-import { BybitWalletAdapter } from '@tronweb3/tronwallet-adapter-bybit';
-import { OkxWalletAdapter } from '@tronweb3/tronwallet-adapter-okxwallet';
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { WalletConnectAdapter } from '@tronweb3/tronwallet-adapter-walletconnect';
 import type { WalletConnectAdapterConfig } from '@tronweb3/tronwallet-adapter-walletconnect';
 import { TokenPocketAdapter } from '@tronweb3/tronwallet-adapter-tokenpocket';
-import { BitKeepAdapter } from '@tronweb3/tronwallet-adapter-bitkeep';
 import { LedgerAdapter } from '@tronweb3/tronwallet-adapter-ledger';
 import type { LedgerAdapterConfig } from '@tronweb3/tronwallet-adapter-ledger';
-import { GateWalletAdapter } from '@tronweb3/tronwallet-adapter-gatewallet';
-import { FoxWalletAdapter } from '@tronweb3/tronwallet-adapter-foxwallet';
 import { TrustAdapter } from '@tronweb3/tronwallet-adapter-trust';
-import { TomoWalletAdapter } from '@tronweb3/tronwallet-adapter-tomowallet';
-import { BinanceWalletAdapter } from '@tronweb3/tronwallet-adapter-binance';
-import { GuardaAdapter } from '@tronweb3/tronwallet-adapter-guarda';
 import { MetaMaskAdapter } from '@tronweb3/tronwallet-adapter-metamask-tron';
 import type { Wallet, Token, CustomToken } from 'pelican-web3-lib-common';
 
@@ -26,6 +18,7 @@ import { PelicanWeb3ConfigProvider } from './config-provider';
 import { normalizeTronError } from '../errors';
 import type { Chain } from 'pelican-web3-lib-common';
 import { TronLinkAdapter } from '../adapters/tronlink';
+import { OkxWalletAdapter } from '../adapters/okxwallet';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
