@@ -10,6 +10,7 @@ import {
 } from 'pelican-web3-lib-tron';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
+import { TronNileNet } from 'pelican-web3-lib-assets';
 
 
 const Basic = () => {
@@ -24,6 +25,9 @@ const Basic = () => {
         TrustWallet,
         MetaMaskTronWallet,
       ]}
+      initialChain={
+        TronNileNet
+      }
       walletConnect={{
         network: 'Nile',
         options: {

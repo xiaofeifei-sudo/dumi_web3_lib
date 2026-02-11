@@ -128,6 +128,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         clearInterval(timer);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance, address, wallet?.adapter, connected, currentChain, token?.symbol, token?.availableChains, customToken?.contract, customToken?.decimal]);
 
 
@@ -202,7 +203,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
     if (wallet?.adapter) {
       detectNetwork();
     }
-  }, [connected, initialChain]);
+  }, [availableWallets, connected, currentChain, disconnect, initialChain, wallet?.adapter]);
 
   /// 合并所有可用钱包和适配器
   const allWallets = useMemo<Wallet[]>(() => {
@@ -239,7 +240,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       connected,
       address,
     });
-  }, [wallet?.adapter?.name, connected, allWallets]);
+  }, [wallet, connected, allWallets, address]);
 
   /// 处理连接错误
   useEffect(() => {
@@ -251,7 +252,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       connectAsyncRef.current?.reject(normalized);
       connectAsyncRef.current = undefined;
     }
-  }, [connectionError]);
+  }, [connectionError, wallet?.adapter?.name]);
 
   // 获取账户地址
   useEffect(() => {
@@ -279,7 +280,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
       connectAsyncRef.current.resolve({ address: address! });
       connectAsyncRef.current = undefined;
     }
-  }, [connected]);
+  }, [address, connected]);
 
   // 连接/断开钱包
   useEffect(() => {
@@ -308,7 +309,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         disconnect();
       }
     }
-  }, [wallet?.adapter?.name, connected]);
+  }, [wallet?.adapter?.name, connected, connect, disconnect]);
 
 
   /// 处理 TRON 余额
