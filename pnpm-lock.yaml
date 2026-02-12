@@ -697,6 +697,9 @@ importers:
 
   packages/tron:
     dependencies:
+      '@binance/w3w-utils':
+        specifier: 1.1.6
+        version: 1.1.6
       '@ledgerhq/hw-app-trx':
         specifier: 6.29.2
         version: 6.29.2
@@ -712,27 +715,6 @@ importers:
       '@tronweb3/tronwallet-abstract-adapter':
         specifier: ^1.1.10
         version: 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-binance':
-        specifier: ^1.0.2
-        version: 1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-bitkeep':
-        specifier: ^1.1.7
-        version: 1.1.7(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-bybit':
-        specifier: ^1.0.2
-        version: 1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-foxwallet':
-        specifier: ^1.0.1
-        version: 1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-gatewallet':
-        specifier: ^1.0.4
-        version: 1.0.4(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-guarda':
-        specifier: ^1.0.0
-        version: 1.0.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tomowallet':
-        specifier: ^1.0.1
-        version: 1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@tronweb3/tronwallet-adapter-walletconnect':
         specifier: ^3.0.2
         version: 3.0.2(@react-native-async-storage/async-storage@1.24.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10)))(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.13)
@@ -5248,38 +5230,6 @@ packages:
 
   '@tronweb3/tronwallet-abstract-adapter@1.1.10':
     resolution: {integrity: sha512-gZExaEZwPfI9oI7qSi56p/5Zl/DEzo1JlcD3lQzz1cuz0rZmEFpIqDS2mhY4r/IwEPwilIU7lg7T8/RQDVk9gA==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-binance@1.0.2':
-    resolution: {integrity: sha512-NlU2DUn/eWdLYxyAybD5zwHZpl/cHPRA5O+j63MDiXpgou79tqkyXoRaG0/kPd9gJPEZfRvLTEAOZ1Y2PqDrKw==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-bitkeep@1.1.7':
-    resolution: {integrity: sha512-J557vdOZoZOSu4CDQO+WpaXcnmOSzHxURepnlpvhnCYHvY5cZhPKVTDI4CfxarMmryExxOXjnnomWMj6o/nY1A==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-bybit@1.0.2':
-    resolution: {integrity: sha512-9fu8ICb0UG0Xcb1rfzR1SMpFjEiyLNoQ9heDKfW/RgQAjSscVS9CFRavNusdekZeG4ypPfGXvPGWlyBee1IY5A==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-foxwallet@1.0.1':
-    resolution: {integrity: sha512-XRPyhY6gixXwzk9ipp5z6PxpjKWVuoIKhvNEuxPTQN8Z58OGOvii/dg6veS65Rqio+GRMVPI9sk+zCmLjF0ywA==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-gatewallet@1.0.4':
-    resolution: {integrity: sha512-wTX2sTXyoR2DiwcAovg6XG5HGNdNkWy2I9MB53Csny6NvTbxDzeCWy64NEsKzxRCGMoe8Zs9JfTSVReJ6OdWtw==}
-    engines: {node: '>=18', pnpm: '>=9'}
-
-  '@tronweb3/tronwallet-adapter-guarda@1.0.0':
-    resolution: {integrity: sha512-FkHDxL40ano+WYOu7BWKogW1vfeeRd1LvIf55ni/GVeFL8EtJsb5yBEGR8lThcGbHz+Wjsa6a8uU6MyuNirZ1g==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-tomowallet@1.0.1':
-    resolution: {integrity: sha512-YTzdGc+WMP3moAvD/3XlPYEs1XJNi2EhURIT4vFfbRXcxdq7dm4rDziinZR07Nh7ULsIbZlHoGh8DTGvoXfOlw==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-tronlink@1.1.13':
-    resolution: {integrity: sha512-Oq5L0FyBM+g49DCr0DYdSx8xuhiqIlKoBTPNVmCTSDoWnoZpIh0XE33Axm/4OUMO2NHFpQMvP3pFo7QIllOZ/w==}
     engines: {node: '>=16', pnpm: '>=7'}
 
   '@tronweb3/tronwallet-adapter-walletconnect@3.0.2':
@@ -14498,7 +14448,7 @@ snapshots:
       eslint-visitor-keys: 2.1.0
       semver: 6.3.1
 
-  '@babel/eslint-plugin@7.27.1(@babel/eslint-parser@7.27.1(@babel/core@7.23.6)(eslint@8.57.1))(eslint@8.57.1)':
+  '@babel/eslint-plugin@7.27.1(@babel/eslint-parser@7.27.1(@babel/core@7.27.1)(eslint@8.57.1))(eslint@8.57.1)':
     dependencies:
       '@babel/eslint-parser': 7.27.1(@babel/core@7.27.1)(eslint@8.57.1)
       eslint: 8.57.1
@@ -21011,78 +20961,6 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@tronweb3/tronwallet-adapter-binance@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@binance/w3w-utils': 1.1.6
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-bitkeep@1.1.7(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-bybit@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-foxwallet@1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-gatewallet@1.0.4(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-guarda@1.0.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-tomowallet@1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-tronlink@1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
   '@tronweb3/tronwallet-adapter-walletconnect@3.0.2(@react-native-async-storage/async-storage@1.24.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10)))(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.13)':
     dependencies:
       '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -22008,7 +21886,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.27.1
       '@babel/eslint-parser': 7.27.1(@babel/core@7.27.1)(eslint@8.57.1)
-      '@babel/eslint-plugin': 7.27.1(@babel/eslint-parser@7.27.1(@babel/core@7.23.6)(eslint@8.57.1))(eslint@8.57.1)
+      '@babel/eslint-plugin': 7.27.1(@babel/eslint-parser@7.27.1(@babel/core@7.27.1)(eslint@8.57.1))(eslint@8.57.1)
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.27.1)
       '@babel/plugin-proposal-decorators': 7.27.1(@babel/core@7.27.1)
       '@babel/preset-env': 7.27.2(@babel/core@7.27.1)

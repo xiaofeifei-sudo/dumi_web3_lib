@@ -1,8 +1,6 @@
-/* v8 ignore start */
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { BybitWalletCircleColorful, ChromeCircleColorful } from 'pelican-web3-lib-icons';
 
-// Bybit 钱包的展示与下载信息元数据
 export const BybitWallet: WalletMetadata = {
   icon: <BybitWalletCircleColorful />,
   name: 'Bybit',
@@ -22,4 +20,5 @@ export const BybitWallet: WalletMetadata = {
   ],
   key: 'BybitWallet',
   group: 'Popular',
+  supportSwitchChain: false
 };

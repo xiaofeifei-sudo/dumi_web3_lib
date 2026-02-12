@@ -1,7 +1,7 @@
 import { Flex, message } from 'antd';
 
 import { SignMessage } from './components/SignMessage';
-import { MetaMaskTronWallet, OkxTronWallet, TokenPocketWallet, TronWeb3ConfigProvider, TronlinkWallet, TrustWallet } from 'pelican-web3-lib-tron';
+import { BinanceWallet, BitgetWallet, BybitWallet, FoxWallet, GateWallet, GuardaWallet, MetaMaskTronWallet, OkxTronWallet, TokenPocketWallet, TronWeb3ConfigProvider, TronlinkWallet, TrustWallet } from 'pelican-web3-lib-tron';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
 
@@ -12,6 +12,13 @@ const Message = () => {
             TokenPocketWallet,
             TrustWallet,
             MetaMaskTronWallet,
+            BinanceWallet,
+            BitgetWallet,
+            BybitWallet,
+            FoxWallet,
+            GateWallet,
+            GuardaWallet,
+        
           ]} >
       <Flex justify="space-between" style={{ width: 386 }}>
         <Connector>

@@ -18,6 +18,12 @@ import { TokenPocketAdapter } from '../adapters/tokenpocket';
 import { TrustAdapter } from '../adapters/trust';
 import { MetaMaskAdapter } from '../adapters/metamask_tron';
 import { LedgerAdapter, type LedgerAdapterConfig } from '../adapters/ledger';
+import { BinanceWalletAdapter } from '../adapters/binance';
+import { FoxWalletAdapter } from '../adapters/foxwallet';
+import { GateWalletAdapter } from '../adapters/gatewallet';
+import { GuardaAdapter } from '../adapters/guarda';
+import { BybitWalletAdapter } from '../adapters/bybit';
+import { BitKeepAdapter } from '../adapters/bitkeep';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
@@ -80,28 +86,56 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       openAppWithDeeplink: true,
       ...(adapterConfig ?? {}),
     });
-    // const bybitWalletAdapter = new BybitWalletAdapter();
+    const bybitWalletAdapter = new BybitWalletAdapter({
+      checkTimeout: 2000,
+      openUrlWhenWalletNotFound: true,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
     const tokenPocketAdapter = new TokenPocketAdapter({
       openUrlWhenWalletNotFound: true,
       checkTimeout: 2000,
       openAppWithDeeplink: true,
       ...(adapterConfig ?? {}),
     });
-    // const bitKeepAdapter = new BitKeepAdapter();
+    const bitKeepAdapter = new BitKeepAdapter({
+      checkTimeout: 2000,
+      openUrlWhenWalletNotFound: true,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
     const ledgerAdapter = new LedgerAdapter(
       adapterConfig ? { ...(ledgerAdapterConfig ?? {}), ...adapterConfig } : ledgerAdapterConfig,
     );
-    // const gateWalletAdapter = new GateWalletAdapter();
-    // const foxWalletAdapter = new FoxWalletAdapter();
+    const gateWalletAdapter = new GateWalletAdapter({
+      checkTimeout: 2000,
+      openUrlWhenWalletNotFound: true,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
+    const foxWalletAdapter = new FoxWalletAdapter({
+      checkTimeout: 2000,
+      openUrlWhenWalletNotFound: true,
+      openAppWithDeeplink: true,
+      ...(adapterConfig ?? {}),
+    });
     const trustAdapter = new TrustAdapter({
       openUrlWhenWalletNotFound: true,
       checkTimeout: 2000,
       openAppWithDeeplink: true,
       ...(adapterConfig ?? {}),
     });
+    const binanceWalletAdapter = new BinanceWalletAdapter({
+      openUrlWhenWalletNotFound: true,
+      checkTimeout: 2000,
+      ...(adapterConfig ?? {}),
+    });
     // const tomoWalletAdapter = new TomoWalletAdapter();
-    // const binanceWalletAdapter = new BinanceWalletAdapter();
-    // const guardaAdapter = new GuardaAdapter();
+    const guardaAdapter = new GuardaAdapter({
+      checkTimeout: 2000,
+      openUrlWhenWalletNotFound: true,
+      ...(adapterConfig ?? {}),
+    });
     const metaMaskTronAdapter = new MetaMaskAdapter();
     const walletConnectAdapter = walletConnect
       ? new WalletConnectAdapter({
@@ -118,16 +152,16 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
     const list = [
       tronLinkAdapter,
       okxWalletAdapter,
-      // bybitWalletAdapter,
+      bybitWalletAdapter,
       ledgerAdapter,
       tokenPocketAdapter,
-      // bitKeepAdapter,
-      // gateWalletAdapter,
-      // foxWalletAdapter,
+      bitKeepAdapter,
+      gateWalletAdapter,
+      foxWalletAdapter,
       trustAdapter,
       // tomoWalletAdapter,
-      // binanceWalletAdapter,
-      // guardaAdapter,
+      binanceWalletAdapter,
+      guardaAdapter,
       metaMaskTronAdapter,
     ];
     return walletConnectAdapter ? [walletConnectAdapter, ...list] : list;

@@ -22,4 +22,5 @@ export const BitgetWallet: WalletMetadata = {
   ],
   key: 'BitgetWallet',
   group: 'Popular',
+  supportSwitchChain: false,
 };

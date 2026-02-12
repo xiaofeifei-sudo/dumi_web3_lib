@@ -2,6 +2,8 @@ import type { Chain, TransferParams } from 'pelican-web3-lib-common';
 import { toSunCompat } from '../../utils';
 import { TronInvalidAddressError } from '../../errors/invalid-address-error';
 import { getTokenDecimals } from './getTokenDecimals';
+import { getBalance } from './getBalance';
+import { TronInsufficientBalanceError } from '../../errors/insufficient-balance-error';
 
 /// 发送交易
 export async function sendTransaction(
@@ -35,17 +37,17 @@ export async function sendTransaction(
     const sun = toSunCompat(tronWeb, rawValue);
     amount = BigInt(sun);
   }
-  // const balance = await getBalance(
-  //   tronWeb,
-  //   from,
-  //   currentChain,
-  //   tokenOnChain?.contract ? params.token : undefined,
-  //   !tokenOnChain?.contract ? params.customToken : undefined,
-  // );
-  // const available = balance?.value ?? 0n;
-  // if (amount > available) {
-  //   throw new TronInsufficientBalanceError();
-  // }
+  const balance = await getBalance(
+    tronWeb,
+    from,
+    currentChain,
+    tokenOnChain?.contract ? params.token : undefined,
+    !tokenOnChain?.contract ? params.customToken : undefined,
+  );
+  const available = balance?.value ?? 0n;
+  if (amount > available) {
+    throw new TronInsufficientBalanceError();
+  }
   if (tokenOnChain?.contract || params.customToken?.contract) {
     const functionSelector = 'transfer(address,uint256)';
     const parameter = [
