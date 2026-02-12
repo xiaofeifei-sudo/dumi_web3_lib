@@ -13,6 +13,7 @@ import { TronChainIds } from 'pelican-web3-lib-common';
 
 import {  resolveTronWeb, switchTronChain } from '../utils';
 import { normalizeTronError } from '../errors';
+import { TronWalletNotSupportTestnetError } from '../errors/wallet-not-support-testnet-error';
 import { getBalance as getTronBalance } from './methods/getBalance';
 import { sendTransaction as sendTronTransaction } from './methods/sendTransaction';
 import { useWallet } from '../hooks';
@@ -388,6 +389,15 @@ export const PelicanWeb3ConfigProvider: React.FC<
         const walletName = (_wallet?.name as AdapterName) ?? null;
         connectAsyncRef.current = { promise, resolve, reject, walletName };
         try {
+          const isTestnet =
+            (currentChain as any)?.id === TronChainIds.Shasta ||
+            (currentChain as any)?.id === TronChainIds.Nile;
+          if (isTestnet && _wallet && _wallet.supportSwitchChain !== true) {
+            const err = new TronWalletNotSupportTestnetError();
+            reject(err);
+            connectAsyncRef.current = undefined;
+            return promise;
+          }
           select(walletName);
           await connect()
         } catch (err) {

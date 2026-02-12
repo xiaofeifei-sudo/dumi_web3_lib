@@ -6,8 +6,6 @@ import React, { useMemo, useState, type PropsWithChildren } from 'react';
 import type { WalletError } from '@tronweb3/tronwallet-abstract-adapter';
 import { WalletConnectAdapter } from '@tronweb3/tronwallet-adapter-walletconnect';
 import type { WalletConnectAdapterConfig } from '@tronweb3/tronwallet-adapter-walletconnect';
-import { LedgerAdapter } from '@tronweb3/tronwallet-adapter-ledger';
-import type { LedgerAdapterConfig } from '@tronweb3/tronwallet-adapter-ledger';
 import type { Wallet, Token, CustomToken } from 'pelican-web3-lib-common';
 
 import { PelicanWeb3ConfigProvider } from './config-provider';
@@ -19,6 +17,7 @@ import { WalletProvider } from '../hooks';
 import { TokenPocketAdapter } from '../adapters/tokenpocket';
 import { TrustAdapter } from '../adapters/trust';
 import { MetaMaskAdapter } from '../adapters/metamask_tron';
+import { LedgerAdapter, type LedgerAdapterConfig } from '../adapters/ledger';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
