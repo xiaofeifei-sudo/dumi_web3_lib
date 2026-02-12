@@ -9,7 +9,6 @@ import {
     WalletConnectionError,
     WalletSignTransactionError,
     WalletGetNetworkError,
-    WalletSwitchChainError,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import type {
     Transaction,
@@ -19,52 +18,73 @@ import type {
     Network,
 } from '@tronweb3/tronwallet-abstract-adapter';
 
+import { openTrustWallet, supportTrust } from './utils';
 import { getNetworkInfoByTronWeb, type TronLinkWallet } from '../tronlink/adapter';
 import type { TronLinkMessageEvent, AccountsChangedEventData } from '../tronlink/types';
-import { openOkxWallet, supportOkxWallet } from './utils';
 
+/**
+ * Trust 钱包适配器
+ * - 集成 Trust Wallet 提供的 tronLink 能力，在 Web dApp 中完成账户连接、网络信息获取、消息/交易签名等操作
+ * - 通过轮询方式检测钱包是否存在，并在移动端可选地使用 DeepLink 唤起 Trust App
+ */
 declare global {
     interface Window {
-        /** OKX Wallet 注入对象（包含 TronLink 兼容层） */
-        okxwallet?: {
+        trustwallet?: {
             tronLink: TronLinkWallet;
         };
     }
 }
-export interface OkxWalletAdapterConfig extends BaseAdapterConfig {
+
+export interface TrustAdapterConfig extends BaseAdapterConfig {
     /**
-     * 检测 OKX Wallet 是否存在的超时时间（毫秒）
-     * 默认值：2 * 1000ms
+     * Timeout in millisecond for checking if Trust wallet exists.
+     * Default is 2 * 1000ms
+     *
+     * 检测 Trust 钱包是否存在的超时时间（毫秒）
+     * 默认 2000ms；在此时间内以固定间隔轮询页面环境是否注入了 trustwallet.tronLink
      */
     checkTimeout?: number;
+
     /**
-     * 是否通过 DeepLink 打开 OKX Wallet App（移动端）
-     * 默认值：true
+     * Set if open app using DeepLink.
+     * Default is true.
+     *
+     * 是否在移动端使用 DeepLink 唤起 Trust App
+     * 默认开启；当检测到当前为移动浏览器且非 Trust App 内环境时，会尝试跳转唤起
      */
     openAppWithDeeplink?: boolean;
 }
 
-export const OkxWalletAdapterName = 'OKX Wallet' as AdapterName<'OKX Wallet'>;
+export const TrustAdapterName = 'Trust' as AdapterName<'Trust'>;
 
-export class OkxWalletAdapter extends Adapter {
-    name = OkxWalletAdapterName;
-    url = 'https://okx.com';
+export class TrustAdapter extends Adapter {
+    /** 适配器名称（用于展示与区分） */
+    name = TrustAdapterName;
+    /** 钱包主页地址（用于未安装时的引导） */
+    url = 'https://trustwallet.com';
+    /** 钱包图标（Base64 SVG） */
     icon =
-        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTIzLjU1ODMgMTUuODk2NUgxNi40NDc0QzE2LjE0NTMgMTUuODk2NSAxNS45MDA0IDE2LjE0MTQgMTUuOTAwNCAxNi40NDM1VjIzLjU1NDRDMTUuOTAwNCAyMy44NTY1IDE2LjE0NTMgMjQuMTAxNCAxNi40NDc0IDI0LjEwMTRIMjMuNTU4M0MyMy44NjA0IDI0LjEwMTQgMjQuMTA1MyAyMy44NTY1IDI0LjEwNTMgMjMuNTU0NFYxNi40NDM1QzI0LjEwNTMgMTYuMTQxNCAyMy44NjA0IDE1Ljg5NjUgMjMuNTU4MyAxNS44OTY1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTE2LjQ0NzQgMTYuMzk2NUgyMy41NTgzQzIzLjU4NDIgMTYuMzk2NSAyMy42MDUzIDE2LjQxNzUgMjMuNjA1MyAxNi40NDM1VjIzLjU1NDRDMjMuNjA1MyAyMy41ODAzIDIzLjU4NDIgMjMuNjAxNCAyMy41NTgzIDIzLjYwMTRIMTYuNDQ3NEMxNi40MjE0IDIzLjYwMTQgMTYuNDAwNCAyMy41ODAzIDE2LjQwMDQgMjMuNTU0NFYxNi40NDM1QzE2LjQwMDQgMTYuNDE3NSAxNi40MjE0IDE2LjM5NjUgMTYuNDQ3NCAxNi4zOTY1WiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTUiLz4KPHBhdGggZD0iTTE1LjM1MDMgNy42OTE0MUg4LjIzOTM3QzcuOTM3MjggNy42OTE0MSA3LjY5MjM4IDcuOTM2MyA3LjY5MjM4IDguMjM4NFYxNS4zNDkzQzcuNjkyMzggMTUuNjUxNCA3LjkzNzI4IDE1Ljg5NjMgOC4yMzkzNyAxNS44OTYzSDE1LjM1MDNDMTUuNjUyMyAxNS44OTYzIDE1Ljg5NzIgMTUuNjUxNCAxNS44OTcyIDE1LjM0OTNWOC4yMzg0QzE1Ljg5NzIgNy45MzYzIDE1LjY1MjMgNy42OTE0MSAxNS4zNTAzIDcuNjkxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOC4yMzkzNyA4LjE5MTQxSDE1LjM1MDNDMTUuMzc2MiA4LjE5MTQxIDE1LjM5NzIgOC4yMTI0NSAxNS4zOTcyIDguMjM4NFYxNS4zNDkzQzE1LjM5NzIgMTUuMzc1MiAxNS4zNzYyIDE1LjM5NjMgMTUuMzUwMyAxNS4zOTYzSDguMjM5MzdDOC4yMTM0MiAxNS4zOTYzIDguMTkyMzggMTUuMzc1MiA4LjE5MjM4IDE1LjM0OTNWOC4yMzg0QzguMTkyMzggOC4yMTI0NCA4LjIxMzQyIDguMTkxNDEgOC4yMzkzNyA4LjE5MTQxWiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTUiLz4KPHBhdGggZD0iTTMxLjc2MDQgNy42OTE0MUgyNC42NDk1QzI0LjM0NzQgNy42OTE0MSAyNC4xMDI1IDcuOTM2MyAyNC4xMDI1IDguMjM4NFYxNS4zNDkzQzI0LjEwMjUgMTUuNjUxNCAyNC4zNDc0IDE1Ljg5NjMgMjQuNjQ5NSAxNS44OTYzSDMxLjc2MDRDMzIuMDYyNSAxNS44OTYzIDMyLjMwNzQgMTUuNjUxNCAzMi4zMDc0IDE1LjM0OTNWOC4yMzg0QzMyLjMwNzQgNy45MzYzIDMyLjA2MjUgNy42OTE0MSAzMS43NjA0IDcuNjkxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjQuNjQ5NSA4LjE5MTQxSDMxLjc2MDRDMzEuNzg2NCA4LjE5MTQxIDMxLjgwNzQgOC4yMTI0NSAzMS44MDc0IDguMjM4NFYxNS4zNDkzQzMxLjgwNzQgMTUuMzc1MiAzMS43ODY0IDE1LjM5NjMgMzEuNzYwNCAxNS4zOTYzSDI0LjY0OTVDMjQuNjIzNiAxNS4zOTYzIDI0LjYwMjUgMTUuMzc1MiAyNC42MDI1IDE1LjM0OTNWOC4yMzg0QzI0LjYwMjUgOC4yMTI0NCAyNC42MjM2IDguMTkxNDEgMjQuNjQ5NSA4LjE5MTQxWiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTUiLz4KPHBhdGggZD0iTTE1LjM1MDMgMjQuMDk5Nkg4LjIzOTM3QzcuOTM3MjggMjQuMDk5NiA3LjY5MjM4IDI0LjM0NDUgNy42OTIzOCAyNC42NDY2VjMxLjc1NzVDNy42OTIzOCAzMi4wNTk2IDcuOTM3MjggMzIuMzA0NSA4LjIzOTM3IDMyLjMwNDVIMTUuMzUwM0MxNS42NTI0IDMyLjMwNDUgMTUuODk3MyAzMi4wNTk2IDE1Ljg5NzMgMzEuNzU3NVYyNC42NDY2QzE1Ljg5NzMgMjQuMzQ0NSAxNS42NTI0IDI0LjA5OTYgMTUuMzUwMyAyNC4wOTk2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTguMjM5MzcgMjQuNTk5NkgxNS4zNTAzQzE1LjM3NjIgMjQuNTk5NiAxNS4zOTczIDI0LjYyMDYgMTUuMzk3MyAyNC42NDY2VjMxLjc1NzVDMTUuMzk3MyAzMS43ODM0IDE1LjM3NjIgMzEuODA0NSAxNS4zNTAzIDMxLjgwNDVIOC4yMzkzN0M4LjIxMzQyIDMxLjgwNDUgOC4xOTIzOCAzMS43ODM0IDguMTkyMzggMzEuNzU3NVYyNC42NDY2QzguMTkyMzggMjQuNjIwNiA4LjIxMzQyIDI0LjU5OTYgOC4yMzkzNyAyNC41OTk2WiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTUiLz4KPHBhdGggZD0iTTMxLjc2MDQgMjQuMDk5NkgyNC42NDk1QzI0LjM0NzQgMjQuMDk5NiAyNC4xMDI1IDI0LjM0NDUgMjQuMTAyNSAyNC42NDY2VjMxLjc1NzVDMjQuMTAyNSAzMi4wNTk2IDI0LjM0NzQgMzIuMzA0NSAyNC42NDk1IDMyLjMwNDVIMzEuNzYwNEMzMi4wNjI1IDMyLjMwNDUgMzIuMzA3NCAzMi4wNTk2IDMyLjMwNzQgMzEuNzU3NVYyNC42NDY2QzMyLjMwNzQgMjQuMzQ0NSAzMi4wNjI1IDI0LjA5OTYgMzEuNzYwNCAyNC4wOTk2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTI0LjY0OTUgMjQuNTk5NkgzMS43NjA0QzMxLjc4NjQgMjQuNTk5NiAzMS44MDc0IDI0LjYyMDYgMzEuODA3NCAyNC42NDY2VjMxLjc1NzVDMzEuODA3NCAzMS43ODM0IDMxLjc4NjQgMzEuODA0NSAzMS43NjA0IDMxLjgwNDVIMjQuNjQ5NUMyNC42MjM2IDMxLjgwNDUgMjQuNjAyNSAzMS43ODM0IDI0LjYwMjUgMzEuNzU3NVYyNC42NDY2QzI0LjYwMjUgMjQuNjIwNiAyNC42MjM2IDI0LjU5OTYgMjQuNjQ5NSAyNC41OTk2WiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTUiLz4KPC9zdmc+Cg==';
+        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTgiIGhlaWdodD0iNjUiIHZpZXdCb3g9IjAgMCA1OCA2NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgOS4zODk0OUwyOC44OTA3IDBWNjUuMDA0MkM4LjI1NDUgNTYuMzM2OSAwIDM5LjcyNDggMCAzMC4zMzUzVjkuMzg5NDlaIiBmaWxsPSIjMDUwMEZGIi8+CjxwYXRoIGQ9Ik01Ny43ODIyIDkuMzg5NDlMMjguODkxNSAwVjY1LjAwNDJDNDkuNTI3NyA1Ni4zMzY5IDU3Ljc4MjIgMzkuNzI0OCA1Ny43ODIyIDMwLjMzNTNWOS4zODk0OVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8yMjAxXzY5NDIpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMjIwMV82OTQyIiB4MT0iNTEuMzYxNSIgeTE9Ii00LjE1MjkzIiB4Mj0iMjkuNTM4NCIgeTI9IjY0LjUxNDciIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agb2Zmc2V0PSIwLjAyMTEyIiBzdG9wLWNvbG9yPSIjMDAwMEZGIi8+CjxzdG9wIG9mZnNldD0iMC4wNzYyNDIzIiBzdG9wLWNvbG9yPSIjMDA5NEZGIi8+CjxzdG9wIG9mZnNldD0iMC4xNjMwODkiIHN0b3AtY29sb3I9IiM0OEZGOTEiLz4KPHN0b3Agb2Zmc2V0PSIwLjQyMDA0OSIgc3RvcC1jb2xvcj0iIzAwOTRGRiIvPgo8c3RvcCBvZmZzZXQ9IjAuNjgyODg2IiBzdG9wLWNvbG9yPSIjMDAzOEZGIi8+CjxzdG9wIG9mZnNldD0iMC45MDI0NjUiIHN0b3AtY29sb3I9IiMwNTAwRkYiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K';
 
-    config: Required<OkxWalletAdapterConfig>;
+    config: Required<TrustAdapterConfig>;
+
     private _readyState: WalletReadyState = isInBrowser() ? WalletReadyState.Loading : WalletReadyState.NotFound;
     private _state: AdapterState = AdapterState.Loading;
+    /** 当前是否处于连接流程（防重入） */
     private _connecting: boolean;
+    /** 注入的 tronLink 钱包对象（由 Trust App 提供） */
     private _wallet: TronLinkWallet | null;
+    /** 当前已连接地址（base58） */
     private _address: string | null;
 
-    constructor(config: OkxWalletAdapterConfig = {}) {
+    constructor(config: TrustAdapterConfig = {}) {
         super();
         const { checkTimeout = 2 * 1000, openUrlWhenWalletNotFound = true, openAppWithDeeplink = true } = config;
+
         if (typeof checkTimeout !== 'number') {
-            throw new Error('[OkxWalletAdapter] config.checkTimeout should be a number');
+            throw new Error('[TrustAdapter] config.checkTimeout should be a number');
         }
+
         this.config = {
             checkTimeout,
             openAppWithDeeplink,
@@ -79,7 +99,7 @@ export class OkxWalletAdapter extends Adapter {
             this.setState(AdapterState.NotFound);
             return;
         }
-        if (supportOkxWallet()) {
+        if (supportTrust()) {
             this._readyState = WalletReadyState.Found;
             this._updateWallet();
         } else {
@@ -91,28 +111,31 @@ export class OkxWalletAdapter extends Adapter {
         }
     }
 
-    /** 当前地址（未连接为 null） */
+    /** 当前连接地址（可能为空） */
     get address() {
         return this._address;
     }
 
-    /** 当前适配器状态 */
+    /** 适配器状态（加载中/未找到/已连接/已断开等） */
     get state() {
         return this._state;
     }
-    /** 钱包就绪状态 */
+
+    /** 钱包就绪状态（未找到/加载中/已找到） */
     get readyState() {
         return this._readyState;
     }
 
-    /** 是否处于连接中 */
+    /** 是否正在连接中 */
     get connecting() {
         return this._connecting;
     }
 
     /**
-     * 获取当前网络信息（基于 TronWeb）
-     * @returns {Network} 当前网络信息
+     * Get network information used by Trust.
+     * @returns {Network} Current network information.
+     *
+     * 获取当前网络信息（通过 tronWeb 推断链 ID、节点、主网/测试网等）
      */
     async network(): Promise<Network> {
         try {
@@ -121,11 +144,7 @@ export class OkxWalletAdapter extends Adapter {
             const wallet = this._wallet;
             if (!wallet || !wallet.tronWeb) throw new WalletDisconnectedError();
             try {
-                const info = await getNetworkInfoByTronWeb(wallet.tronWeb);
-                return {
-                    ...info,
-                    networkType: info.networkType || 'mainnet',
-                };
+                return await getNetworkInfoByTronWeb(wallet.tronWeb);
             } catch (e: any) {
                 throw new WalletGetNetworkError(e?.message, e);
             }
@@ -136,13 +155,14 @@ export class OkxWalletAdapter extends Adapter {
     }
 
     /**
-     * 连接 OKX Wallet
-     * - 移动端可通过 DeepLink 拉起 App（可配置）
-     * - 桌面端通过浏览器扩展
+     * 连接钱包
+     * - 移动端可选地唤起 Trust App
+     * - 触发 tron_requestAccounts 以获取账户授权
+     * - 成功后设置地址、状态并开始监听账户事件
      */
     async connect(): Promise<void> {
         try {
-            this.checkIfOpenOkxWallet();
+            this.checkIfopenTrustWallet();
             if (this.connected || this.connecting) return;
             await this._checkWallet();
             if (this.state === AdapterState.NotFound) {
@@ -161,7 +181,7 @@ export class OkxWalletAdapter extends Adapter {
                 }
                 if (res.code === 4000) {
                     throw new WalletConnectionError(
-                        'The same DApp has already initiated a request to connect to OkxWallet, and the pop-up window has not been closed.'
+                        'The same DApp has already initiated a request to connect to trustwallet, and the pop-up window has not been closed.'
                     );
                 }
                 if (res.code === 4001) {
@@ -186,7 +206,11 @@ export class OkxWalletAdapter extends Adapter {
         }
     }
 
-    /** 断开连接并清理事件监听 */
+    /**
+     * 断开连接
+     * - 清理事件监听
+     * - 清空地址并更新状态
+     */
     async disconnect(): Promise<void> {
         this._stopListenEvent();
         if (this.state !== AdapterState.Connected) {
@@ -198,10 +222,10 @@ export class OkxWalletAdapter extends Adapter {
     }
 
     /**
-     * 使用钱包签名交易
-     * @param transaction 待签名交易
-     * @param privateKey 可选私钥（不传则使用钱包）
-     * @returns 已签名交易
+     * 交易签名
+     * @param transaction 原始交易对象
+     * @param privateKey 可选私钥（通常留空由钱包签名）
+     * @returns 已签名的交易
      */
     async signTransaction(transaction: Transaction, privateKey?: string): Promise<SignedTransaction> {
         try {
@@ -225,11 +249,11 @@ export class OkxWalletAdapter extends Adapter {
     }
 
     /**
-     * 对交易进行多签
-     * @param transaction 待签名交易
-     * @param privateKey 可选私钥或 false（使用权限签名）
-     * @param permissionId 权限 ID
-     * @returns 已签名交易
+     * 多重签名
+     * @param transaction 交易对象
+     * @param privateKey 私钥或 false（false 表示使用钱包持有的密钥）
+     * @param permissionId 权限 ID（多签权限）
+     * @returns 已签名的交易
      */
     async multiSign(
         transaction: Transaction,
@@ -257,9 +281,9 @@ export class OkxWalletAdapter extends Adapter {
     }
 
     /**
-     * 签名消息（V2）
-     * @param message 待签名消息
-     * @param privateKey 可选私钥（不传则使用钱包）
+     * 消息签名（EIP-191 V2）
+     * @param message 文本消息
+     * @param privateKey 可选私钥（通常留空）
      * @returns 签名字符串
      */
     async signMessage(message: string, privateKey?: string): Promise<string> {
@@ -282,16 +306,12 @@ export class OkxWalletAdapter extends Adapter {
         }
     }
 
-    /// 切换 TRON 网络
-    async switchChain(chainId: string) {
-        const error = new WalletSwitchChainError('Switch chain is not supported');
-        this.emit('error', error);
-        throw error;
-    }
-
-    /** 检查并返回可用的钱包对象（已连接且含 tronWeb） */
+    /**
+     * 检查并返回有效钱包实例
+     * - 确保已连接且 tronWeb 可用
+     */
     private async checkAndGetWallet() {
-        this.checkIfOpenOkxWallet();
+        this.checkIfopenTrustWallet();
         await this._checkWallet();
         if (this.state !== AdapterState.Connected) throw new WalletDisconnectedError();
         const wallet = this._wallet;
@@ -299,18 +319,23 @@ export class OkxWalletAdapter extends Adapter {
         return wallet as TronLinkWallet;
     }
 
-    /** 监听 OKX Wallet 注入的 message 事件 */
+    /** 开始监听来自钱包的消息事件（账户变化/连接/断开） */
     private _listenEvent() {
         this._stopListenEvent();
         window.addEventListener('message', this.messageHandler);
     }
 
-    /** 停止监听 message 事件 */
+    /** 停止事件监听 */
     private _stopListenEvent() {
         window.removeEventListener('message', this.messageHandler);
     }
 
-    /** message 事件处理：连接、断开、账户变更 */
+    /**
+     * 处理钱包消息事件
+     * - accountsChanged：账户切换或登出
+     * - connect：完成连接并同步地址
+     * - disconnect：断开连接
+     */
     private messageHandler = (e: TronLinkMessageEvent) => {
         const message = e.data?.message;
         if (!message) {
@@ -355,20 +380,26 @@ export class OkxWalletAdapter extends Adapter {
         }
     };
 
-    /** 在移动端必要时尝试通过 DeepLink 拉起 OKX Wallet App */
-    private checkIfOpenOkxWallet() {
+    /**
+     * 在移动端环境中可选地尝试唤起 Trust App（DeepLink）
+     * - 若成功跳转，则抛出 WalletNotFoundError 以中断当前流程（等待用户回到 App 内继续）
+     */
+    private checkIfopenTrustWallet() {
         if (this.config.openAppWithDeeplink === false) {
             return;
         }
-        if (openOkxWallet()) {
+        if (openTrustWallet()) {
             throw new WalletNotFoundError();
         }
     }
 
     private _checkPromise: Promise<boolean> | null = null;
     /**
-     * 通过定时轮询检测钱包是否存在；仅在检测到或超时后 resolve
-     * @returns 是否检测到 OKX Wallet
+     * check if wallet exists by interval, the promise only resolve when wallet detected or timeout
+     * @returns if trustwallet exists
+     *
+     * 通过定时轮询检查钱包是否存在；当检测到或超时后结束
+     * 返回是否检测到 Trust 钱包
      */
     private _checkWallet(): Promise<boolean> {
         if (this.readyState === WalletReadyState.Found) {
@@ -384,11 +415,9 @@ export class OkxWalletAdapter extends Adapter {
         this._checkPromise = new Promise((resolve) => {
             const check = () => {
                 times++;
-                const isSupport = supportOkxWallet();
+                const isSupport = supportTrust();
                 if (isSupport || times > maxTimes) {
-                    if (timer) {
-                        clearInterval(timer);
-                    }
+                    if (timer) clearInterval(timer);
                     this._readyState = isSupport ? WalletReadyState.Found : WalletReadyState.NotFound;
                     this._updateWallet();
                     this.emit('readyStateChanged', this.readyState);
@@ -401,13 +430,17 @@ export class OkxWalletAdapter extends Adapter {
         return this._checkPromise;
     }
 
-    /** 根据环境更新钱包引用与适配器状态 */
+    /**
+     * 根据当前环境更新钱包实例、地址与状态
+     * - 若支持 Trust，则注入 tronLink 并同步地址与状态
+     * - 否则清空并标记为未找到
+     */
     private _updateWallet = () => {
         let state = this.state;
         let address = this.address;
-        if (supportOkxWallet()) {
+        if (supportTrust()) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this._wallet = window.okxwallet!.tronLink;
+            this._wallet = window.trustwallet!.tronLink;
             this._listenEvent();
             address = this._wallet.tronWeb?.defaultAddress?.base58 || null;
             state = this._wallet.ready ? AdapterState.Connected : AdapterState.Disconnect;
@@ -420,12 +453,15 @@ export class OkxWalletAdapter extends Adapter {
         this.setState(state);
     };
 
-    /** 设置当前地址 */
+    /** 设置当前地址（内部状态持久） */
     private setAddress(address: string | null) {
         this._address = address;
     }
 
-    /** 设置适配器状态并触发 stateChanged 事件 */
+    /**
+     * 更新适配器状态并触发变更事件
+     * @param state 新状态
+     */
     private setState(state: AdapterState) {
         const preState = this.state;
         if (state !== preState) {

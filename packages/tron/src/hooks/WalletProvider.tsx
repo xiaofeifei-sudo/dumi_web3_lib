@@ -40,8 +40,7 @@ export interface WalletProviderProps {
     onChainChanged?: (chainData: unknown) => unknown;
     onAdapterChanged?: (adapter: Adapter | null) => unknown;
     localStorageKey?: string;
-    autoConnect?: boolean;
-    disableAutoConnectOnLoad?: boolean;
+    reconnectOnMount?: boolean;
 }
 
 /**
@@ -74,8 +73,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     onChainChanged,
     onAdapterChanged,
     localStorageKey = 'tronAdapterName',
-    autoConnect = true,
-    disableAutoConnectOnLoad = false,
+    reconnectOnMount = true,
 }) {
     /**
      * 从 LocalStorage 持久化选中的适配器名称
@@ -90,6 +88,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     const [disconnecting, setDisconnecting] = useState(false);
     const isConnecting = useRef(false);
     const isDisconnecting = useRef(false);
+    const hasManuallySetName = useRef(false);
 
     /**
      * 适配器列表
@@ -174,18 +173,31 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
                     });
                     selectedWallet.adapter.disconnect();
                 } else {
-                    setState({
-                        wallet: selectedWallet,
-                        adapter: selectedWallet.adapter,
-                        connected: selectedWallet.adapter.connected,
-                        address: selectedWallet.adapter.address,
-                    });
+                    const preventInitialConnect = !reconnectOnMount && !hasManuallySetName.current;
+                    if (preventInitialConnect && !connected) {
+                        setState({
+                            wallet: selectedWallet,
+                            adapter: selectedWallet.adapter,
+                            connected: false,
+                            address: null,
+                        });
+                        if (selectedWallet.adapter.connected) {
+                            selectedWallet.adapter.disconnect();
+                        }
+                    } else {
+                        setState({
+                            wallet: selectedWallet,
+                            adapter: selectedWallet.adapter,
+                            connected: selectedWallet.adapter.connected,
+                            address: selectedWallet.adapter.address,
+                        });
+                    }
                 }
             } else {
                 setState(initialState);
             }
         },
-        [name, wallets, manuallyDisconnected]
+        [name, wallets, manuallyDisconnected, reconnectOnMount, connected]
     );
 
     const preAdapter = useRef<Adapter | null>(null);
@@ -230,7 +242,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             setState((state) => ({ ...state, address: nextAddress }));
             onAccountsChanged?.(nextAddress, preAddr);
         },
-        [onAccountsChanged]
+        [onAccountsChanged, adapter]
     );
     const handleDisconnect = useCallback(
         function () {
@@ -244,17 +256,18 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
         function (readyState: WalletReadyState) {
             onReadyStateChanged?.(readyState);
         },
-        [onReadyStateChanged]
+        [onReadyStateChanged, adapter]
     );
     const handleChainChanged = useCallback(
         function (chainData: unknown) {
             onChainChanged?.(chainData);
         },
-        [onChainChanged]
+        [onChainChanged, adapter]
     );
     useEffect(
         function () {
-            if (adapter) {
+            const allowListen = !!adapter && (reconnectOnMount || hasManuallySetName.current);
+            if (allowListen) {
                 // 监听当前适配器的生命周期与状态事件
                 adapter.on('connect', handleConnect);
                 adapter.on('error', handleError);
@@ -276,6 +289,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
         },
         [
             adapter,
+            reconnectOnMount,
             handleConnect,
             handleError,
             handleAccountChange,
@@ -293,22 +307,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
         };
     }, [adapter]);
 
-    const hasManuallySetName = useRef(false);
-    const hasAutoConnectAttempted = useRef(false);
-    useEffect(
-        function () {
-            const canAutoConnect =
-                autoConnect &&
-                (!disableAutoConnectOnLoad || hasManuallySetName.current) &&
-                !!adapter &&
-                adapter.connected;
-            if (hasAutoConnectAttempted.current || isConnecting.current || !canAutoConnect) {
-                return;
-            }
-            hasAutoConnectAttempted.current = true;
-        },
-        [autoConnect, adapter, disableAutoConnectOnLoad, setName]
-    );
+    useEffect(function () {}, []);
     /**
      * 选择适配器
      * - 记录用户已手动选择，用于后续自动连接的判断
@@ -318,8 +317,25 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             hasManuallySetName.current = true;
             setManuallyDisconnected(false);
             setName(nextName);
+            try {
+                if (typeof window !== 'undefined') {
+                    window.localStorage.setItem(localStorageKey, JSON.stringify(nextName));
+                }
+            } catch {}
+            const immediate = wallets.find((w) => w.adapter.name === nextName);
+            if (immediate) {
+                setState((state) => ({
+                    ...state,
+                    wallet: immediate,
+                    adapter: immediate.adapter,
+                    connected: immediate.adapter.connected,
+                    address: immediate.adapter.address,
+                }));
+            } else {
+                // no immediate adapter matched
+            }
         },
-        [setName, setManuallyDisconnected]
+        [setManuallyDisconnected, setName, wallets, localStorageKey]
     );
 
     /**
@@ -331,11 +347,36 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
             if (isConnecting.current || isDisconnecting.current || connected) {
                 return;
             }
-            if (!adapter) throw handleError(new WalletNotSelectedError());
+            let actualName: AdapterName | null = name || null;
+            if (!actualName && typeof window !== 'undefined') {
+                const raw = window.localStorage.getItem(localStorageKey);
+                if (raw) {
+                    try {
+                        actualName = JSON.parse(raw) as AdapterName | null;
+                    } catch {
+                        actualName = raw as unknown as AdapterName | null;
+                    }
+                }
+            }
+            const selectedWallet = actualName && wallets.find((item) => item.adapter.name === actualName);
+            const targetAdapter =
+                adapter ??
+                selectedWallet?.adapter ??
+                (actualName ? adapters.find((a) => a.name === actualName) ?? null : null);
+            if (!targetAdapter) throw handleError(new WalletNotSelectedError());
             isConnecting.current = true;
             setConnecting(true);
             try {
-                await adapter.connect();
+                await targetAdapter.connect();
+                setState((state) => ({
+                    ...state,
+                    wallet: targetAdapter
+                        ? { adapter: targetAdapter, state: targetAdapter.state }
+                        : state.wallet,
+                    adapter: targetAdapter ?? state.adapter,
+                    connected: targetAdapter.connected,
+                    address: targetAdapter.address,
+                }));
             } catch (error: unknown) {
                 setName(null);
                 throw error;
@@ -344,7 +385,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
                 isConnecting.current = false;
             }
         },
-        [isConnecting, isDisconnecting, adapter, connected, handleError, setName]
+        [connected, name, wallets, adapter, adapters, handleError, localStorageKey, setName]
     );
 
     const disconnect = useCallback(
@@ -399,8 +440,7 @@ export const WalletProvider: FC<WalletProviderProps> = function ({
     return (
         <WalletContext.Provider
             value={{
-                disableAutoConnectOnLoad,
-                autoConnect,
+                reconnectOnMount,
                 wallets,
                 wallet,
                 address,

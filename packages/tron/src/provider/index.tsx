@@ -8,8 +8,6 @@ import { WalletConnectAdapter } from '@tronweb3/tronwallet-adapter-walletconnect
 import type { WalletConnectAdapterConfig } from '@tronweb3/tronwallet-adapter-walletconnect';
 import { LedgerAdapter } from '@tronweb3/tronwallet-adapter-ledger';
 import type { LedgerAdapterConfig } from '@tronweb3/tronwallet-adapter-ledger';
-import { TrustAdapter } from '@tronweb3/tronwallet-adapter-trust';
-import { MetaMaskAdapter } from '@tronweb3/tronwallet-adapter-metamask-tron';
 import type { Wallet, Token, CustomToken } from 'pelican-web3-lib-common';
 
 import { PelicanWeb3ConfigProvider } from './config-provider';
@@ -19,12 +17,14 @@ import { TronLinkAdapter } from '../adapters/tronlink';
 import { OkxWalletAdapter } from '../adapters/okxwallet';
 import { WalletProvider } from '../hooks';
 import { TokenPocketAdapter } from '../adapters/tokenpocket';
+import { TrustAdapter } from '../adapters/trust';
+import { MetaMaskAdapter } from '../adapters/metamask_tron';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
   wallets?: Wallet[]; // 可供 UI 展示或过滤的钱包清单（非适配器实例）
   onError?: (error: Error) => void; // 统一错误回调，错误将被标准化后回传
-  autoConnect?: boolean; // 是否在页面就绪时自动尝试连接上次使用的钱包
+  reconnectOnMount?: boolean; // 页面就绪时是否尝试重连上次使用的钱包
   balance?: boolean;
   /**
    * 指定 TRC-20 代币以查询余额（传入后优先显示该代币余额）
@@ -53,7 +53,7 @@ export interface TronWeb3ConfigProviderProps {
 export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigProviderProps>> = ({
   wallets,
   onError,
-  autoConnect,
+  reconnectOnMount,
   balance,
   token,
   customToken,
@@ -143,7 +143,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
         onError?.(normalized);
       }}
       adapters={adapters} // 传入钱包适配器列表
-      autoConnect={autoConnect} // 自动连接配置
+      reconnectOnMount={reconnectOnMount}
       {...walletProviderProps}
     >
       <PelicanWeb3ConfigProvider

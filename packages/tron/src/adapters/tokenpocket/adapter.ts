@@ -28,6 +28,7 @@ import {
     TIP6963RequestProviderEventName,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import type { Tron, TronAccountsChangedCallback } from '../tronlink/types';
+import { getNetworkInfoByTronWeb } from '../tronlink';
 
 export interface TokenPocketAdapterConfig extends BaseAdapterConfig {
     /**
@@ -50,7 +51,7 @@ export const TokenPocketAdapterName = 'TokenPocket' as AdapterName<'TokenPocket'
 
 export interface TokenPocketWallet {
     ready: boolean;
-    tronWeb: TronWeb;
+    tronWeb: TronWeb | any;
     tron: Tron;
 }
 
@@ -282,32 +283,12 @@ export class TokenPocketAdapter extends Adapter {
     /**
      * 切换到目标链；若 TokenPocket 不支持将抛出 WalletSwitchChainError。
      * 具体支持的 chainId 需参考 TokenPocket 文档配置。
-     * @param chainId 目标链 ID（如 Tron 主网/测试网对应的 EVM 风格链 ID）
+     * @param _chainId 目标链 ID（如 Tron 主网/测试网对应的 EVM 风格链 ID）
      */
-    async switchChain(chainId: string) {
-        try {
-            this.checkIfOpenApp();
-            await this._checkWallet();
-            if (this.readyState === WalletReadyState.NotFound) {
-                if (this.config.openUrlWhenWalletNotFound !== false && isInBrowser()) {
-                    window.open(this.url, '_blank');
-                }
-                throw new WalletNotFoundError();
-            }
-            if (!this._wallet) return;
-            const wallet = this._wallet as TokenPocketWallet;
-            try {
-                await wallet.tron.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId }],
-                });
-            } catch (e: any) {
-                throw new WalletSwitchChainError(e?.message || e, e instanceof Error ? e : new Error(e));
-            }
-        } catch (error: any) {
-            this.emit('error', error);
-            throw error;
-        }
+    async switchChain(_chainId: string) {
+        const error = new WalletSwitchChainError('Switch chain is not supported');
+        this.emit('error', error);
+        throw error;
     }
 
     private onAccountsChanged: TronAccountsChangedCallback = (accounts) => {
@@ -554,11 +535,4 @@ export class TokenPocketAdapter extends Adapter {
             this.emit('stateChanged', state);
         }
     }
-}
-/**
- * 从 TronWeb 实例获取网络信息。
- * TODO: 需根据 TronWeb 提供的 API 补充实现。
- */
-function getNetworkInfoByTronWeb(_tronWeb: TronWeb): Network | PromiseLike<Network> {
-    throw new Error('Function not implemented.');
 }

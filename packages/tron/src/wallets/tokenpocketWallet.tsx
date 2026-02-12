@@ -5,5 +5,5 @@ export const TokenPocketWallet: WalletMetadata = {
   ...metadata_TokenPocket,
   key: 'tokenPocketTronWallet',
   group: 'Popular',
-  supportSwitchChain: true,
+  supportSwitchChain: false,
 };

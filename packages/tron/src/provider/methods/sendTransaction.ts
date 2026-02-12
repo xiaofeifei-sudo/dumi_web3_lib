@@ -1,6 +1,5 @@
 import type { Chain, TransferParams } from 'pelican-web3-lib-common';
-import { getBalance } from './getBalance';
-import { TronInsufficientBalanceError } from '../../errors/insufficient-balance-error';
+import { toSunCompat } from '../../utils';
 import { TronInvalidAddressError } from '../../errors/invalid-address-error';
 import { getTokenDecimals } from './getTokenDecimals';
 
@@ -33,20 +32,20 @@ export async function sendTransaction(
     }
     amount = BigInt(Math.floor(rawValue * 10 ** decimals));
   } else {
-    const sun = tronWeb.toSun(rawValue);
-    amount = BigInt(typeof sun === 'string' ? sun : String(sun));
+    const sun = toSunCompat(tronWeb, rawValue);
+    amount = BigInt(sun);
   }
-  const balance = await getBalance(
-    tronWeb,
-    from,
-    currentChain,
-    tokenOnChain?.contract ? params.token : undefined,
-    !tokenOnChain?.contract ? params.customToken : undefined,
-  );
-  const available = balance?.value ?? 0n;
-  if (amount > available) {
-    throw new TronInsufficientBalanceError();
-  }
+  // const balance = await getBalance(
+  //   tronWeb,
+  //   from,
+  //   currentChain,
+  //   tokenOnChain?.contract ? params.token : undefined,
+  //   !tokenOnChain?.contract ? params.customToken : undefined,
+  // );
+  // const available = balance?.value ?? 0n;
+  // if (amount > available) {
+  //   throw new TronInsufficientBalanceError();
+  // }
   if (tokenOnChain?.contract || params.customToken?.contract) {
     const functionSelector = 'transfer(address,uint256)';
     const parameter = [
@@ -67,6 +66,7 @@ export async function sendTransaction(
     const txId: string = result?.txid || result?.transaction?.txID || '';
     return `0x${txId.replace(/^0x/, '')}` as `0x${string}`;
   }
+  
   const trade = await tronWeb.transactionBuilder.sendTrx(to, Number(amount), from);
   if (!signTransaction) {
     throw new Error('signTransaction is not available');

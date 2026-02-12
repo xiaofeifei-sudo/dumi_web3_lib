@@ -38,6 +38,20 @@ export const switchTronChain = async (adapter?: any, newChain?: any, wallet?: an
   throw new TronWalletNotSupportSwitchChainError();
 };
 
+export const toSunCompat = (tronWeb: any, value: number | string | bigint): string => {
+  if (typeof tronWeb?.toSun === 'function') {
+    const sun = tronWeb.toSun(value as any);
+    return typeof sun === 'string' ? sun : String(sun);
+  }
+  if (typeof value === 'bigint') return value.toString();
+  const n = typeof value === 'string' ? Number(value) : Number(value);
+  if (!Number.isFinite(n)) {
+    throw new Error('Invalid TRX amount');
+  }
+  const scaled = Math.floor(n * 1e6);
+  return String(scaled);
+};
+
 export const tronToBigInt = (v: any): bigint => {
   if (v === undefined || v === null) return 0n;
   if (typeof v === 'bigint') return v;

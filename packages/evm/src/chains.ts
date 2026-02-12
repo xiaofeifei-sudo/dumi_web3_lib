@@ -24,6 +24,8 @@ import {
   ScrollSepolia as ScrollSepoliaAsset,
   Sepolia as SepoliaAsset,
   X1Testnet as X1TestnetAsset,
+  TronMainnet as TronMainnetAsset,
+  TronNileNet as TronNileNetAsset,
 } from 'pelican-web3-lib-assets';
 import {
   arbitrum,
@@ -40,7 +42,9 @@ import {
   scroll,
   scrollSepolia,
   sepolia,
-  bscTestnet
+  bscTestnet,
+  tron,
+  tronNile
 } from 'wagmi/chains';
 
 import type { ChainAssetWithWagmiChain } from './interface';
@@ -160,4 +164,16 @@ export const Hardhat: ChainAssetWithWagmiChain = {
 export const Localhost: ChainAssetWithWagmiChain = {
   ...LocalhostAsset,
   wagmiChain: localhost,
+};
+
+// Tron 主网
+export const TronMainnet: ChainAssetWithWagmiChain = {
+  ...TronMainnetAsset,
+wagmiChain: tron
+};
+
+// Tron NileNet 测试网
+export const TronNileNet: ChainAssetWithWagmiChain = {
+  ...TronNileNetAsset,
+  wagmiChain: tronNile
 };

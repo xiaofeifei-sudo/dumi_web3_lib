@@ -27,7 +27,6 @@ const ChainStatus: React.FC = () => {
 const InitialChainDemo: React.FC = () => {
   return (
     <TronWeb3ConfigProvider
-      autoConnect={false}
       initialChain={TronNileNet}
       wallets={[
         TronlinkWallet,

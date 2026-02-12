@@ -14,7 +14,6 @@ const Chains: React.FC = () => {
 
   return (
     <TronWeb3ConfigProvider
-      autoConnect={false}
       wallets={[
         TronlinkWallet,
         OkxTronWallet,

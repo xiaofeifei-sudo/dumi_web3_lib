@@ -697,6 +697,9 @@ importers:
 
   packages/tron:
     dependencies:
+      '@metamask/multichain-api-client':
+        specifier: 0.11.0
+        version: 0.11.0
       '@tronweb3/tronwallet-abstract-adapter':
         specifier: ^1.1.10
         version: 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -721,15 +724,9 @@ importers:
       '@tronweb3/tronwallet-adapter-ledger':
         specifier: ^1.1.12
         version: 1.1.12(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-metamask-tron':
-        specifier: ^1.0.1
-        version: 1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@tronweb3/tronwallet-adapter-tomowallet':
         specifier: ^1.0.1
         version: 1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-trust':
-        specifier: ^1.0.2
-        version: 1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@tronweb3/tronwallet-adapter-walletconnect':
         specifier: ^3.0.2
         version: 3.0.2(@react-native-async-storage/async-storage@1.24.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10)))(@types/react@18.3.21)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.13)
@@ -5266,20 +5263,12 @@ packages:
     resolution: {integrity: sha512-yvO5S8zRgs/KNvJATUu6rc+yyhbWxz5ZQYNcln6FXMYSR25PIU9LkVNmJGTIrR6hRFnDTvyNTqduGqE+6+7ybA==}
     engines: {node: '>=16', pnpm: '>=7'}
 
-  '@tronweb3/tronwallet-adapter-metamask-tron@1.0.1':
-    resolution: {integrity: sha512-1r/a0BOnLavVfM2QOjXCz4fLxu2aSP/AKOhuGPm8M31oROo+PNw8XtrS2xDTB9C/pAgUMMgYJTKpJ0KK0Ed+yg==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
   '@tronweb3/tronwallet-adapter-tomowallet@1.0.1':
     resolution: {integrity: sha512-YTzdGc+WMP3moAvD/3XlPYEs1XJNi2EhURIT4vFfbRXcxdq7dm4rDziinZR07Nh7ULsIbZlHoGh8DTGvoXfOlw==}
     engines: {node: '>=16', pnpm: '>=7'}
 
   '@tronweb3/tronwallet-adapter-tronlink@1.1.13':
     resolution: {integrity: sha512-Oq5L0FyBM+g49DCr0DYdSx8xuhiqIlKoBTPNVmCTSDoWnoZpIh0XE33Axm/4OUMO2NHFpQMvP3pFo7QIllOZ/w==}
-    engines: {node: '>=16', pnpm: '>=7'}
-
-  '@tronweb3/tronwallet-adapter-trust@1.0.2':
-    resolution: {integrity: sha512-Bw1Gikor29BDzRN8lsCVk9ElviG9wRwR7egGHDYwEiwkFXb31qZXbMCFFSJvK4GZ5sQCCVWenPR6A2Te4t4WHA==}
     engines: {node: '>=16', pnpm: '>=7'}
 
   '@tronweb3/tronwallet-adapter-walletconnect@3.0.2':
@@ -21083,15 +21072,6 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@tronweb3/tronwallet-adapter-metamask-tron@1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@metamask/multichain-api-client': 0.11.0
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
   '@tronweb3/tronwallet-adapter-tomowallet@1.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
       '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -21104,15 +21084,6 @@ snapshots:
   '@tronweb3/tronwallet-adapter-tronlink@1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
       '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-
-  '@tronweb3/tronwallet-adapter-trust@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@tronweb3/tronwallet-abstract-adapter': 1.1.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@tronweb3/tronwallet-adapter-tronlink': 1.1.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - debug

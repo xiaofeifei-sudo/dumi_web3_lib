@@ -6,7 +6,7 @@ import { TronNileNet } from 'pelican-web3-lib-assets';
 
 const TokenBalanceDemo: React.FC = () => {
   return (
-    <TronWeb3ConfigProvider autoConnect={false} balance token={USDT} initialChain={TronNileNet} wallets={[
+    <TronWeb3ConfigProvider balance token={USDT} initialChain={TronNileNet} wallets={[
         TronlinkWallet,
         OkxTronWallet,
         LedgerWallet,

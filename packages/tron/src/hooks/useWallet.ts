@@ -16,8 +16,7 @@ export interface Wallet {
  * - 提供选择、连接、断开、签名交易与消息的方法
  */
 export interface WalletContextState {
-    disableAutoConnectOnLoad: boolean;
-    autoConnect: boolean;
+    reconnectOnMount: boolean;
     wallets: Wallet[];
     wallet: Wallet | null;
     address: string | null;
@@ -48,7 +47,7 @@ Please wrap your sub-components with a WalletProvider and provide required value
  * - 属性通过 getter 在访问时提示错误
  */
 const DEFAULT_CONTEXT = {
-    autoConnect: false,
+    reconnectOnMount: true,
     connecting: false,
     connected: false,
     disconnecting: false,

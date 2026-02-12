@@ -50,7 +50,7 @@ interface ConnectAsync {
 export const PelicanWeb3ConfigProvider: React.FC<
   React.PropsWithChildren<PelicanWeb3ConfigProviderProps>
 > = ({ availableWallets, connectionError, ignoreConfig, balance, token, customToken, children, initialChain }) => {
-  const { address, wallet, wallets, connected, connect, disconnect, select, signTransaction } = useWallet();
+    const { address, wallet, wallets, connected, connect, disconnect, select, signTransaction } = useWallet();
   const connectAsyncRef = useRef<ConnectAsync>();
   const [account, setAccount] = useState<Account>();
   const [currentChain, setCurrentChain] = useState<Chain | undefined>(initialChain ?? TronMainnet);
@@ -280,36 +280,6 @@ export const PelicanWeb3ConfigProvider: React.FC<
     }
   }, [address, connected]);
 
-  // 连接/断开钱包
-  useEffect(() => {
-    if (wallet?.adapter?.name) {
-      // 如果钱包尚未就绪，需要清除已选钱包
-      // if (!hasWalletReady(wallet.adapter.readyState)) {
-      //   select(null as any);
-      //   return;
-      // }
-      console.info('[TronConfig] 自动连接触发', {
-        wallet: wallet?.adapter?.name,
-      });
-      connect().catch((err) => {
-        const normalized = normalizeTronError(err, {
-          action: 'connect',
-          walletName: wallet?.adapter?.name,
-        });
-        connectAsyncRef.current?.reject(normalized);
-        connectAsyncRef.current = undefined;
-      });
-    } else {
-      if (connected) {
-        console.info('[TronConfig] 自动断开触发', {
-          wallet: wallet?.adapter?.name,
-        });
-        disconnect();
-      }
-    }
-  }, [wallet?.adapter?.name]);
-
-
   /// 处理 TRON 余额
   const currency = currentChain?.nativeCurrency;
 
@@ -419,6 +389,7 @@ export const PelicanWeb3ConfigProvider: React.FC<
         connectAsyncRef.current = { promise, resolve, reject, walletName };
         try {
           select(walletName);
+          await connect()
         } catch (err) {
           const normalized = normalizeTronError(err, { action: 'connect', walletName });
           reject(normalized);

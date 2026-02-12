@@ -1,6 +1,6 @@
 import React from 'react';
 import { Space } from 'antd';
-import { WagmiWeb3ConfigProvider, Mainnet, MetaMask, Sepolia, WalletConnect } from 'pelican-web3-lib-evm';
+import { WagmiWeb3ConfigProvider, Mainnet, MetaMask, Sepolia, WalletConnect, BSCTestNet, BSC, TronMainnet, TronNileNet } from 'pelican-web3-lib-evm';
 import { http } from 'wagmi';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
@@ -13,8 +13,8 @@ const App: React.FC = () => {
         autoAddInjectedWallets: true,
       }}
       reconnectOnMount={true}
-      chains={[Sepolia, Mainnet]}
-      wallets={[MetaMask(),WalletConnect() ]}
+      chains={[Sepolia, Mainnet, TronMainnet, TronNileNet]}
+      wallets={[MetaMask(),WalletConnect(), ]}
       walletConnect={{
         projectId: YOUR_WALLET_CONNECT_PROJECT_ID,
       }}
@@ -22,6 +22,8 @@ const App: React.FC = () => {
       transports={{
         [Sepolia.id]: http(),
         [Mainnet.id]: http(),
+        [TronMainnet.id]: http(),
+        [TronNileNet.id]: http(),
       }}
     >
       <Space direction="vertical">

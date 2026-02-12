@@ -12,7 +12,7 @@ const Message = () => {
             TokenPocketWallet,
             TrustWallet,
             MetaMaskTronWallet,
-          ]} autoConnect={false} >
+          ]} >
       <Flex justify="space-between" style={{ width: 386 }}>
         <Connector>
           <ConnectButton />

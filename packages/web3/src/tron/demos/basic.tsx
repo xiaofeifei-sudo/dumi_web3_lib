@@ -16,7 +16,6 @@ import { TronNileNet } from 'pelican-web3-lib-assets';
 const Basic = () => {
   return (
     <TronWeb3ConfigProvider
-      autoConnect={false}
       wallets={[
         OkxTronWallet,
         TronlinkWallet,
