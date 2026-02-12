@@ -20,7 +20,7 @@ import type {
     Network,
     TronWeb,
 } from '@tronweb3/tronwallet-abstract-adapter';
-import { openBitgetWallet, supportBitgetWallet } from './utils.js';
+import { openBitgetWallet, supportBitgetWallet } from './utils';
 import type { Tron } from '../tronlink/types';
 import { getNetworkInfoByTronWeb, type TronLinkWallet } from '../tronlink/adapter';
 

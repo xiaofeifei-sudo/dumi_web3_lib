@@ -1,10 +1,9 @@
 // 说明：Fox Wallet 的展示元数据
 import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful } from 'pelican-web3-lib-icons';
-import { FoxColorful } from 'pelican-web3-lib-icons';
 
 export const metadata_FoxWallet: WalletMetadata = {
-  icon: <FoxColorful />,
+  icon: 'https://www.google.com/s2/favicons?sz=64&domain=foxwallet.com',
   name: 'Fox Wallet',
   remark: 'Fox Wallet',
   app: {

@@ -1,2 +1,2 @@
-export * from './adapter.js';
-export * from './utils.js';
+export * from './adapter';
+export * from './utils';

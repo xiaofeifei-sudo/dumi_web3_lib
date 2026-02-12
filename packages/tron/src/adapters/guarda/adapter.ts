@@ -19,7 +19,7 @@ import type {
     Network,
     TronWeb,
 } from '@tronweb3/tronwallet-abstract-adapter';
-import { supportGuarda } from './utils.js';
+import { supportGuarda } from './utils';
 import type { Tron } from '../tronlink/types';
 import { getNetworkInfoByTronWeb } from '../tronlink/adapter';
 
