@@ -1,6 +1,6 @@
 {
   "name": "pelican-web3-lib-tron",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "main": "dist/lib/index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
@@ -26,12 +26,12 @@
     "@tronweb3/tronwallet-adapter-walletconnect": "^3.0.2",
     "@metamask/multichain-api-client": "0.11.0",
     "@ledgerhq/hw-app-trx": "6.29.2",
-        "@ledgerhq/hw-transport": "6.27.1",
-        "@ledgerhq/hw-transport-webhid": "6.27.1",
-        "buffer": "6.0.3",
-        "eventemitter3": "5.0.1",
-        "preact": "10.23.0",
-        "@binance/w3w-utils": "1.1.6",
+    "@ledgerhq/hw-transport": "6.27.1",
+    "@ledgerhq/hw-transport-webhid": "6.27.1",
+    "buffer": "6.0.3",
+    "eventemitter3": "5.0.1",
+    "preact": "10.23.0",
+    "@binance/w3w-utils": "1.1.6",
     "tronweb": "^6.0.3"
   },
   "devDependencies": {
