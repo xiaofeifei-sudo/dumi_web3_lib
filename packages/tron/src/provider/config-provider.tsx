@@ -141,6 +141,9 @@ export const PelicanWeb3ConfigProvider: React.FC<
           const selectedWallet = availableWallets?.find(
             (item) => item.name === wallet?.adapter?.name,
           );
+        if (selectedWallet && selectedWallet.supportSwitchChain !== true) {
+          return;
+        }
         const { chainId } = await (wallet.adapter as any).network();
         const map: Record<string, Chain> = {
           [TronChainIds.Mainnet]: TronMainnet,

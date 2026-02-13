@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Input, InputNumber, message, Space } from 'antd';
-import {  LedgerWallet, MetaMaskTronWallet, OkxTronWallet, TokenPocketWallet, TronWeb3ConfigProvider, TronlinkWallet, TrustWallet, USDT } from 'pelican-web3-lib-tron';
+import {  BinanceWallet, LedgerWallet, MetaMaskTronWallet, OkxTronWallet, TokenPocketWallet, TronWeb3ConfigProvider, TronlinkWallet, TrustWallet, USDT } from 'pelican-web3-lib-tron';
 import { TronNileNet } from 'pelican-web3-lib-assets';
 import Connector from '../../components/Connector';
 import { ConnectButton } from '../../components/connect-button';
@@ -129,6 +129,7 @@ const Transaction: React.FC = () => {
               TokenPocketWallet,
               TrustWallet,
               MetaMaskTronWallet,
+              BinanceWallet
             ]}
       balance
       token={USDT}

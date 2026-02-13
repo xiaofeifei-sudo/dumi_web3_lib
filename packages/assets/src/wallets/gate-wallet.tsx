@@ -3,7 +3,7 @@ import type { WalletMetadata } from 'pelican-web3-lib-common';
 import { ChromeCircleColorful } from 'pelican-web3-lib-icons';
 
 export const metadata_GateWallet: WalletMetadata = {
-  icon: 'https://www.google.com/s2/favicons?sz=64&domain=gate.io',
+  icon: 'https://lh3.googleusercontent.com/RjkrXU4ovz77JApt18xbtVzBF414DAtTznrZuSOa5ynqL8CstZlHCeUcPV0hAbj62rKCWwJejIfV8FYfHhCltgsL=s120',
   name: 'Gate Wallet',
   remark: 'Gate Wallet',
   app: {

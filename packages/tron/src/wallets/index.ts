@@ -11,3 +11,4 @@ export * from './binanceWallet';
 export * from './foxWallet';
 export * from './gateWallet';
 export * from './guardaWallet';
+export * from './tomoWallet';

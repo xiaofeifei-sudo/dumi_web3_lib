@@ -24,6 +24,7 @@ import { GateWalletAdapter } from '../adapters/gatewallet';
 import { GuardaAdapter } from '../adapters/guarda';
 import { BybitWalletAdapter } from '../adapters/bybit';
 import { BitKeepAdapter } from '../adapters/bitkeep';
+import { TomoWalletAdapter } from '../adapters/tomowallet';
 
 /** Tron Web3 配置项 */
 export interface TronWeb3ConfigProviderProps {
@@ -130,7 +131,11 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       checkTimeout: 2000,
       ...(adapterConfig ?? {}),
     });
-    // const tomoWalletAdapter = new TomoWalletAdapter();
+    const tomoWalletAdapter = new TomoWalletAdapter({
+      checkTimeout: 3000,
+      openUrlWhenWalletNotFound: true,
+      ...(adapterConfig ?? {}),
+    });
     const guardaAdapter = new GuardaAdapter({
       checkTimeout: 2000,
       openUrlWhenWalletNotFound: true,
@@ -159,7 +164,7 @@ export const TronWeb3ConfigProvider: React.FC<PropsWithChildren<TronWeb3ConfigPr
       gateWalletAdapter,
       foxWalletAdapter,
       trustAdapter,
-      // tomoWalletAdapter,
+      tomoWalletAdapter,
       binanceWalletAdapter,
       guardaAdapter,
       metaMaskTronAdapter,
