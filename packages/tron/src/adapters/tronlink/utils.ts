@@ -11,7 +11,14 @@ export function supportTron() {
  * 检测是否支持 TronLink（包含 tron / tronLink / tronWeb 三种注入）
  */
 export function supportTronLink() {
-    return !!(supportTron() || window.tronLink || window.tronWeb);
+    const hasTron = supportTron();
+    const hasNew = !!window.tronLink;
+    const hasLegacy =
+        !!window.tronWeb &&
+        !(window as any).okxwallet &&
+        !(window as any).tokenpocket &&
+        !(window as any).trustwallet;
+    return hasTron || hasNew || hasLegacy;
 }
 
 /**

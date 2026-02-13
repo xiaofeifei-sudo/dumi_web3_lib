@@ -4,7 +4,8 @@ import { isInBrowser, isInMobileBrowser } from '@tronweb3/tronwallet-abstract-ad
  * 判断是否支持 TokenPocket（窗口存在 tokenpocket 对象且注入了 tronWeb）。
  */
 export function supportTokenPocket() {
-    return !!window.tronWeb && typeof (window as any).tokenpocket !== 'undefined';
+    const tp = (window as any).tokenpocket;
+    return typeof tp !== 'undefined' && !!(tp?.tronWeb || tp?.tron);
 }
 
 /**

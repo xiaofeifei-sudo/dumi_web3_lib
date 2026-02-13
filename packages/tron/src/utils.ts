@@ -20,9 +20,38 @@ export const getNetworkInfoByTronWeb = async (tronWeb: any) => {
 
 /// 解析 TRON Web 实例：优先使用适配器中的，否则 fallback 到全局 window 对象
 export const resolveTronWeb = (adapter?: any) => {
+  const name = adapter?.name;
   const adapterTronWeb = adapter?.tronWeb;
-  const injectedTronWeb = (window as any)?.tronWeb;
-  return adapterTronWeb || injectedTronWeb;
+  if (name === 'TokenPocket') {
+    return adapterTronWeb ?? (window as any)?.tokenpocket?.tronWeb ?? null;
+  }
+  if (name === 'Trust') {
+    return adapterTronWeb ?? (window as any)?.trustwallet?.tronLink?.tronWeb ?? null;
+  }
+  if (name === 'OKX Wallet') {
+    return adapterTronWeb ?? (window as any)?.okxwallet?.tronLink?.tronWeb ?? null;
+  }
+  if (name === 'Bitget Wallet') {
+    const w = (window as any)?.bitkeep;
+    return adapterTronWeb ?? w?.tronWeb ?? w?.tronLink?.tronWeb ?? null;
+  }
+  if (name === 'Gate Wallet') {
+    const w = (window as any)?.gatewallet;
+    return adapterTronWeb ?? w?.tronLink?.tronWeb ?? w?.tron?.tronWeb ?? null;
+  }
+  if (name === 'Bybit Wallet') {
+    return adapterTronWeb ?? (window as any)?.bybitWallet?.tronLink?.tronWeb ?? null;
+  }
+  if (name === 'FoxWallet') {
+    return adapterTronWeb ?? (window as any)?.foxwallet?.tronLink?.tronWeb ?? null;
+  }
+  if (name === 'Guarda') {
+    return adapterTronWeb ?? (window as any)?.guarda?.tronWeb ?? null;
+  }
+  if (name === 'Tomo Wallet') {
+    return adapterTronWeb ?? (window as any)?.tomo_wallet?.tron?.tronWeb ?? null;
+  }
+  return adapterTronWeb ?? (window as any)?.tronWeb ?? null;
 };
 
 
