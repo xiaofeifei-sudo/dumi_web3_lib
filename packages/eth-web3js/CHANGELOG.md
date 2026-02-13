@@ -1,5 +1,15 @@
 # pelican-web3-lib-eth-web3js
 
+## 1.0.17
+
+### Patch Changes
+
+- Patch release
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.17
+  - pelican-web3-lib-common@1.0.17
+  - pelican-web3-lib-evm@1.0.17
+
 ## 1.0.16
 
 ### Patch Changes
