@@ -7,6 +7,7 @@ import {
   MetaMaskTronWallet,
   LedgerWallet,
   BinanceWallet,
+  BitgetWallet,
 
 } from 'pelican-web3-lib-tron';
 import Connector from '../../components/Connector';
@@ -24,7 +25,8 @@ const Basic = () => {
         TokenPocketWallet,
         TrustWallet,
         MetaMaskTronWallet,
-        BinanceWallet
+        BinanceWallet,
+        BitgetWallet
       ]}
       initialChain={
         TronNileNet

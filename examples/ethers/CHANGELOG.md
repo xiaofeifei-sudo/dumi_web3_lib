@@ -1,5 +1,15 @@
 # @example/ethers
 
+## 0.0.44
+
+### Patch Changes
+
+- Updated dependencies
+  - pelican-web3-lib-assets@1.0.18
+  - pelican-web3-lib-common@1.0.18
+  - pelican-web3-lib-ethers@1.0.18
+  - pelican-web3-lib@1.26.18
+
 ## 0.0.43
 
 ### Patch Changes

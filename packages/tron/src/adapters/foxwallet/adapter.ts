@@ -19,7 +19,8 @@ import type {
     Network,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { openFoxWallet, supportFoxWallet } from './utils';
-import { getNetworkInfoByTronWeb, TronLinkWallet } from '../tronlink/adapter';
+import type { TronLinkWallet } from '../tronlink/adapter';
+import { getNetworkInfoByTronWeb } from '../tronlink/adapter';
 
 declare global {
     interface Window {

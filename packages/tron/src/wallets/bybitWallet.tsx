@@ -3,7 +3,7 @@ import { BybitWalletCircleColorful, ChromeCircleColorful } from 'pelican-web3-li
 
 export const BybitWallet: WalletMetadata = {
   icon: <BybitWalletCircleColorful />,
-  name: 'Bybit',
+  name: 'Bybit Wallet',
   remark: 'Bybit',
   app: {
     link: 'https://www.bybit.com/download/',

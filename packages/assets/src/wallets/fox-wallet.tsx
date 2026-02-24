@@ -4,7 +4,7 @@ import { ChromeCircleColorful } from 'pelican-web3-lib-icons';
 
 export const metadata_FoxWallet: WalletMetadata = {
   icon: 'https://www.google.com/s2/favicons?sz=64&domain=foxwallet.com',
-  name: 'Fox Wallet',
+  name: 'FoxWallet',
   remark: 'Fox Wallet',
   app: {
     link: 'https://foxwallet.com/',

@@ -5,7 +5,7 @@ import { BitgetWalletColorful, ChromeCircleColorful } from 'pelican-web3-lib-ico
 // Bitget 钱包的展示与下载信息元数据
 export const BitgetWallet: WalletMetadata = {
   icon: <BitgetWalletColorful />,
-  name: 'Bitget',
+  name: 'Bitget Wallet',
   remark: 'Bitget',
   app: {
     link: 'https://web3.bitget.com/wallet-download',

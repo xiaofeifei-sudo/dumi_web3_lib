@@ -18,8 +18,9 @@ import type {
     Network,
 } from '@tronweb3/tronwallet-abstract-adapter';
 import { openBybitWallet, supportBybitWallet } from './utils';
-import { getNetworkInfoByTronWeb, TronLinkWallet } from '../tronlink/adapter';
-import { AccountsChangedEventData, TronLinkMessageEvent } from '../tronlink';
+import type { TronLinkWallet } from '../tronlink/adapter';
+import { getNetworkInfoByTronWeb } from '../tronlink/adapter';
+import type { AccountsChangedEventData, TronLinkMessageEvent } from '../tronlink';
 
 declare global {
     interface Window {
