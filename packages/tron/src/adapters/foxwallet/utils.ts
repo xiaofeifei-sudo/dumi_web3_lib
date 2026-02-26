@@ -1,13 +1,13 @@
-import { isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from "pelican-web3-lib-common";
 
 export function supportFoxWallet() {
     return (
-        !!isInMobileBrowser && !!(window.foxwallet && window.foxwallet.tronLink && window.foxwallet.tronLink.tronWeb)
+        !!CoreHelperUtil.isMobile() && !!(window.foxwallet && window.foxwallet.tronLink && window.foxwallet.tronLink.tronWeb)
     );
 }
 
 export function openFoxWallet() {
-    if (isInMobileBrowser() && !supportFoxWallet()) {
+    if (CoreHelperUtil.isMobile() && !supportFoxWallet()) {
         const { origin, pathname, search, hash } = window.location;
         const url = origin + pathname + search + hash;
         location.href = `foxwallet://dapp?url=${encodeURIComponent(url)}`;

@@ -1,5 +1,6 @@
-import { isInBrowser, isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { isInBrowser } from '@tronweb3/tronwallet-abstract-adapter';
 import type { Tron } from './types';
+import { CoreHelperUtil } from 'pelican-web3-lib-common';
 
 /**
  * 检测是否存在 Tron 对象（TronLink 环境）
@@ -39,7 +40,7 @@ export function isInTronLinkApp() {
 export function openTronLink(
     { dappIcon, dappName }: { dappIcon: string; dappName: string } = { dappIcon: '', dappName: '' }
 ) {
-    if (!supportTronLink() && isInMobileBrowser() && !isInTronLinkApp()) {
+    if (!supportTronLink() && CoreHelperUtil.isMobile() && !isInTronLinkApp()) {
         let defaultDappName = '',
             defaultDappIcon = '';
         try {

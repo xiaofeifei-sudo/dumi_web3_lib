@@ -1,4 +1,5 @@
-import { isInBrowser, isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { isInBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from 'pelican-web3-lib-common';
 
 /**
  * 判断是否支持 TokenPocket（窗口存在 tokenpocket 对象且注入了 tronWeb）。
@@ -25,7 +26,7 @@ export function isInTokenPocket() {
  * @returns 是否已触发 DeepLink 跳转
  */
 export function openTokenPocket() {
-    if (!supportTokenPocket() && isInMobileBrowser() && !isInTokenPocket()) {
+    if (!supportTokenPocket() && CoreHelperUtil.isMobile() && !isInTokenPocket()) {
         const { origin, pathname, search, hash } = window.location;
         const url = origin + pathname + search + hash;
         const params = {

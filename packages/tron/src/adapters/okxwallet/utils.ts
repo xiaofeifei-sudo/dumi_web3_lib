@@ -1,4 +1,4 @@
-import { isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from "pelican-web3-lib-common";
 
 /**
  * 检测是否支持 OKX Wallet（存在 okxwallet.tronLink 注入）
@@ -23,7 +23,7 @@ export function isInOKApp() {
  * @returns 是否已尝试跳转（true 表示已跳转）
  */
 export function openOkxWallet() {
-    if (!isInOKApp() && isInMobileBrowser()) {
+    if (!isInOKApp() && CoreHelperUtil.isMobile()) {
         window.location.href = 'okx://wallet/dapp/url?dappUrl=' + encodeURIComponent(window.location.href);
         return true;
     }

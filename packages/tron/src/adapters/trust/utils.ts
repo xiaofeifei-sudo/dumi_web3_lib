@@ -1,4 +1,4 @@
-import { isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from "pelican-web3-lib-common";
 
 /**
  * 判断是否支持 Trust 钱包（检测 window.trustwallet.tronLink 是否存在）
@@ -22,7 +22,7 @@ export const isTrustApp = function () {
  * - 返回是否已触发跳转
  */
 export function openTrustWallet() {
-    if (!isTrustApp() && isInMobileBrowser()) {
+    if (!isTrustApp() && CoreHelperUtil.isMobile()) {
         window.location.href = 'https://link.trustwallet.com/open_url?url=' + encodeURIComponent(window.location.href);
         return true;
     }

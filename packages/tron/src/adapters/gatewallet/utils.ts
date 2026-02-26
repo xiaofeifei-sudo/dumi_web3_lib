@@ -1,4 +1,4 @@
-import { isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from "pelican-web3-lib-common";
 
 export function supportGateWallet() {
     return !!(window.gatewallet && window.gatewallet.tronLink);
@@ -12,7 +12,7 @@ export function isInGateApp() {
     return false;
 }
 export function openGateWallet() {
-    if (!isInGateApp() && isInMobileBrowser()) {
+    if (!isInGateApp() && CoreHelperUtil.isMobile()) {
         window.location.href =
             'https://gateio.onelink.me/DmA6/web3?dapp_url=' + encodeURIComponent(window.location.href);
         return true;

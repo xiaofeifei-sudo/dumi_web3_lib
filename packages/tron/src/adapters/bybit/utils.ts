@@ -1,4 +1,4 @@
-import { isInMobileBrowser } from '@tronweb3/tronwallet-abstract-adapter';
+import { CoreHelperUtil } from "pelican-web3-lib-common";
 
 export function supportBybitWallet() {
     return !!(window.bybitWallet && window.bybitWallet.tronLink);
@@ -12,7 +12,7 @@ export function isInBybitApp() {
     return false;
 }
 export function openBybitWallet() {
-    if (!isInBybitApp() && isInMobileBrowser()) {
+    if (!isInBybitApp() && CoreHelperUtil.isMobile()) {
         window.location.href = `https://app.bybit.com/inapp?by_dp=${encodeURIComponent(
             'bybitapp://open/route?targetUrl=by%3A%2F%2Fweb3%2Ftab%2Findex%3Findex%3D0'
         )}&by_web_link=${encodeURIComponent(window.location.href)}`;
